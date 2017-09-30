@@ -94,7 +94,7 @@ subprojects {
 			Bintray(MavenPublication) {
 				from components.java
 				artifact sourceJar
-//				artifact javadocJar
+				artifact javadocJar
 				pom.withXml {
 					asNode().children().last() + {
 						resolveStrategy = Closure.DELEGATE_FIRST
