@@ -1,0 +1,5 @@
+dependencies {
+	api("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}") {
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
+	}
+}
