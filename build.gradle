@@ -23,10 +23,6 @@ buildscript {
 }
 
 // Projects
-ext {
-	swtVersion = "3.105.3"
-}
-
 subprojects {
 
 	apply plugin: "java-library"
