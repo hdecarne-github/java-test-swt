@@ -1,46 +1,48 @@
-def snapshotVersion = project.version.endsWith("-SNAPSHOT")
+// Build helpers
+def snapshotBuild = project.version.endsWith("-SNAPSHOT")
 
 def resolveProperty(propertyName, envName) {
 	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
 	
 	if(resolved == null) {
 		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
-	} 
+	}
 	return resolved; 
 }
 
+// Build script
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+		classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.5.2")
+		classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
+	}
+}
+
+// Projects
 ext {
 	swtVersion = "3.105.3"
 }
 
 subprojects {
 
-	buildscript {
-		repositories {
-			jcenter()
-		}
-		dependencies {
-			classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
-			classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.5.2")
-			classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
-		}
-	}
-
 	apply plugin: "java-library"
-//	apply plugin: "jacoco"
-//	apply plugin: "org.sonarqube"
+	apply plugin: "jacoco"
+	apply plugin: "org.sonarqube"
 	apply plugin: "maven-publish"
-//	apply plugin: "com.jfrog.artifactory"
-//	apply plugin: "com.jfrog.bintray"
+	apply plugin: "com.jfrog.artifactory"
+	apply plugin: "com.jfrog.bintray"
 	apply plugin: "eclipse"
-
 	
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
 	
 	repositories {
 		jcenter()
-		if(snapshotVersion) {
+		if(snapshotBuild) {
 			maven { url "https://oss.jfrog.org/libs-snapshot/" }
 		}
 	}
@@ -63,6 +65,19 @@ subprojects {
 		testImplementation("junit:junit:4.12")
 	}
 
+	jacoco {
+		toolVersion = "0.7.9"
+	}
+	
+	jacocoTestReport {
+		reports {
+			xml.enabled false
+			html.enabled true
+			html.destination file("${buildDir}/reports/jacocoHtml")
+			csv.enabled false
+		}
+	}
+	
 	task sourceJar(type: Jar) {
 		from sourceSets.main.allJava
 		classifier "sources"
@@ -112,7 +127,7 @@ subprojects {
 		contextUrl = "https://oss.jfrog.org/artifactory"
 		publish {
 			repository {
-				repoKey = (snapshotVersion ? "oss-snapshot-local" : "oss-release-local")
+				repoKey = (snapshotBuild ? "oss-snapshot-local" : "oss-release-local")
 				username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 				password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 				maven = true
@@ -122,7 +137,7 @@ subprojects {
 			}
 		}
 		resolve {
-			repoKey = (snapshotVersion ? "libs-snapshot" : "libs-release")
+			repoKey = (snapshotBuild ? "libs-snapshot" : "libs-release")
 			username = project.resolveProperty("artifactory_user", "ARTIFACTORY_USER")
 			password = project.resolveProperty("artifactory_password", "ARTIFACTORY_PASSWORD")
 			maven = true

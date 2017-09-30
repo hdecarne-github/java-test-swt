@@ -3,3 +3,9 @@ dependencies {
 		exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 	}
 }
+
+test {
+	enabled = false
+}
+
+project.tasks["sonarqube"].enabled = test.enabled

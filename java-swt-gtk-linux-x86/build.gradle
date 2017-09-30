@@ -1,5 +1,11 @@
 dependencies {
-	api("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86:${swtVersion}3.105.3") {
+	api("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86:${swtVersion}") {
 		exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 	}
 }
+
+test {
+	enabled = false
+}
+
+project.tasks["sonarqube"].enabled = test.enabled
