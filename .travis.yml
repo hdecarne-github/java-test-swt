@@ -9,7 +9,6 @@ jdk:
 
 os:
   - linux
-  - osx
 
 script:
   - ./gradlew build sonarqube artifactoryPublish

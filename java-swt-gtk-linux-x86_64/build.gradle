@@ -5,7 +5,8 @@ dependencies {
 }
 
 test {
-	enabled = false
+	enabled = (System.properties["os.name"].toLowerCase() ==~ /linux/) \
+		&& (System.properties["os.arch"].toLowerCase() ==~ /x86_64|amd64/) 
 }
 
 project.tasks["sonarqube"].enabled = test.enabled
