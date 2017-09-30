@@ -24,12 +24,12 @@
 		<link>
 			<name>main-java</name>
 			<type>2</type>
-			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/src/main/java</location>
+			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/java-swt-gtk-linux-x86_64/shared-src/main/java</location>
 		</link>
 		<link>
 			<name>test-java</name>
 			<type>2</type>
-			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/src/test/java</location>
+			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/java-swt-gtk-linux-x86_64/shared-src/test/java</location>
 		</link>
 	</linkedResources>
 </projectDescription>

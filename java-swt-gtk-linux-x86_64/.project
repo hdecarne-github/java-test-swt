@@ -20,16 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>main-java</name>
-			<type>2</type>
-			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/src/main/java</location>
-		</link>
-		<link>
-			<name>test-java</name>
-			<type>2</type>
-			<location>/Users/holger/Desktop/Projekte/github.com/java-swt/src/test/java</location>
-		</link>
-	</linkedResources>
 </projectDescription>
