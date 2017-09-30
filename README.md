@@ -1,5 +1,5 @@
 ### Common SWT code shared between projects
-
+[![Build Status](https://travis-ci.org/hdecarne/java-swt.svg?branch=master)](https://travis-ci.org/hdecarne/java-swt)
 [![Download](https://api.bintray.com/packages/hdecarne/maven/java-swt-cocoa-macosx-x86_64/images/download.svg)](https://bintray.com/hdecarne/maven/java-swt-cocoa-macosx-x86_64/_latestVersion) macOS (x86/64bit)  
 [![Download](https://api.bintray.com/packages/hdecarne/maven/java-swt-gtk-linux-x86/images/download.svg)](https://bintray.com/hdecarne/maven/java-swt-gtk-linux-x86/_latestVersion) Linux/GTK (x86/32bit)  
 [![Download](https://api.bintray.com/packages/hdecarne/maven/java-swt-gtk-linux-x86_64/images/download.svg)](https://bintray.com/hdecarne/maven/java-swt-gtk-linux-x86_64/_latestVersion) Linux/GTK (x86/64bit)  
