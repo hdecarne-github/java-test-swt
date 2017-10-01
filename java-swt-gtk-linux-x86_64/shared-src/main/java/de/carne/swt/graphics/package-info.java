@@ -14,33 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt;
+@NonNullByDefault
+package de.carne.swt.graphics;
 
-import org.eclipse.swt.graphics.Device;
-
-import de.carne.check.Nullable;
-
-/**
- * Utility class providing {@linkplain Device} related functions.
- */
-public final class Devices {
-
-	private Devices() {
-		// prevent instantiation
-	}
-
-	/**
-	 * Dispose a (possibly {@code null}) {@linkplain Device}.
-	 *
-	 * @param device The {@linkplain Device} to dispose (may be {@code null}).
-	 * @return Always {@code null}.
-	 */
-	@Nullable
-	public static <T extends Device> T safeDispose(@Nullable T device) {
-		if (device != null) {
-			device.dispose();
-		}
-		return null;
-	}
-
-}
+import de.carne.check.NonNullByDefault;

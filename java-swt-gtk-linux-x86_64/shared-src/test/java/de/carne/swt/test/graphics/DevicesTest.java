@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.test;
+package de.carne.swt.test.graphics;
 
 import org.eclipse.swt.widgets.Display;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.swt.Devices;
+import de.carne.swt.graphics.Devices;
 
 /**
  * Test {@linkplain Devices} class.
