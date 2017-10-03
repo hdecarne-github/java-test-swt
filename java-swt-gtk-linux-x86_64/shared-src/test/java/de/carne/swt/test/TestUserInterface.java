@@ -14,11 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.events;
+package de.carne.swt.test;
+
+import org.eclipse.swt.widgets.Shell;
+
+import de.carne.swt.ResourceException;
+import de.carne.swt.widgets.UserInterface;
 
 /**
- *
+ * Test user interface.
  */
-public interface UserController {
+public class TestUserInterface extends UserInterface<Shell> {
+
+	@Override
+	protected void build(Shell root) throws ResourceException {
+		root.setText(getClass().getTypeName());
+	}
 
 }

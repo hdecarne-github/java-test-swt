@@ -26,6 +26,7 @@ import de.carne.ApplicationMain;
 import de.carne.check.Check;
 import de.carne.swt.ResourceException;
 import de.carne.swt.UserApplication;
+import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Exceptions;
 import de.carne.util.Late;
 import de.carne.util.Threads;
@@ -75,10 +76,11 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 	}
 
 	@Override
-	protected Shell setupStartShell(Display display) throws ResourceException {
-		Shell shell = new Shell(display);
+	protected UserInterface<Shell> setupUserInterface(Display display) throws ResourceException {
+		TestUserInterface userInterface = new TestUserInterface();
 
-		return shell;
+		userInterface.setup(new Shell(display));
+		return userInterface;
 	}
 
 	/**
