@@ -1,0 +1,5 @@
+autoEnabled=true
+eclipse.preferences.version=1
+extraProperties=
+moduleKey=de.carne.common\:java-swt\:java-swt-gtk-linux-x86_64
+serverId=SonarCloud/hdecarne-github
