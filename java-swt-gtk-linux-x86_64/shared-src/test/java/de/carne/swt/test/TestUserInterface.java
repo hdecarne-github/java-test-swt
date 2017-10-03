@@ -16,19 +16,45 @@
  */
 package de.carne.swt.test;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.swt.ResourceException;
+import de.carne.swt.graphics.ImageResourcePool;
+import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.UserInterface;
+import de.carne.util.Late;
 
 /**
  * Test user interface.
  */
 public class TestUserInterface extends UserInterface<Shell> {
 
+	private final Late<ImageResourcePool> images = new Late<>();
+
 	@Override
 	protected void build(Shell root) throws ResourceException {
+		this.images.set(new ImageResourcePool(root.getDisplay()));
+		root.setImage(this.images.get().get(getClass(), "image_a_128.png"));
 		root.setText(getClass().getTypeName());
+		buildMenuBar(root);
+	}
+
+	private void buildMenuBar(Shell root) throws ResourceException {
+		MenuBuilder menu = MenuBuilder.menuBar(root);
+		Image itemImage = this.images.get().get(getClass(), "image_a_16.png");
+
+		menu.addItem(SWT.CASCADE).withText("Menu A");
+		menu.beginMenu();
+		menu.addItem(SWT.PUSH).withText("Menu item A.1").withImage(itemImage);
+		menu.addItem(SWT.PUSH).withText("Menu item A.2").withImage(itemImage);
+		menu.endMenu();
+		menu.addItem(SWT.CASCADE).withText("Menu B");
+		menu.beginMenu();
+		menu.addItem(SWT.PUSH).withText("Menu item B.1").withImage(itemImage);
+		menu.addItem(SWT.PUSH).withText("Menu item B.2").withImage(itemImage);
+		menu.endMenu();
 	}
 
 }
