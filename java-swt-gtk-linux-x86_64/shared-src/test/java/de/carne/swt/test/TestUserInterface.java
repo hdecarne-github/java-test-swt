@@ -36,24 +36,32 @@ public class TestUserInterface extends UserInterface<Shell> {
 	@Override
 	protected void build(Shell root) throws ResourceException {
 		this.images.set(new ImageResourcePool(root.getDisplay()));
-		root.setImage(this.images.get().get(getClass(), "image_a_128.png"));
+		root.setImages(this.images.get().getAll(getClass(), "image_a_16.png", "image_a_32.png", "image_a_48.png",
+				"image_a_128.png"));
 		root.setText(getClass().getTypeName());
-		buildMenuBar(root);
+
+		TestUserAgent agent = new TestUserAgent();
+
+		buildMenuBar(root, agent);
 	}
 
-	private void buildMenuBar(Shell root) throws ResourceException {
+	private void buildMenuBar(Shell root, TestUserAgent agent) throws ResourceException {
 		MenuBuilder menu = MenuBuilder.menuBar(root);
 		Image itemImage = this.images.get().get(getClass(), "image_a_16.png");
 
 		menu.addItem(SWT.CASCADE).withText("Menu A");
 		menu.beginMenu();
 		menu.addItem(SWT.PUSH).withText("Menu item A.1").withImage(itemImage);
+		menu.onSelected(agent::onMenuItemSelected);
 		menu.addItem(SWT.PUSH).withText("Menu item A.2").withImage(itemImage);
+		menu.onSelected(agent::onMenuItemSelected);
 		menu.endMenu();
 		menu.addItem(SWT.CASCADE).withText("Menu B");
 		menu.beginMenu();
 		menu.addItem(SWT.PUSH).withText("Menu item B.1").withImage(itemImage);
+		menu.onSelected(agent::onMenuItemSelected);
 		menu.addItem(SWT.PUSH).withText("Menu item B.2").withImage(itemImage);
+		menu.onSelected(agent::onMenuItemSelected);
 		menu.endMenu();
 	}
 
