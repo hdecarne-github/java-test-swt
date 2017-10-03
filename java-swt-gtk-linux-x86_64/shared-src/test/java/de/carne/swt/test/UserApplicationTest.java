@@ -20,13 +20,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.carne.Application;
-import de.carne.swt.SWTApplication;
+import de.carne.swt.UserApplication;
 import de.carne.util.Threads;
 
 /**
- * Test {@linkplain SWTApplication} class.
+ * Test {@linkplain UserApplication} class.
  */
-public class SWTApplicationTest implements Runnable {
+public class UserApplicationTest implements Runnable {
 
 	/**
 	 * Setup the necessary system properties.
@@ -38,11 +38,11 @@ public class SWTApplicationTest implements Runnable {
 	}
 
 	/**
-	 * Test test-application.
+	 * Run and test {@linkplain TestUserApplicationMain}.
 	 */
 	@Test
 	public void testSWTApplication() {
-		TestSWTApplicationMain.setRobotThreadSupplier(() -> new Thread(this));
+		TestUserApplicationMain.setRobotThreadSupplier(() -> new Thread(this));
 		Application.main(new String[0]);
 	}
 
@@ -50,7 +50,7 @@ public class SWTApplicationTest implements Runnable {
 	public void run() {
 		Threads.sleep(1000);
 
-		TestSWTApplicationMain application = Application.getMain(TestSWTApplicationMain.class);
+		TestUserApplicationMain application = Application.getMain(TestUserApplicationMain.class);
 
 		application.waitReady();
 		application.close();

@@ -32,7 +32,7 @@ import de.carne.util.cmdline.CmdLineProcessor;
 /**
  * Base class for any kind of SWT based application.
  */
-public abstract class SWTApplication {
+public abstract class UserApplication {
 
 	private final Late<CmdLineProcessor> cmdLineHolder = new Late<>();
 	private final Late<Display> displayHolder = new Late<>();
@@ -40,12 +40,13 @@ public abstract class SWTApplication {
 	private int status = 0;
 
 	/**
-	 * Run the application by setting up the UI and executing the event loop.
+	 * Run the application by setting up the user interface and executing the event loop.
 	 *
-	 * @param cmdLine The {@linkplain CmdLineProcessor} to invoke after the UI has been set up.
+	 * @param cmdLine The {@linkplain CmdLineProcessor} to invoke after the user interface has been set up.
 	 * @return The application's exit code (as set by {@linkplain #setStatus(int)}).
+	 * @throws ResourceException If a required resource is not available.
 	 */
-	public int run(CmdLineProcessor cmdLine) {
+	public int run(CmdLineProcessor cmdLine) throws ResourceException {
 		this.cmdLineHolder.set(cmdLine);
 
 		Display display = this.displayHolder.set(setupDisplay());
@@ -59,7 +60,7 @@ public abstract class SWTApplication {
 		} catch (CmdLineException e) {
 			Exceptions.warn(e);
 		}
-		while (display.getShells().length > 0) {
+		while (!display.isDisposed() && display.getShells().length > 0) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -71,20 +72,18 @@ public abstract class SWTApplication {
 	 * Setup the {@linkplain Display}.
 	 *
 	 * @return The application's {@linkplain Display}.
+	 * @throws ResourceException If a required resource is not available.
 	 */
-	protected Display setupDisplay() {
-		return new Display();
-	}
+	protected abstract Display setupDisplay() throws ResourceException;
 
 	/**
 	 * Setup the start {@linkplain Shell}.
 	 *
 	 * @param display The application's {@linkplain Display}.
 	 * @return The application's start {@linkplain Shell}.
+	 * @throws ResourceException If a required resource is not available.
 	 */
-	protected Shell setupStartShell(Display display) {
-		return new Shell(display);
-	}
+	protected abstract Shell setupStartShell(Display display) throws ResourceException;
 
 	/**
 	 * Get the application's {@linkplain Display}.
@@ -173,7 +172,7 @@ public abstract class SWTApplication {
 	}
 
 	/**
-	 * Set the application's exist status (as returned by {@linkplain #run(CmdLineProcessor)}).
+	 * Set the application's exit status (as returned by {@linkplain #run(CmdLineProcessor)}).
 	 *
 	 * @param status The exit status to set.
 	 */

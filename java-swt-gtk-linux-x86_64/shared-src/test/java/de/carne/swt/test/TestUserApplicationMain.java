@@ -24,15 +24,17 @@ import org.junit.Assert;
 
 import de.carne.ApplicationMain;
 import de.carne.check.Check;
-import de.carne.swt.SWTApplication;
+import de.carne.swt.ResourceException;
+import de.carne.swt.UserApplication;
+import de.carne.util.Exceptions;
 import de.carne.util.Late;
 import de.carne.util.Threads;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
- * Test application that provides the features to be tested.
+ * Test application that utilizes the features to be tested.
  */
-public class TestSWTApplicationMain extends SWTApplication implements ApplicationMain {
+public class TestUserApplicationMain extends UserApplication implements ApplicationMain {
 
 	private static final Late<Supplier<Thread>> ROBOT_THREAD_SUPPLIER_HOLDER = new Late<>();
 
@@ -54,18 +56,27 @@ public class TestSWTApplicationMain extends SWTApplication implements Applicatio
 	@Override
 	public int run(String[] args) {
 		ROBOT_THREAD_SUPPLIER_HOLDER.get().get().start();
-		return run(new CmdLineProcessor(name(), args));
+
+		int status;
+
+		try {
+			status = run(new CmdLineProcessor(name(), args));
+		} catch (ResourceException e) {
+			Assert.fail(Exceptions.toString(e));
+			status = -1;
+		}
+		return status;
 	}
 
 	@Override
-	protected Display setupDisplay() {
+	protected Display setupDisplay() throws ResourceException {
 		Display.setAppName(getClass().getTypeName());
-		return super.setupDisplay();
+		return new Display();
 	}
 
 	@Override
-	protected Shell setupStartShell(Display display) {
-		Shell shell = super.setupStartShell(display);
+	protected Shell setupStartShell(Display display) throws ResourceException {
+		Shell shell = new Shell(display);
 
 		return shell;
 	}
