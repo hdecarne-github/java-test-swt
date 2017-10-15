@@ -40,8 +40,7 @@ class SWTApp implements Runnable {
 		Display display = new Display();
 
 		this.shell.set(new Shell(display));
-		this.shell.get().setText(TITLE_SHELL);
-		setupMenu();
+		setupShell();
 		this.shell.get().open();
 		while (!display.isDisposed() && display.getShells().length > 0) {
 			if (!display.readAndDispatch()) {
@@ -50,7 +49,12 @@ class SWTApp implements Runnable {
 		}
 	}
 
-	private void setupMenu() {
+	private void setupShell() {
+		this.shell.get().setText(TITLE_SHELL);
+		setupShellMenu();
+	}
+
+	private void setupShellMenu() {
 		Menu bar = new Menu(this.shell.get(), SWT.BAR);
 		MenuItem appItem = new MenuItem(bar, SWT.CASCADE);
 		Menu app = new Menu(appItem);

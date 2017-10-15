@@ -167,17 +167,15 @@ public abstract class SWTTester {
 		}
 	}
 
-	private void testerThread(Runner runner) {
-		Display display = waitReady(runner);
-
-		for (Runnable check : runner) {
-			runWait(display, check);
-		}
-		runWait(display, () -> disposeAll(runner));
-	}
-
 	void runTester(Runner runner) {
-		Thread testerThread = new Thread(() -> testerThread(runner));
+		Thread testerThread = new Thread(() -> {
+			Display display = waitReady(runner);
+
+			for (Runnable check : runner) {
+				runWait(display, check);
+			}
+			runWait(display, () -> disposeAll(runner));
+		});
 
 		testerThread.setDaemon(true);
 		testerThread.start();
