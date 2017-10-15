@@ -16,7 +16,6 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -36,7 +35,11 @@ public class SWTTesterTestFailure extends SWTTester {
 	 */
 	@Test(expected = AssertionError.class)
 	public void testerTestFailure() {
-		runner().check(() -> Assert.fail()).run();
+		runner().check(this::checkFailure).run();
+	}
+
+	private void checkFailure() {
+		getShell("unknown").get().close();
 	}
 
 }
