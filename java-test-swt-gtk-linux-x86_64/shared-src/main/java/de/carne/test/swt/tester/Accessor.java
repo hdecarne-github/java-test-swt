@@ -50,6 +50,7 @@ public class Accessor<T> implements Supplier<T> {
 	 * <p>
 	 * If the submitted object is {@code null} this function signals a test failure.
 	 *
+	 * @param <T> The checked object's actual type.
 	 * @param object The object to check.
 	 * @param message The message to use for test case failure.
 	 * @return The checked object.
