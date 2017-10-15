@@ -16,26 +16,25 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Test;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
-/**
- * Test {@linkplain SWTTester} class.
- */
-public class SWTTesterTest extends SWTTester {
+class SWTApp implements Runnable {
+
+	public static final String TITLE_SHELL = "Shell";
 
 	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
+	public void run() {
+		Display display = new Display();
+		Shell shell = new Shell(display);
 
-		app.run();
-	}
-
-	/**
-	 * Run and verify overall tester functionality.
-	 */
-	@Test
-	public void testerTest() {
-		runner().run();
+		shell.setText(TITLE_SHELL);
+		shell.open();
+		while (!display.isDisposed() && display.getShells().length > 0) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
 	}
 
 }

@@ -64,6 +64,11 @@ subprojects {
 		implementation("de.carne.common:java-default:5")
 		implementation("junit:junit:4.12")
 	}
+	
+	test {
+		// SWT display can only be created once per VM
+		forkEvery = 1
+	}
 
 	jacoco {
 		toolVersion = "0.7.9"

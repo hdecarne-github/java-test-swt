@@ -133,7 +133,7 @@ public abstract class SWTTester {
 		return display;
 	}
 
-	private void closeAllShells(Runner runner) {
+	private void disposeAll(Runner runner) {
 		Display display = Display.findDisplay(runner.displayThread());
 
 		if (display != null && !display.isDisposed()) {
@@ -142,6 +142,7 @@ public abstract class SWTTester {
 					shell.dispose();
 				}
 			}
+			display.dispose();
 		}
 	}
 
@@ -151,7 +152,7 @@ public abstract class SWTTester {
 		for (Runnable check : runner) {
 			runWait(display, check);
 		}
-		runWait(display, () -> closeAllShells(runner));
+		runWait(display, () -> disposeAll(runner));
 	}
 
 	void runTester(Runner runner) {
