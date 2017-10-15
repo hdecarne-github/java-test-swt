@@ -16,30 +16,29 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Test;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Class providing access to the application's {@linkplain MenuItem} objects.
  */
-public class SWTTesterTest extends SWTTester {
+public class MenuItemAccessor extends Accessor<MenuItem> {
 
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
+	/**
+	 * Construct {@linkplain MenuItemAccessor}.
+	 *
+	 * @param menuItem The {@linkplain MenuItem} object to wrap.
+	 */
+	public MenuItemAccessor(MenuItem menuItem) {
+		super(menuItem);
 	}
 
 	/**
-	 * Run and verify overall tester functionality.
+	 * Generate a selection event to the {@linkplain MenuItem}.
 	 */
-	@Test
-	public void testerTest() {
-		runner().check(this::checkAppQuit).run();
-	}
-
-	private void checkAppQuit() {
-		getShell(SWTApp.TITLE_SHELL).menuBar().item(SWTApp.TITLE_MENU_APP_QUIT).select();
+	public void select() {
+		get().notifyListeners(SWT.Selection, new Event());
 	}
 
 }

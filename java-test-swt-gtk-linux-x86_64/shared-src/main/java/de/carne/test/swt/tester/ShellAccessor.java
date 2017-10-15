@@ -16,30 +16,29 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Test;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Class providing access to the application's {@linkplain Shell} objects.
  */
-public class SWTTesterTest extends SWTTester {
+public class ShellAccessor extends Accessor<Shell> {
 
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
+	/**
+	 * Construct {@linkplain ShellAccessor}.
+	 *
+	 * @param shell The {@linkplain Shell} object to wrap.
+	 */
+	public ShellAccessor(Shell shell) {
+		super(shell);
 	}
 
 	/**
-	 * Run and verify overall tester functionality.
+	 * Get this {@linkplain Shell}'s menu bar accessor.
+	 *
+	 * @return This {@linkplain Shell}'s menu bar accessor.
 	 */
-	@Test
-	public void testerTest() {
-		runner().check(this::checkAppQuit).run();
-	}
-
-	private void checkAppQuit() {
-		getShell(SWTApp.TITLE_SHELL).menuBar().item(SWTApp.TITLE_MENU_APP_QUIT).select();
+	MenuAccessor menuBar() {
+		return new MenuAccessor(Accessor.notNull(get().getMenuBar(), "Menu bar not found"));
 	}
 
 }

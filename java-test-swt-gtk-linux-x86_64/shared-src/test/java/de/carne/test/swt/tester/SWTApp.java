@@ -16,25 +16,62 @@
  */
 package de.carne.test.swt.tester;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+
+import de.carne.check.Nullable;
+import de.carne.util.Late;
 
 class SWTApp implements Runnable {
 
 	public static final String TITLE_SHELL = "Shell";
+	public static final String TITLE_MENU_APP = "App";
+	public static final String TITLE_MENU_APP_QUIT = "Quit";
+
+	private Late<Shell> shell = new Late<>();
 
 	@Override
 	public void run() {
 		Display display = new Display();
-		Shell shell = new Shell(display);
 
-		shell.setText(TITLE_SHELL);
-		shell.open();
+		this.shell.set(new Shell(display));
+		this.shell.get().setText(TITLE_SHELL);
+		setupMenu();
+		this.shell.get().open();
 		while (!display.isDisposed() && display.getShells().length > 0) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
+	}
+
+	private void setupMenu() {
+		Menu bar = new Menu(this.shell.get(), SWT.BAR);
+		MenuItem appItem = new MenuItem(bar, SWT.CASCADE);
+		Menu app = new Menu(appItem);
+		MenuItem appQuit = new MenuItem(app, SWT.PUSH);
+
+		this.shell.get().setMenuBar(bar);
+		appItem.setText(TITLE_MENU_APP);
+		appItem.setMenu(app);
+		appQuit.setText(TITLE_MENU_APP_QUIT);
+		appQuit.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(@Nullable SelectionEvent evt) {
+				onAppQuit();
+			}
+
+		});
+	}
+
+	void onAppQuit() {
+		this.shell.get().close();
 	}
 
 }

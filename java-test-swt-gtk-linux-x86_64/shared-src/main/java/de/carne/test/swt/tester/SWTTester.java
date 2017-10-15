@@ -65,6 +65,27 @@ public abstract class SWTTester {
 		return new Runner(args);
 	}
 
+	/**
+	 * Get the accessor for a specific {@linkplain Shell}.
+	 * <p>
+	 * If no shell is found for the given name this function signals a test failure.
+	 *
+	 * @param title The title of the {@linkplain Shell} to get.
+	 * @return The accessor for the found object.
+	 */
+	public ShellAccessor getShell(String title) {
+		Display display = Display.findDisplay(Thread.currentThread());
+		Shell foundShell = null;
+
+		for (Shell shell : display.getShells()) {
+			if (title.equals(shell.getText())) {
+				foundShell = shell;
+				break;
+			}
+		}
+		return new ShellAccessor(Accessor.notNull(foundShell, "Shell not found: " + title));
+	}
+
 	private void runWait(Display display, Runnable runnable) {
 		final CountDownLatch latch = new CountDownLatch(1);
 
