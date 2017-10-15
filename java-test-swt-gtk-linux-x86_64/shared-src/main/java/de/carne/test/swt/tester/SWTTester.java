@@ -121,9 +121,9 @@ public abstract class SWTTester {
 		Display display = Display.findDisplay(runner.displayThread());
 
 		Supplier<Boolean> shellReady = () -> {
-			Shell[] shells;
+			Shell[] shells = display.getShells();
 
-			return Boolean.valueOf((shells = display.getShells()).length > 0 && shells[0].isVisible());
+			return Boolean.valueOf(shells.length > 0 && shells[0].isVisible());
 		};
 
 		while (!runWait(display, shellReady).booleanValue()) {
