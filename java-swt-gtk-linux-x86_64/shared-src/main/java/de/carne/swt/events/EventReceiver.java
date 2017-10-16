@@ -16,43 +16,35 @@
  */
 package de.carne.swt.events;
 
-import java.util.function.Consumer;
-
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.carne.check.Nullable;
 
 /**
- * Event listener for mapping a typed SWT event to a consuming action.
- *
- * @param <T> The event type to listen for.
+ * Event listener for mapping a SWT event to a receiving action.
  */
-public class EventConsumer<T extends TypedEvent> implements Listener {
+public class EventReceiver implements Listener {
 
-	private final Class<T> eventType;
-	private final Consumer<T> consumer;
+	private final Runnable receiver;
 
-	private EventConsumer(Class<T> eventType, Consumer<T> consumer) {
-		this.eventType = eventType;
-		this.consumer = consumer;
+	private EventReceiver(Runnable receiver) {
+		this.receiver = receiver;
 	}
 
 	/**
-	 * {@linkplain SelectionEvent} listener.
+	 * {@linkplain Event} receiver.
 	 *
-	 * @param consumer The consuming action.
+	 * @param receiver The receiving action.
 	 * @return The event listener.
 	 */
-	public static EventConsumer<SelectionEvent> selected(Consumer<SelectionEvent> consumer) {
-		return new EventConsumer<>(SelectionEvent.class, consumer);
+	public static EventReceiver any(Runnable receiver) {
+		return new EventReceiver(receiver);
 	}
 
 	@Override
 	public void handleEvent(@Nullable Event event) {
-		this.consumer.accept(this.eventType.cast(event));
+		this.receiver.run();
 	}
 
 }

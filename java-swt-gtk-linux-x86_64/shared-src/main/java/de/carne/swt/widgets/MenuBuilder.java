@@ -19,6 +19,7 @@ package de.carne.swt.widgets;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,11 +31,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.carne.check.Nullable;
 import de.carne.swt.events.EventConsumer;
+import de.carne.swt.events.EventReceiver;
 
 /**
- * Menu builder.
+ * {@linkplain Menu} builder.
  */
-public final class MenuBuilder {
+public final class MenuBuilder implements Supplier<Menu> {
 
 	private Deque<Menu> menuStack = new LinkedList<>();
 	@Nullable
@@ -47,7 +49,7 @@ public final class MenuBuilder {
 	/**
 	 * Build a {@linkplain Shell}s menu bar.
 	 *
-	 * @param shell The {@linkplain Shell} to build the menu bar for.
+	 * @param shell The {@linkplain Shell} owning the menu bar.
 	 * @return The new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder menuBar(Shell shell) {
@@ -58,9 +60,19 @@ public final class MenuBuilder {
 	}
 
 	/**
+	 * Build a {@linkplain Shell}s menu bar.
+	 *
+	 * @param shell The {@linkplain Shell} owning the menu bar.
+	 * @return The new {@linkplain MenuBuilder}.
+	 */
+	public static MenuBuilder menuBar(Supplier<? extends Shell> shell) {
+		return menuBar(shell.get());
+	}
+
+	/**
 	 * Build a pop up menu.
 	 *
-	 * @param parent The {@linkplain Control} owning the the menu.
+	 * @param parent The {@linkplain Control} owning the the pop up menu.
 	 * @return The new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder popupMenu(Control parent) {
@@ -68,11 +80,22 @@ public final class MenuBuilder {
 	}
 
 	/**
+	 * Build a pop up menu.
+	 *
+	 * @param parent The {@linkplain Control} owning the the pop up menu.
+	 * @return The new {@linkplain MenuBuilder}.
+	 */
+	public static MenuBuilder popupMenu(Supplier<? extends Control> parent) {
+		return popupMenu(parent.get());
+	}
+
+	/**
 	 * Get the {@linkplain Menu} the builder operates on at this state.
 	 *
 	 * @return The {@linkplain Menu} the builder operates on at this state.
 	 */
-	public Menu currentMenu() {
+	@Override
+	public Menu get() {
 		return this.menuStack.peek();
 	}
 
@@ -129,7 +152,7 @@ public final class MenuBuilder {
 	/**
 	 * Add a {@linkplain MenuItem} to the current {@linkplain Menu}.
 	 * <p>
-	 * All subsequent calls will operate on the new menu item.
+	 * All subsequent calls will operate on the new item.
 	 *
 	 * @param style The style of the {@linkplain MenuItem} to add.
 	 * @return The updated {@linkplain MenuBuilder}.
@@ -140,7 +163,7 @@ public final class MenuBuilder {
 	}
 
 	/**
-	 * Set the current menu item's text.
+	 * Set the current {@linkplain MenuItem}'s text.
 	 *
 	 * @param text The text to set.
 	 * @return The updated {@linkplain MenuBuilder}.
@@ -152,7 +175,7 @@ public final class MenuBuilder {
 	}
 
 	/**
-	 * Set the current menu item's {@linkplain Image}.
+	 * Set the current {@linkplain MenuItem}'s image.
 	 *
 	 * @param image The image to set.
 	 * @return The updated {@linkplain MenuBuilder}.
@@ -164,8 +187,19 @@ public final class MenuBuilder {
 	}
 
 	/**
+	 * Set the current {@linkplain MenuItem}'s image.
+	 *
+	 * @param image The image to set.
+	 * @return The updated {@linkplain MenuBuilder}.
+	 * @see MenuItem#setImage(Image)
+	 */
+	public MenuBuilder withImage(Supplier<Image> image) {
+		return withImage(image.get());
+	}
+
+	/**
 	 * Set {@linkplain SelectionEvent} action.
-	 * 
+	 *
 	 * @param action The action to set.
 	 * @return The updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
@@ -173,6 +207,22 @@ public final class MenuBuilder {
 	public MenuBuilder onSelected(Consumer<SelectionEvent> action) {
 		MenuItem item = checkCurrentItem(this.currentItem);
 		EventConsumer<SelectionEvent> listener = EventConsumer.selected(action);
+
+		item.addListener(SWT.Selection, listener);
+		item.addListener(SWT.DefaultSelection, listener);
+		return this;
+	}
+
+	/**
+	 * Set {@linkplain SelectionEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated {@linkplain MenuBuilder}.
+	 * @see MenuItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
+	 */
+	public MenuBuilder onSelected(Runnable action) {
+		MenuItem item = checkCurrentItem(this.currentItem);
+		EventReceiver listener = EventReceiver.any(action);
 
 		item.addListener(SWT.Selection, listener);
 		item.addListener(SWT.DefaultSelection, listener);
