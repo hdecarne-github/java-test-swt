@@ -38,27 +38,30 @@ subprojects {
 			maven { url "https://oss.jfrog.org/libs-snapshot/" }
 		}
 	}
+	
+	def sharedSrcDir = "../java-test-swt-gtk-linux-x86_64/shared-src"
 
 	sourceSets {
 		main {
 			java {
-				srcDir "../java-test-swt-gtk-linux-x86_64/shared-src/main/java"
+				srcDir "${sharedSrcDir}/main/java"
 			}
 		}
 		test {
 			java {
-				srcDir "../java-test-swt-gtk-linux-x86_64/shared-src/test/java"
+				srcDir "${sharedSrcDir}/test/java"
 			}
 			resources {
-				srcDir "../java-test-swt-gtk-linux-x86_64/shared-src/test/resources"
+				srcDir "${sharedSrcDir}/test/resources"
 			}
 		}
 	}
 	
-	def buildPlatform = project.name.substring(rootProject.name.length()).replace('-', '.')
+	def platformSuffix = project.name.substring(rootProject.name.length())
+	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		api("org.eclipse.platform:org.eclipse.swt${buildPlatform}:3.105.3") {
+		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.105.3") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
 		implementation("de.carne.common:java-default:5")
