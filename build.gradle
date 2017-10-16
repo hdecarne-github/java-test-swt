@@ -38,31 +38,39 @@ subprojects {
 			maven { url "https://oss.jfrog.org/libs-snapshot/" }
 		}
 	}
+	
+	def sharedSrcDir = "../java-swt-gtk-linux-x86_64/shared-src"
 
 	sourceSets {
 		main {
 			java {
-				srcDir "../java-swt-gtk-linux-x86_64/shared-src/main/java"
+				srcDir "${sharedSrcDir}/main/java"
 			}
 		}
 		test {
 			java {
-				srcDir "../java-swt-gtk-linux-x86_64/shared-src/test/java"
+				srcDir "${sharedSrcDir}/test/java"
 			}
 			resources {
-				srcDir "../java-swt-gtk-linux-x86_64/shared-src/test/resources"
+				srcDir "${sharedSrcDir}/test/resources"
 			}
 		}
 	}
 	
-	def buildPlatform = project.name.substring(rootProject.name.length()).replace('-', '.')
+	def platformSuffix = project.name.substring(rootProject.name.length())
+	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		api("org.eclipse.platform:org.eclipse.swt${buildPlatform}:3.105.3") {
+		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.105.3") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		implementation("de.carne.common:java-default:5-SNAPSHOT")
-		testImplementation("junit:junit:4.12")
+		implementation("de.carne.common:java-default:5")
+		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2-SNAPSHOT")
+	}
+	
+	test {
+		// SWT display can only be created once per VM
+		forkEvery = 1
 	}
 
 	jacoco {
