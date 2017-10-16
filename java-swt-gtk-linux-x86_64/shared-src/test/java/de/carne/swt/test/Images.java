@@ -16,38 +16,34 @@
  */
 package de.carne.swt.test;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import de.carne.Application;
-import de.carne.swt.UserApplication;
-import de.carne.test.swt.tester.SWTTester;
-
 /**
- * Test {@linkplain UserApplication} class.
+ * Test image resources.
  */
-public class UserApplicationTest extends SWTTester {
+public final class Images {
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		System.setProperty("de.carne.Application.USE_LAUNCHER_CLASS_LOADER", Boolean.TRUE.toString());
-		System.setProperty("de.carne.Application", "test");
-	}
-
-	@Override
-	protected void runSWTApplication(String[] args) {
-		Application.main(args);
+	private Images() {
+		// Prevent instantiation
 	}
 
 	/**
-	 * Run and test the test application.
+	 * image_a_16.png
 	 */
-	@Test
-	public void testTestUserApplication() {
-		runner().run();
-	}
+	public static final String IMAGE_A_16 = "image_a_16.png";
+	/**
+	 * image_a_32.png
+	 */
+	public static final String IMAGE_A_32 = "image_a_32.png";
+	/**
+	 * image_a_48.png
+	 */
+	public static final String IMAGE_A_48 = "image_a_48.png";
+	/**
+	 * image_a_128.png
+	 */
+	public static final String IMAGE_A_128 = "image_a_128.png";
+	/**
+	 * image_a_{16,32,48,128}.png
+	 */
+	public static final String[] IMAGES_A = new String[] { IMAGE_A_16, IMAGE_A_32, IMAGE_A_48, IMAGE_A_128 };
 
 }

@@ -16,38 +16,21 @@
  */
 package de.carne.swt.test;
 
-import java.util.function.Supplier;
-
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Assert;
 
 import de.carne.ApplicationMain;
-import de.carne.check.Check;
 import de.carne.swt.ResourceException;
 import de.carne.swt.UserApplication;
 import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Exceptions;
-import de.carne.util.Late;
-import de.carne.util.Threads;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
  * Test application that utilizes the features to be tested.
  */
 public class TestUserApplicationMain extends UserApplication implements ApplicationMain {
-
-	private static final Late<Supplier<Thread>> ROBOT_THREAD_SUPPLIER_HOLDER = new Late<>();
-
-	private static final long SLEEP_STEP_TIMEOUT = 250;
-	private static final long SLEEP_STEP_LIMIT = 40;
-
-	/**
-	 * @param robotThreadSupplier Invoked after application startup, but before UI setup.
-	 */
-	public static void setRobotThreadSupplier(Supplier<Thread> robotThreadSupplier) {
-		ROBOT_THREAD_SUPPLIER_HOLDER.set(robotThreadSupplier);
-	}
 
 	@Override
 	public String name() {
@@ -56,8 +39,6 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 
 	@Override
 	public int run(String[] args) {
-		ROBOT_THREAD_SUPPLIER_HOLDER.get().get().start();
-
 		int status;
 
 		try {
@@ -81,42 +62,6 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 
 		userInterface.setup(new Shell(display));
 		return userInterface;
-	}
-
-	/**
-	 * Wait for the startup shell to become ready.
-	 */
-	public void waitReady() {
-		Display display = getDisplay();
-
-		Check.assertTrue(!Thread.currentThread().equals(display.getThread()));
-
-		Supplier<Boolean> readyCheck = () -> {
-			Shell[] shells = display.getShells();
-
-			return Boolean.valueOf(shells.length > 0 && shells[0].isVisible());
-		};
-
-		int sleepCount = 0;
-
-		while (!Check.notNull(runWait(readyCheck)).booleanValue()) {
-			Threads.sleep(SLEEP_STEP_TIMEOUT);
-			sleepCount++;
-			Assert.assertTrue(sleepCount < SLEEP_STEP_LIMIT);
-		}
-	}
-
-	/**
-	 * Close the application by closing all shells.
-	 */
-	public void close() {
-		runWait(() -> {
-			Display display = getDisplay();
-
-			for (Shell shell : display.getShells()) {
-				shell.close();
-			}
-		});
 	}
 
 }

@@ -36,8 +36,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 	@Override
 	protected void build(Shell root) throws ResourceException {
 		this.images.set(new ImageResourcePool(root.getDisplay()));
-		root.setImages(this.images.get().getAll(getClass(), "image_a_16.png", "image_a_32.png", "image_a_48.png",
-				"image_a_128.png"));
+		root.setImages(this.images.get().getAll(Images.class, Images.IMAGES_A));
 		root.setText(getClass().getTypeName());
 
 		TestUserAgent agent = new TestUserAgent();
@@ -47,7 +46,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	private void buildMenuBar(Shell root, TestUserAgent agent) throws ResourceException {
 		MenuBuilder menu = MenuBuilder.menuBar(root);
-		Image itemImage = this.images.get().get(getClass(), "image_a_16.png");
+		Image itemImage = this.images.get().get(Images.class, Images.IMAGE_A_16);
 
 		menu.addItem(SWT.CASCADE).withText("Menu A");
 		menu.beginMenu();
