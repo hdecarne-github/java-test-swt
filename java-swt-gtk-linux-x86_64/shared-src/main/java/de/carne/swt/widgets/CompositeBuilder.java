@@ -50,16 +50,17 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	/**
 	 * Add a child control to the {@linkplain Composite}.
 	 *
-	 * @param function
+	 * @param <C> The actual control type (either direct or wrapped in a builder).
+	 * @param createChild The function to use to create the new control.
 	 * @return The added child control.
 	 */
-	public <C> C addChild(Function<T, C> function) {
-		return function.apply(get());
+	public <C> C addChild(Function<T, C> createChild) {
+		return createChild.apply(get());
 	}
 
 	/**
 	 * Add a child of type {@linkplain Composite}.
-	 * 
+	 *
 	 * @param style The {@linkplain Composite} style.
 	 * @return The updated builder.
 	 */
