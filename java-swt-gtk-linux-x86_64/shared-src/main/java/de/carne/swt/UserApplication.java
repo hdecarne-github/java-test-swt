@@ -53,7 +53,7 @@ public abstract class UserApplication {
 		Display display = this.displayHolder.set(setupDisplay());
 		UserInterface<Shell> ui = setupUserInterface(display);
 
-		openAndPack(ui);
+		ui.root().open();
 		try {
 			cmdLine.process();
 		} catch (CmdLineException e) {
@@ -65,13 +65,6 @@ public abstract class UserApplication {
 			}
 		}
 		return this.status;
-	}
-
-	private void openAndPack(UserInterface<Shell> ui) {
-		Shell uiRoot = ui.root();
-
-		uiRoot.open();
-		uiRoot.pack();
 	}
 
 	/**
