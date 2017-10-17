@@ -17,6 +17,7 @@
 package de.carne.swt.events;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TypedEvent;
@@ -32,11 +33,11 @@ import de.carne.check.Nullable;
  */
 public class EventConsumer<T extends TypedEvent> implements Listener {
 
-	private final Class<T> eventType;
+	private final Function<Event, T> eventFactory;
 	private final Consumer<T> consumer;
 
-	private EventConsumer(Class<T> eventType, Consumer<T> consumer) {
-		this.eventType = eventType;
+	private EventConsumer(Function<Event, T> eventFactory, Consumer<T> consumer) {
+		this.eventFactory = eventFactory;
 		this.consumer = consumer;
 	}
 
@@ -47,12 +48,12 @@ public class EventConsumer<T extends TypedEvent> implements Listener {
 	 * @return The event listener.
 	 */
 	public static EventConsumer<SelectionEvent> selected(Consumer<SelectionEvent> consumer) {
-		return new EventConsumer<>(SelectionEvent.class, consumer);
+		return new EventConsumer<>(SelectionEvent::new, consumer);
 	}
 
 	@Override
 	public void handleEvent(@Nullable Event event) {
-		this.consumer.accept(this.eventType.cast(event));
+		this.consumer.accept(this.eventFactory.apply(event));
 	}
 
 }
