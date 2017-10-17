@@ -173,6 +173,7 @@ subprojects {
 
 	eclipse {
 		classpath {
+			downloadSources = true
 			defaultOutputDir = file("eclipse-build")
 		}
 	}
