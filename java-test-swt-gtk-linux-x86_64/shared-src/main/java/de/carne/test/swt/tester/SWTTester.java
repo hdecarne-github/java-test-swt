@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.util.Exceptions;
+import de.carne.util.SystemProperties;
 import de.carne.util.Threads;
 
 /**
@@ -35,8 +36,11 @@ import de.carne.util.Threads;
  */
 public abstract class SWTTester {
 
-	private static final int SLEEP_MILLIS = 250;
-	private static final int SLEEP_COUNT_LIMIT = 20;
+	private static final int STEP_TIMEOUT = SystemProperties.intValue(SWTTester.class.getName() + ".STEP_TIMEOUT", 250);
+	private static final int STEP_COUNT_LIMIT = SystemProperties
+			.intValue(SWTTester.class.getName() + ".STEP_COUNT_LIMIT", 20);
+	private static final int DISPOSE_TIMEOUT = SystemProperties.intValue(SWTTester.class.getName() + ".DISPOSE_TIMEOUT",
+			250);
 
 	/**
 	 * Start and run the SWT application subject to the test.
@@ -125,17 +129,19 @@ public abstract class SWTTester {
 	}
 
 	private int ensureSleepLimit(int sleepCount) {
-		if (sleepCount >= SLEEP_COUNT_LIMIT) {
+		if (sleepCount >= STEP_COUNT_LIMIT) {
 			throw new IllegalStateException("Sleep/wait limit reached");
 		}
 		return sleepCount + 1;
 	}
 
 	private Display waitReady(Runner runner) {
-		int sleepCount = 0;
+		Threads.sleep(STEP_TIMEOUT);
+
+		int sleepCount = 1;
 
 		while (Display.findDisplay(runner.displayThread()) == null) {
-			Threads.sleep(SLEEP_MILLIS);
+			Threads.sleep(STEP_TIMEOUT);
 			sleepCount = ensureSleepLimit(sleepCount);
 		}
 
@@ -148,10 +154,22 @@ public abstract class SWTTester {
 		};
 
 		while (!runWait(display, shellReady).booleanValue()) {
-			Threads.sleep(SLEEP_MILLIS);
+			Threads.sleep(STEP_TIMEOUT);
 			sleepCount = ensureSleepLimit(sleepCount);
 		}
 		return display;
+	}
+
+	private void closeAll(Runner runner) {
+		Display display = Display.findDisplay(runner.displayThread());
+
+		if (display != null && !display.isDisposed()) {
+			for (Shell shell : display.getShells()) {
+				if (!shell.isDisposed()) {
+					shell.close();
+				}
+			}
+		}
 	}
 
 	private void disposeAll(Runner runner) {
@@ -174,6 +192,9 @@ public abstract class SWTTester {
 			for (Runnable check : runner) {
 				runWait(display, check);
 			}
+			Threads.sleep(DISPOSE_TIMEOUT);
+			runWait(display, () -> closeAll(runner));
+			Threads.sleep(STEP_TIMEOUT);
 			runWait(display, () -> disposeAll(runner));
 		});
 
