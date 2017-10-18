@@ -19,7 +19,10 @@ package de.carne.swt.widgets;
 import java.util.function.Function;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.ToolBar;
 
 /**
  * {@linkplain Composite} builder.
@@ -62,10 +65,40 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 * Add a child of type {@linkplain Composite}.
 	 *
 	 * @param style The {@linkplain Composite} style.
-	 * @return The updated builder.
+	 * @return The added child control.
 	 */
 	public CompositeBuilder<Composite> addCompositeChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Composite(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain Group}.
+	 *
+	 * @param style The {@linkplain Group} style.
+	 * @return The added child control.
+	 */
+	public CompositeBuilder<Group> addGroupChild(int style) {
+		return addChild(parent -> new CompositeBuilder<>(new Group(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain CoolBar}.
+	 *
+	 * @param style The {@linkplain CoolBar} style.
+	 * @return The added child control.
+	 */
+	public CoolBarBuilder addCoolBarChild(int style) {
+		return addChild(parent -> new CoolBarBuilder(new CoolBar(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain ToolBar}.
+	 *
+	 * @param style The {@linkplain ToolBar} style.
+	 * @return The added child control.
+	 */
+	public ToolBarBuilder addToolBarChild(int style) {
+		return addChild(parent -> new ToolBarBuilder(new ToolBar(parent, style)));
 	}
 
 }

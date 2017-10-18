@@ -67,10 +67,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	 * @return The updated builder.
 	 */
 	public GridLayoutBuilder margin(int width, int height) {
-		GridLayout gridLayout = get();
+		GridLayout layout = get();
 
-		gridLayout.marginWidth = width;
-		gridLayout.marginHeight = height;
+		layout.marginWidth = width;
+		layout.marginHeight = height;
 		return this;
 	}
 
@@ -84,12 +84,12 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	 * @return The updated builder.
 	 */
 	public GridLayoutBuilder margin(int left, int top, int right, int bottom) {
-		GridLayout gridLayout = get();
+		GridLayout layout = get();
 
-		gridLayout.marginLeft = left;
-		gridLayout.marginTop = top;
-		gridLayout.marginRight = right;
-		gridLayout.marginBottom = bottom;
+		layout.marginLeft = left;
+		layout.marginTop = top;
+		layout.marginRight = right;
+		layout.marginBottom = bottom;
 		return this;
 	}
 
@@ -101,10 +101,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	 * @return The updated builder.
 	 */
 	public GridLayoutBuilder spacing(int horizontal, int vertical) {
-		GridLayout gridLayout = get();
+		GridLayout layout = get();
 
-		gridLayout.horizontalSpacing = horizontal;
-		gridLayout.verticalSpacing = vertical;
+		layout.horizontalSpacing = horizontal;
+		layout.verticalSpacing = vertical;
 		return this;
 	}
 
@@ -143,7 +143,7 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 
 		/**
 		 * Set the layout data's grab attributes.
-		 * 
+		 *
 		 * @param grabExcessHorizontalSpace Whether to grap excessive horizontal space.
 		 * @param grabExcessVerticalSpace Whether to grap excessive vertical space.
 		 * @return The updated builder.

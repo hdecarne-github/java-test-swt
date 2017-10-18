@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
+import de.carne.swt.CreateResourceException;
 import de.carne.swt.ResourceException;
 import de.carne.swt.UnknownResourceException;
 import de.carne.swt.graphics.ImageResourcePool;
@@ -40,7 +41,7 @@ public class ImageResourcePoolTest {
 	public final SWTDevice<Display> display = new SWTDevice<>(() -> new Display());
 
 	/**
-	 * Test {@linkplain ImageResourcePool#get(Class, String)}.
+	 * Test {@linkplain ImageResourcePool#get(Class, String)} with existing images.
 	 *
 	 * @throws ResourceException if a resource is not available
 	 */
@@ -54,15 +55,28 @@ public class ImageResourcePoolTest {
 	}
 
 	/**
-	 * Test {@linkplain ImageResourcePool#get(Class, String)}.
+	 * Test {@linkplain ImageResourcePool#get(Class, String)} with unkown image.
 	 *
 	 * @throws ResourceException if a resource is not available
 	 */
 	@Test(expected = UnknownResourceException.class)
-	public void testGetFailure() throws ResourceException {
+	public void testGetFailure1() throws ResourceException {
 		ImageResourcePool pool = new ImageResourcePool(this.display.get());
 
 		pool.get(Images.class, "unknown.png");
+		pool.disposeAll();
+	}
+
+	/**
+	 * Test {@linkplain ImageResourcePool#get(Class, String)} with invalid image.
+	 *
+	 * @throws ResourceException if a resource is not available
+	 */
+	@Test(expected = CreateResourceException.class)
+	public void testGetFailure2() throws ResourceException {
+		ImageResourcePool pool = new ImageResourcePool(this.display.get());
+
+		pool.get(Images.class, "Images.class");
 		pool.disposeAll();
 	}
 

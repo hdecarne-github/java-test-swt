@@ -38,7 +38,12 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	@Nullable
 	private ToolItem currentItem = null;
 
-	private ToolBarBuilder(ToolBar toolBar) {
+	/**
+	 * Construct {@linkplain ToolBarBuilder}.
+	 *
+	 * @param toolBar The {@linkplain ToolBarBuilder} to build up.
+	 */
+	public ToolBarBuilder(ToolBar toolBar) {
 		super(toolBar);
 	}
 
@@ -47,7 +52,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	 *
 	 * @param parent The {@linkplain ToolBar} owner.
 	 * @param style The style of {@linkplain ToolBar} to create.
-	 * @return The new {@linkplain ToolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static ToolBarBuilder vertical(Composite parent, int style) {
 		return new ToolBarBuilder(new ToolBar(parent, SWT.VERTICAL | style));
@@ -58,7 +63,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	 *
 	 * @param parent The {@linkplain ToolBar} owner.
 	 * @param style The style of {@linkplain ToolBar} to create.
-	 * @return The new {@linkplain ToolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static ToolBarBuilder vertical(Supplier<? extends Composite> parent, int style) {
 		return vertical(parent.get(), style);
@@ -69,7 +74,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	 *
 	 * @param parent The {@linkplain ToolBar} owner.
 	 * @param style The style of {@linkplain ToolBar} to create.
-	 * @return The new {@linkplain ToolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static ToolBarBuilder horizontal(Composite parent, int style) {
 		return new ToolBarBuilder(new ToolBar(parent, SWT.HORIZONTAL | style));
@@ -80,7 +85,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	 *
 	 * @param parent The {@linkplain ToolBar} owner.
 	 * @param style The style of {@linkplain ToolBar} to create.
-	 * @return The new {@linkplain ToolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static ToolBarBuilder horizontal(Supplier<? extends Composite> parent, int style) {
 		return horizontal(parent.get(), style);

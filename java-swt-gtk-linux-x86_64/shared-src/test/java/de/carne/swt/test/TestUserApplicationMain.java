@@ -28,7 +28,7 @@ import de.carne.util.Exceptions;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
- * Test application that utilizes the features to be tested.
+ * Test application which runs the test user interface.
  */
 public class TestUserApplicationMain extends UserApplication implements ApplicationMain {
 

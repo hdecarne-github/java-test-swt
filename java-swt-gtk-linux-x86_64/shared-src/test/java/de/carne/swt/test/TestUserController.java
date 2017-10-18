@@ -23,7 +23,7 @@ import de.carne.util.logging.Log;
 /**
  * Test user agent.
  */
-class TestUserAgent {
+class TestUserController {
 
 	private static final Log LOG = new Log();
 

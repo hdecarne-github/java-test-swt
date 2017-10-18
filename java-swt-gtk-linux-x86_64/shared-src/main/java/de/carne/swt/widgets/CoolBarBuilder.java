@@ -40,7 +40,12 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	@Nullable
 	private CoolItem currentItem = null;
 
-	private CoolBarBuilder(CoolBar coolBar) {
+	/**
+	 * Construct {@linkplain CoolBarBuilder}.
+	 *
+	 * @param coolBar The {@linkplain CoolBarBuilder} to build up.
+	 */
+	public CoolBarBuilder(CoolBar coolBar) {
 		super(coolBar);
 	}
 
@@ -49,7 +54,7 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	 *
 	 * @param parent The {@linkplain CoolBar} owner.
 	 * @param style The style of {@linkplain CoolBar} to create.
-	 * @return The new {@linkplain CoolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static CoolBarBuilder vertical(Composite parent, int style) {
 		return new CoolBarBuilder(new CoolBar(parent, SWT.VERTICAL | style));
@@ -60,7 +65,7 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	 *
 	 * @param parent The {@linkplain CoolBar} owner.
 	 * @param style The style of {@linkplain CoolBar} to create.
-	 * @return The new {@linkplain CoolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static CoolBarBuilder vertical(Supplier<? extends Composite> parent, int style) {
 		return vertical(parent.get(), style);
@@ -71,7 +76,7 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	 *
 	 * @param parent The {@linkplain CoolBar} owner.
 	 * @param style The style of {@linkplain CoolBar} to create.
-	 * @return The new {@linkplain CoolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static CoolBarBuilder horizontal(Composite parent, int style) {
 		return new CoolBarBuilder(new CoolBar(parent, SWT.HORIZONTAL | style));
@@ -82,7 +87,7 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	 *
 	 * @param parent The {@linkplain CoolBar} owner.
 	 * @param style The style of {@linkplain CoolBar} to create.
-	 * @return The new {@linkplain CoolBarBuilder}.
+	 * @return The new builder.
 	 */
 	public static CoolBarBuilder horizontal(Supplier<? extends Composite> parent, int style) {
 		return horizontal(parent.get(), style);
