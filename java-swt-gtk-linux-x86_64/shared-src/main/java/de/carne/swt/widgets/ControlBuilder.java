@@ -16,9 +16,15 @@
  */
 package de.carne.swt.widgets;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Control;
+
+import de.carne.swt.events.EventConsumer;
+import de.carne.swt.events.EventReceiver;
 
 /**
  * {@linkplain Control} builder.
@@ -67,6 +73,34 @@ public class ControlBuilder<T extends Control> implements Supplier<T> {
 	 */
 	public void setLayoutData(Object layoutData) {
 		this.control.setLayoutData(layoutData);
+	}
+
+	/**
+	 * Set {@linkplain DisposeEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Control#addDisposeListener(org.eclipse.swt.events.DisposeListener)
+	 */
+	public ControlBuilder<T> onDisposed(Consumer<DisposeEvent> action) {
+		EventConsumer<DisposeEvent> listener = EventConsumer.disposed(action);
+
+		this.control.addListener(SWT.Dispose, listener);
+		return this;
+	}
+
+	/**
+	 * Set {@linkplain DisposeEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Control#addDisposeListener(org.eclipse.swt.events.DisposeListener)
+	 */
+	public ControlBuilder<T> onDisposed(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		this.control.addListener(SWT.Dispose, listener);
+		return this;
 	}
 
 }

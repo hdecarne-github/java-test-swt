@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 
@@ -28,8 +29,10 @@ import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.layout.FillLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
+import de.carne.swt.widgets.ControlBuilder;
 import de.carne.swt.widgets.CoolBarBuilder;
 import de.carne.swt.widgets.MenuBuilder;
+import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.TabFolderBuilder;
 import de.carne.swt.widgets.ToolBarBuilder;
 import de.carne.swt.widgets.UserInterface;
@@ -41,22 +44,21 @@ import de.carne.util.Late;
 public class TestUserInterface extends UserInterface<Shell> {
 
 	private final Late<ImageResourcePool> imagePoolHolder = new Late<>();
-
 	private final Late<Shell> rootHolder = new Late<>();
-	private final Late<TabFolder> tabsHolder = new Late<>();
 
 	@Override
 	protected void build(Shell root) throws ResourceException {
 		this.imagePoolHolder.set(new ImageResourcePool(root.getDisplay()));
 		this.rootHolder.set(root);
-		root.setImages(this.imagePoolHolder.get().getAll(Images.class, Images.IMAGES_A));
-		root.setText(getClass().getSimpleName());
 
 		TestUserController controller = new TestUserController();
+		ShellBuilder shell = new ShellBuilder(root);
 
+		shell.withText(getClass().getSimpleName())
+				.withImages(this.imagePoolHolder.get().getAll(Images.class, Images.IMAGES_A));
+		shell.onDisposed(() -> this.imagePoolHolder.get().disposeAll());
 		buildMenuBar(controller);
-		this.tabsHolder.set(buildTabs(controller));
-
+		buildTabs(controller);
 		FillLayoutBuilder.layout().margin(0, 0).spacing(0).apply(root);
 	}
 
@@ -80,40 +82,53 @@ public class TestUserInterface extends UserInterface<Shell> {
 		menu.endMenu();
 	}
 
-	private TabFolder buildTabs(TestUserController controller) throws ResourceException {
+	private void buildTabs(TestUserController controller) throws ResourceException {
 		TabFolderBuilder tabs = TabFolderBuilder.top(this.rootHolder.get(), SWT.NONE);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		tabs.addItem(SWT.NONE).withText("Tab 1").withImage(itemImage);
 		tabs.withControl(buildTab1(tabs.get(), controller));
-		return tabs.get();
+		tabs.addItem(SWT.NONE).withText("Tab 2").withImage(itemImage);
+		tabs.withControl(buildTab2(tabs.get(), controller));
 	}
 
 	private Control buildTab1(TabFolder tab, TestUserController controller) throws ResourceException {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
-		CoolBarBuilder commands1 = CoolBarBuilder.horizontal(group, SWT.NONE);
-		ToolBarBuilder commands1Tools = commands1.addToolBarChild(SWT.FLAT | SWT.HORIZONTAL);
-		CoolBarBuilder commands2 = CoolBarBuilder.vertical(group, SWT.NONE);
-		ToolBarBuilder commands2Tools = commands2.addToolBarChild(SWT.FLAT | SWT.VERTICAL);
+		CoolBarBuilder commands = CoolBarBuilder.horizontal(group, SWT.NONE);
+		ToolBarBuilder commandsTools = commands.addToolBarChild(SWT.FLAT | SWT.HORIZONTAL);
+		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
-		commands1.addItem(SWT.NONE);
-		commands1Tools.addItem(SWT.PUSH).withImage(itemImage);
-		commands1Tools.onSelected(controller::onMenuItemSelected);
-		commands1Tools.addItem(SWT.PUSH).withImage(itemImage);
-		commands1Tools.onSelected(controller::onMenuItemSelected);
-		commands1.withControl(commands1Tools);
-		commands1.pack();
-		commands2.addItem(SWT.NONE);
-		commands2Tools.addItem(SWT.PUSH).withImage(itemImage);
-		commands2Tools.onSelected(controller::onMenuItemSelected);
-		commands2Tools.addItem(SWT.PUSH).withImage(itemImage);
-		commands2Tools.onSelected(controller::onMenuItemSelected);
-		commands2.withControl(commands2Tools);
-		commands2.pack();
-		RowLayoutBuilder.layout(SWT.VERTICAL).apply(tab);
-		RowLayoutBuilder.data().apply(commands1);
-		RowLayoutBuilder.data().apply(commands2);
+		commands.addItem(SWT.NONE);
+		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.onSelected(controller::onMenuItemSelected);
+		commands.withControl(commandsTools);
+		commands.pack();
+		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(tab);
+		RowLayoutBuilder.data().apply(commands);
+		RowLayoutBuilder.data().apply(separator1);
+		return group.get();
+	}
+
+	private Control buildTab2(TabFolder tab, TestUserController controller) throws ResourceException {
+		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
+		CoolBarBuilder commands = CoolBarBuilder.vertical(group, SWT.NONE);
+		ToolBarBuilder commandsTools = commands.addToolBarChild(SWT.FLAT | SWT.VERTICAL);
+		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
+		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
+
+		commands.addItem(SWT.NONE);
+		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.onSelected(controller::onMenuItemSelected);
+		commands.withControl(commandsTools);
+		commands.pack();
+		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).wrap(true).apply(tab);
+		RowLayoutBuilder.data().apply(commands);
+		RowLayoutBuilder.data().apply(separator1);
 		return group.get();
 	}
 

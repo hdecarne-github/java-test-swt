@@ -19,6 +19,7 @@ package de.carne.swt.events;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Event;
@@ -39,6 +40,16 @@ public class EventConsumer<T extends TypedEvent> implements Listener {
 	private EventConsumer(Function<Event, T> eventFactory, Consumer<T> consumer) {
 		this.eventFactory = eventFactory;
 		this.consumer = consumer;
+	}
+
+	/**
+	 * {@linkplain DisposeEvent} listener.
+	 *
+	 * @param consumer The consuming action.
+	 * @return The event listener.
+	 */
+	public static EventConsumer<DisposeEvent> disposed(Consumer<DisposeEvent> consumer) {
+		return new EventConsumer<>(DisposeEvent::new, consumer);
 	}
 
 	/**

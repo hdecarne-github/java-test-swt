@@ -21,6 +21,7 @@ import java.util.function.Function;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.ToolBar;
 
@@ -99,6 +100,16 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public ToolBarBuilder addToolBarChild(int style) {
 		return addChild(parent -> new ToolBarBuilder(new ToolBar(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain Label}.
+	 *
+	 * @param style The {@linkplain Label} style.
+	 * @return The added child control.
+	 */
+	public ControlBuilder<Label> addLabelChild(int style) {
+		return addChild(parent -> new ControlBuilder<>(new Label(parent, style)));
 	}
 
 }
