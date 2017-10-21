@@ -160,28 +160,16 @@ public abstract class SWTTester {
 		return display;
 	}
 
-	private void closeAll(Runner runner) {
-		Display display = Display.findDisplay(runner.displayThread());
-
-		if (display != null && !display.isDisposed()) {
-			for (Shell shell : display.getShells()) {
-				if (!shell.isDisposed()) {
-					shell.close();
-				}
-			}
-		}
-	}
-
 	private void disposeAll(Runner runner) {
 		Display display = Display.findDisplay(runner.displayThread());
 
 		if (display != null && !display.isDisposed()) {
 			for (Shell shell : display.getShells()) {
 				if (!shell.isDisposed()) {
+					shell.close();
 					shell.dispose();
 				}
 			}
-			display.dispose();
 		}
 	}
 
@@ -197,8 +185,6 @@ public abstract class SWTTester {
 				}
 			}
 			Threads.sleep(DISPOSE_TIMEOUT);
-			runWait(display, () -> closeAll(runner));
-			Threads.sleep(STEP_TIMEOUT);
 			runWait(display, () -> disposeAll(runner));
 		});
 
@@ -218,11 +204,11 @@ public abstract class SWTTester {
 
 	final class Step implements Runnable {
 
-		private final Runnable step;
+		private final Runnable runnable;
 		private final boolean runOnDisplayThread;
 
-		Step(Runnable step, boolean runOnDisplayThread) {
-			this.step = step;
+		Step(Runnable runnable, boolean runOnDisplayThread) {
+			this.runnable = runnable;
 			this.runOnDisplayThread = runOnDisplayThread;
 		}
 
@@ -232,7 +218,7 @@ public abstract class SWTTester {
 
 		@Override
 		public void run() {
-			this.step.run();
+			this.runnable.run();
 		}
 
 	}
@@ -287,9 +273,7 @@ public abstract class SWTTester {
 		 * @return The updated {@linkplain Runner}.
 		 */
 		public Runner sleep(long millis) {
-			this.steps.add(new Step(() -> {
-				Threads.sleep(millis);
-			}, false));
+			this.steps.add(new Step(() -> Threads.sleep(millis), false));
 			return this;
 		}
 
