@@ -35,7 +35,7 @@ public class SWTTesterTest extends SWTTester {
 	 */
 	@Test
 	public void testerTest() {
-		runner().check(this::checkAppQuit).run();
+		runner().sleep(1000).check(this::checkAppQuit).run();
 	}
 
 	private void checkAppQuit() {

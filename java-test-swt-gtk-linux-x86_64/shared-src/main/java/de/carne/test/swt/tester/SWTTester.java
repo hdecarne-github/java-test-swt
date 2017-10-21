@@ -189,8 +189,12 @@ public abstract class SWTTester {
 		Thread testerThread = new Thread(() -> {
 			Display display = waitReady(runner);
 
-			for (Runnable check : runner) {
-				runWait(display, check);
+			for (Step step : runner) {
+				if (step.runOnDisplayThread()) {
+					runWait(display, step);
+				} else {
+					step.run();
+				}
 			}
 			Threads.sleep(DISPOSE_TIMEOUT);
 			runWait(display, () -> closeAll(runner));
@@ -212,14 +216,35 @@ public abstract class SWTTester {
 		}
 	}
 
+	final class Step implements Runnable {
+
+		private final Runnable step;
+		private final boolean runOnDisplayThread;
+
+		Step(Runnable step, boolean runOnDisplayThread) {
+			this.step = step;
+			this.runOnDisplayThread = runOnDisplayThread;
+		}
+
+		public boolean runOnDisplayThread() {
+			return this.runOnDisplayThread;
+		}
+
+		@Override
+		public void run() {
+			this.step.run();
+		}
+
+	}
+
 	/**
-	 * Class used to setup and perform the an application test run.
+	 * Class used to setup and perform the application test run.
 	 */
-	public class Runner implements Runnable, Iterable<Runnable> {
+	public class Runner implements Runnable, Iterable<Step> {
 
 		private final Thread displayThread;
 		private final String[] args;
-		private final List<Runnable> checks = new LinkedList<>();
+		private final List<Step> steps = new LinkedList<>();
 
 		Runner(String[] args) {
 			this.displayThread = Thread.currentThread();
@@ -251,7 +276,20 @@ public abstract class SWTTester {
 		 * @return The updated {@linkplain Runner}.
 		 */
 		public Runner check(Runnable check) {
-			this.checks.add(check);
+			this.steps.add(new Step(check, true));
+			return this;
+		}
+
+		/**
+		 * Sleep the submitted amount of time during application execution.
+		 *
+		 * @param millis The milliseconds to sleep.
+		 * @return The updated {@linkplain Runner}.
+		 */
+		public Runner sleep(long millis) {
+			this.steps.add(new Step(() -> {
+				Threads.sleep(millis);
+			}, false));
 			return this;
 		}
 
@@ -267,8 +305,8 @@ public abstract class SWTTester {
 		}
 
 		@Override
-		public Iterator<Runnable> iterator() {
-			return this.checks.iterator();
+		public Iterator<Step> iterator() {
+			return this.steps.iterator();
 		}
 
 	}
