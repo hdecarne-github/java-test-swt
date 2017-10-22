@@ -49,6 +49,61 @@ public final class RowLayoutBuilder extends LayoutBuilder<RowLayout> {
 	}
 
 	/**
+	 * Set the layout's wrap attribute.
+	 *
+	 * @param wrap Whether to wrap the controls in case of insufficient space.
+	 * @return The updated builder.
+	 */
+	public RowLayoutBuilder wrap(boolean wrap) {
+		get().wrap = wrap;
+		return this;
+	}
+
+	/**
+	 * Set the layout's pack attribute.
+	 *
+	 * @param pack Whether to pack the controls to their preferred size.
+	 * @return The updated builder.
+	 */
+	public RowLayoutBuilder pack(boolean pack) {
+		get().pack = pack;
+		return this;
+	}
+
+	/**
+	 * Set the layout's fill attribute.
+	 *
+	 * @param fill Whether to fill space to make all controls the same height/width.
+	 * @return The updated builder.
+	 */
+	public RowLayoutBuilder fill(boolean fill) {
+		get().fill = fill;
+		return this;
+	}
+
+	/**
+	 * Set the layout's center attribute.
+	 *
+	 * @param center Whether to center the controls in their space.
+	 * @return The updated builder.
+	 */
+	public RowLayoutBuilder center(boolean center) {
+		get().center = center;
+		return this;
+	}
+
+	/**
+	 * Set the layout's justify attribute.
+	 *
+	 * @param justify Whether to fully justify the controls.
+	 * @return The updated builder.
+	 */
+	public RowLayoutBuilder justify(boolean justify) {
+		get().justify = justify;
+		return this;
+	}
+
+	/**
 	 * Set the layout's margin attributes.
 	 *
 	 * @param width The horizontal margin.
@@ -90,17 +145,6 @@ public final class RowLayoutBuilder extends LayoutBuilder<RowLayout> {
 	 */
 	public RowLayoutBuilder spacing(int spacing) {
 		get().spacing = spacing;
-		return this;
-	}
-
-	/**
-	 * Set the layout's wrap attribute.
-	 *
-	 * @param wrap Whether to wrap the controls in case of insufficient space.
-	 * @return The updated builder.
-	 */
-	public RowLayoutBuilder wrap(boolean wrap) {
-		get().wrap = wrap;
 		return this;
 	}
 
