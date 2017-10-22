@@ -16,19 +16,43 @@
  */
 package de.carne.swt.test;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.swt.events.SelectionEvent;
 
-import de.carne.util.logging.Log;
+import de.carne.Application;
 
 /**
  * Test user agent.
  */
 class TestUserController {
 
-	private static final Log LOG = new Log();
+	private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
-	void onMenuItemSelected(SelectionEvent event) {
-		LOG.notice("{0}", event);
+	private final TestUserInterface ui;
+
+	TestUserController(TestUserInterface ui) {
+		this.ui = ui;
+	}
+
+	void onShellDisposed() {
+		this.executorService.shutdownNow();
+		Application.getMain(TestUserApplicationMain.class).setStatus(0);
+	}
+
+	void onShellActivated() {
+		this.executorService.schedule(this::runBackgroundCommand, 500, TimeUnit.MILLISECONDS);
+	}
+
+	private void runBackgroundCommand() {
+		Application.getMain(TestUserApplicationMain.class)
+				.runWait(() -> this.ui.setStatus("Background task finished."));
+	}
+
+	void onCommandItemSelected(SelectionEvent event) {
+		this.ui.setStatus("Command item '" + event.widget + "'selected.");
 	}
 
 }

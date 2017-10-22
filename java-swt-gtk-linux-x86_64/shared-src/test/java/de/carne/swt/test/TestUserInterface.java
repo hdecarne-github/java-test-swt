@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.carne.swt.ResourceException;
 import de.carne.swt.graphics.ImageResourcePool;
-import de.carne.swt.layout.FillLayoutBuilder;
+import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
 import de.carne.swt.widgets.ControlBuilder;
@@ -45,21 +45,41 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	private final Late<ImageResourcePool> imagePoolHolder = new Late<>();
 	private final Late<Shell> rootHolder = new Late<>();
+	private final Late<Label> status = new Late<>();
+
+	/**
+	 * Set status text.
+	 *
+	 * @param status The status text to set.
+	 */
+	public void setStatus(String status) {
+		this.status.get().setText(status);
+	}
 
 	@Override
 	protected void build(Shell root) throws ResourceException {
 		this.imagePoolHolder.set(new ImageResourcePool(root.getDisplay()));
 		this.rootHolder.set(root);
 
-		TestUserController controller = new TestUserController();
+		TestUserController controller = new TestUserController(this);
 		ShellBuilder shell = new ShellBuilder(root);
 
 		shell.withText(getClass().getSimpleName())
 				.withImages(this.imagePoolHolder.get().getAll(Images.class, Images.IMAGES_A));
-		shell.onDisposed(() -> this.imagePoolHolder.get().disposeAll());
+		shell.onDisposed(() -> {
+			controller.onShellDisposed();
+			this.imagePoolHolder.get().disposeAll();
+		});
+		shell.onShellActivated(controller::onShellActivated);
 		buildMenuBar(controller);
-		buildTabs(controller);
-		FillLayoutBuilder.layout().margin(0, 0).spacing(0).apply(root);
+
+		TabFolder tabs = buildTabs(controller);
+
+		this.status.set(new Label(root, SWT.HORIZONTAL));
+		GridLayoutBuilder.layout(1).margin(2, 2, 2, 2).spacing(2, 2).apply(root);
+		GridLayoutBuilder.data().align(SWT.FILL, SWT.FILL).grab(true, true).apply(tabs);
+		GridLayoutBuilder.data().align(SWT.FILL, SWT.BOTTOM).grab(true, false).apply(this.status);
+		setStatus("UI ready...");
 	}
 
 	private void buildMenuBar(TestUserController controller) throws ResourceException {
@@ -69,20 +89,20 @@ public class TestUserInterface extends UserInterface<Shell> {
 		menu.addItem(SWT.CASCADE).withText("Menu A");
 		menu.beginMenu();
 		menu.addItem(SWT.PUSH).withText("Menu item A.1").withImage(itemImage);
-		menu.onSelected(controller::onMenuItemSelected);
+		menu.onSelected(controller::onCommandItemSelected);
 		menu.addItem(SWT.PUSH).withText("Menu item A.2").withImage(itemImage);
-		menu.onSelected(controller::onMenuItemSelected);
+		menu.onSelected(controller::onCommandItemSelected);
 		menu.endMenu();
 		menu.addItem(SWT.CASCADE).withText("Menu B");
 		menu.beginMenu();
 		menu.addItem(SWT.PUSH).withText("Menu item B.1").withImage(itemImage);
-		menu.onSelected(controller::onMenuItemSelected);
+		menu.onSelected(controller::onCommandItemSelected);
 		menu.addItem(SWT.PUSH).withText("Menu item B.2").withImage(itemImage);
-		menu.onSelected(controller::onMenuItemSelected);
+		menu.onSelected(controller::onCommandItemSelected);
 		menu.endMenu();
 	}
 
-	private void buildTabs(TestUserController controller) throws ResourceException {
+	private TabFolder buildTabs(TestUserController controller) throws ResourceException {
 		TabFolderBuilder tabs = TabFolderBuilder.top(this.rootHolder.get(), SWT.NONE);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
@@ -90,6 +110,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		tabs.withControl(buildTab1(tabs.get(), controller));
 		tabs.addItem(SWT.NONE).withText("Tab 2").withImage(itemImage);
 		tabs.withControl(buildTab2(tabs.get(), controller));
+		return tabs.get();
 	}
 
 	private Control buildTab1(TabFolder tab, TestUserController controller) throws ResourceException {
@@ -101,9 +122,9 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 		commands.addItem(SWT.NONE);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.onSelected(controller::onCommandItemSelected);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
 		commands.pack();
 		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(tab);
@@ -121,9 +142,9 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 		commands.addItem(SWT.NONE);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.onSelected(controller::onCommandItemSelected);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onMenuItemSelected);
+		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
 		commands.pack();
 		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).wrap(true).apply(tab);

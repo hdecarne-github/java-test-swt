@@ -16,8 +16,15 @@
  */
 package de.carne.swt.widgets;
 
+import java.util.function.Consumer;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
+
+import de.carne.swt.events.EventConsumer;
+import de.carne.swt.events.EventReceiver;
 
 /**
  * {@linkplain Shell} builder.
@@ -54,6 +61,146 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	 */
 	public ShellBuilder withImages(Image[] images) {
 		get().setImages(images);
+		return this;
+	}
+
+	/**
+	 * Set activated {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellActivated(Consumer<ShellEvent> action) {
+		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
+
+		get().addListener(SWT.Activate, listener);
+		return this;
+	}
+
+	/**
+	 * Set activated {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellActivated(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		get().addListener(SWT.Activate, listener);
+		return this;
+	}
+
+	/**
+	 * Set deactivated {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellDeactivated(Consumer<ShellEvent> action) {
+		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
+
+		get().addListener(SWT.Deactivate, listener);
+		return this;
+	}
+
+	/**
+	 * Set deactivated {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellDeactivated(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		get().addListener(SWT.Deactivate, listener);
+		return this;
+	}
+
+	/**
+	 * Set iconified {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellIconified(Consumer<ShellEvent> action) {
+		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
+
+		get().addListener(SWT.Iconify, listener);
+		return this;
+	}
+
+	/**
+	 * Set iconified {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellIconified(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		get().addListener(SWT.Iconify, listener);
+		return this;
+	}
+
+	/**
+	 * Set deiconified {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellDeiconifed(Consumer<ShellEvent> action) {
+		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
+
+		get().addListener(SWT.Deiconify, listener);
+		return this;
+	}
+
+	/**
+	 * Set deiconified {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellDeiconifed(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		get().addListener(SWT.Deiconify, listener);
+		return this;
+	}
+
+	/**
+	 * Set closed {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellClosed(Consumer<ShellEvent> action) {
+		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
+
+		get().addListener(SWT.Close, listener);
+		return this;
+	}
+
+	/**
+	 * Set closed {@linkplain ShellEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
+	 */
+	public ShellBuilder onShellClosed(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		get().addListener(SWT.Close, listener);
 		return this;
 	}
 

@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -60,6 +61,16 @@ public class EventConsumer<T extends TypedEvent> implements Listener {
 	 */
 	public static EventConsumer<SelectionEvent> selected(Consumer<SelectionEvent> consumer) {
 		return new EventConsumer<>(SelectionEvent::new, consumer);
+	}
+
+	/**
+	 * {@linkplain ShellEvent} listener.
+	 *
+	 * @param consumer The consuming action.
+	 * @return The event listener.
+	 */
+	public static EventConsumer<ShellEvent> shellEvent(Consumer<ShellEvent> consumer) {
+		return new EventConsumer<>(ShellEvent::new, consumer);
 	}
 
 	@Override
