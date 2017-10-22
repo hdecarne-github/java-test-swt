@@ -96,15 +96,15 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	/**
 	 * Set the layout's spacing attributes.
 	 *
-	 * @param horizontal The horizontal spacing.
-	 * @param vertical The vertical spacing.
+	 * @param horizontalSpacing The horizontal spacing.
+	 * @param verticalSpacing The vertical spacing.
 	 * @return The updated builder.
 	 */
-	public GridLayoutBuilder spacing(int horizontal, int vertical) {
+	public GridLayoutBuilder spacing(int horizontalSpacing, int verticalSpacing) {
 		GridLayout layout = get();
 
-		layout.horizontalSpacing = horizontal;
-		layout.verticalSpacing = vertical;
+		layout.horizontalSpacing = horizontalSpacing;
+		layout.verticalSpacing = verticalSpacing;
 		return this;
 	}
 
@@ -134,10 +134,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder align(int horizontalAlignment, int verticalAlignment) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.horizontalAlignment = horizontalAlignment;
-			gridData.verticalAlignment = verticalAlignment;
+			layoutData.horizontalAlignment = horizontalAlignment;
+			layoutData.verticalAlignment = verticalAlignment;
 			return this;
 		}
 
@@ -149,10 +149,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder preferredSize(int widthHint, int heightHint) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.widthHint = widthHint;
-			gridData.heightHint = heightHint;
+			layoutData.widthHint = widthHint;
+			layoutData.heightHint = heightHint;
 			return this;
 		}
 
@@ -164,10 +164,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder minimumSize(int minimumWidth, int minimumHeight) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.minimumWidth = minimumWidth;
-			gridData.minimumHeight = minimumHeight;
+			layoutData.minimumWidth = minimumWidth;
+			layoutData.minimumHeight = minimumHeight;
 			return this;
 		}
 
@@ -179,10 +179,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder indent(int horizontalIndent, int verticalIndent) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.horizontalIndent = horizontalIndent;
-			gridData.verticalIndent = verticalIndent;
+			layoutData.horizontalIndent = horizontalIndent;
+			layoutData.verticalIndent = verticalIndent;
 			return this;
 		}
 
@@ -194,10 +194,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder span(int horizontalSpan, int verticalSpan) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.horizontalSpan = horizontalSpan;
-			gridData.verticalSpan = verticalSpan;
+			layoutData.horizontalSpan = horizontalSpan;
+			layoutData.verticalSpan = verticalSpan;
 			return this;
 		}
 
@@ -209,10 +209,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder grab(boolean grabExcessHorizontalSpace, boolean grabExcessVerticalSpace) {
-			GridData gridData = get();
+			GridData layoutData = get();
 
-			gridData.grabExcessHorizontalSpace = grabExcessHorizontalSpace;
-			gridData.grabExcessVerticalSpace = grabExcessVerticalSpace;
+			layoutData.grabExcessHorizontalSpace = grabExcessHorizontalSpace;
+			layoutData.grabExcessVerticalSpace = grabExcessVerticalSpace;
 			return this;
 		}
 
