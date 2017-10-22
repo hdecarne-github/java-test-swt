@@ -23,7 +23,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -192,13 +191,13 @@ public abstract class SWTTester {
 		testerThread.start();
 		try {
 			runSWTApplication(runner.args());
-		} catch (SWTException e) {
+		} catch (Exception e) {
 			Throwable cause = e.getCause();
 
 			if (cause instanceof AssertionError) {
 				throw (AssertionError) cause;
 			}
-			throw e;
+			throw new AssertionError("Application failed with exception: " + e.getClass().getName(), e);
 		}
 	}
 
