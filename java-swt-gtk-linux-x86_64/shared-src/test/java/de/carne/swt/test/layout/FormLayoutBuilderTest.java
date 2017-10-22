@@ -16,6 +16,7 @@
  */
 package de.carne.swt.test.layout;
 
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.junit.Assert;
@@ -57,6 +58,34 @@ public class FormLayoutBuilderTest {
 
 		Assert.assertEquals(42, data1.width);
 		Assert.assertEquals(43, data1.height);
+
+		FormData data2 = FormLayoutBuilder.data().left(42).top(43).right(44).bottom(45).get();
+
+		verifyAttachment(data2.left, 42, 100, 0);
+		verifyAttachment(data2.top, 43, 100, 0);
+		verifyAttachment(data2.right, 44, 100, 0);
+		verifyAttachment(data2.bottom, 45, 100, 0);
+
+		FormData data3 = FormLayoutBuilder.data().left(42, 43).top(44, 45).right(46, 47).bottom(48, 49).get();
+
+		verifyAttachment(data3.left, 42, 100, 43);
+		verifyAttachment(data3.top, 44, 100, 45);
+		verifyAttachment(data3.right, 46, 100, 47);
+		verifyAttachment(data3.bottom, 48, 100, 49);
+
+		FormData data4 = FormLayoutBuilder.data().left(42, 43, 44).top(45, 46, 47).right(48, 49, 50).bottom(51, 52, 53)
+				.get();
+
+		verifyAttachment(data4.left, 42, 43, 44);
+		verifyAttachment(data4.top, 45, 46, 47);
+		verifyAttachment(data4.right, 48, 49, 50);
+		verifyAttachment(data4.bottom, 51, 52, 53);
+	}
+
+	private void verifyAttachment(FormAttachment attachment, int numerator, int denominator, int offset) {
+		Assert.assertEquals(numerator, attachment.numerator);
+		Assert.assertEquals(denominator, attachment.denominator);
+		Assert.assertEquals(offset, attachment.offset);
 	}
 
 }

@@ -183,10 +183,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder left(Supplier<Control> control) {
-			FormData layoutData = get();
-
-			layoutData.left = new FormAttachment(control.get());
-			return this;
+			return left(control.get());
 		}
 
 		/**
@@ -211,10 +208,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder left(Supplier<Control> control, int offset) {
-			FormData layoutData = get();
-
-			layoutData.left = new FormAttachment(control.get(), offset);
-			return this;
+			return left(control.get(), offset);
 		}
 
 		/**
@@ -241,10 +235,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder left(Supplier<Control> control, int offset, int alignment) {
-			FormData layoutData = get();
-
-			layoutData.left = new FormAttachment(control.get(), offset, alignment);
-			return this;
+			return left(control.get(), offset, alignment);
 		}
 
 		/**
@@ -309,10 +300,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder top(Supplier<Control> control) {
-			FormData layoutData = get();
-
-			layoutData.top = new FormAttachment(control.get());
-			return this;
+			return top(control.get());
 		}
 
 		/**
@@ -337,10 +325,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder top(Supplier<Control> control, int offset) {
-			FormData layoutData = get();
-
-			layoutData.top = new FormAttachment(control.get(), offset);
-			return this;
+			return top(control.get(), offset);
 		}
 
 		/**
@@ -367,10 +352,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder top(Supplier<Control> control, int offset, int alignment) {
-			FormData layoutData = get();
-
-			layoutData.top = new FormAttachment(control.get(), offset, alignment);
-			return this;
+			return top(control.get(), offset, alignment);
 		}
 
 		/**
@@ -435,10 +417,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder right(Supplier<Control> control) {
-			FormData layoutData = get();
-
-			layoutData.right = new FormAttachment(control.get());
-			return this;
+			return right(control.get());
 		}
 
 		/**
@@ -463,10 +442,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder right(Supplier<Control> control, int offset) {
-			FormData layoutData = get();
-
-			layoutData.right = new FormAttachment(control.get(), offset);
-			return this;
+			return right(control.get(), offset);
 		}
 
 		/**
@@ -493,10 +469,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder right(Supplier<Control> control, int offset, int alignment) {
-			FormData layoutData = get();
-
-			layoutData.right = new FormAttachment(control.get(), offset, alignment);
-			return this;
+			return right(control.get(), offset, alignment);
 		}
 
 		/**
@@ -561,10 +534,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder bottom(Supplier<Control> control) {
-			FormData layoutData = get();
-
-			layoutData.bottom = new FormAttachment(control.get());
-			return this;
+			return bottom(control.get());
 		}
 
 		/**
@@ -589,10 +559,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder bottom(Supplier<Control> control, int offset) {
-			FormData layoutData = get();
-
-			layoutData.bottom = new FormAttachment(control.get(), offset);
-			return this;
+			return bottom(control.get(), offset);
 		}
 
 		/**
@@ -619,10 +586,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @return The updated builder.
 		 */
 		public DataBuilder bottom(Supplier<Control> control, int offset, int alignment) {
-			FormData layoutData = get();
-
-			layoutData.bottom = new FormAttachment(control.get(), offset, alignment);
-			return this;
+			return bottom(control.get(), offset, alignment);
 		}
 
 	}
