@@ -35,17 +35,17 @@ public class FillLayoutBuilderTest {
 	public void testFillLayoutBuilder() {
 		FillLayout layout1 = FillLayoutBuilder.layout().margin(42, 43).spacing(44).get();
 
-		Assert.assertEquals(layout1.type, SWT.HORIZONTAL);
-		Assert.assertEquals(layout1.marginWidth, 42);
-		Assert.assertEquals(layout1.marginHeight, 43);
-		Assert.assertEquals(layout1.spacing, 44);
+		Assert.assertEquals(SWT.HORIZONTAL, layout1.type);
+		Assert.assertEquals(42, layout1.marginWidth);
+		Assert.assertEquals(43, layout1.marginHeight);
+		Assert.assertEquals(44, layout1.spacing);
 
 		FillLayout layout2 = FillLayoutBuilder.layout(SWT.VERTICAL).get();
 
-		Assert.assertEquals(layout2.type, SWT.VERTICAL);
-		Assert.assertEquals(layout2.marginWidth, 0);
-		Assert.assertEquals(layout2.marginHeight, 0);
-		Assert.assertEquals(layout2.spacing, 0);
+		Assert.assertEquals(SWT.VERTICAL, layout2.type);
+		Assert.assertEquals(0, layout2.marginWidth);
+		Assert.assertEquals(0, layout2.marginHeight);
+		Assert.assertEquals(0, layout2.spacing);
 	}
 
 }
