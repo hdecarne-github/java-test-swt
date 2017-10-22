@@ -37,14 +37,14 @@ public class RowLayoutBuilderTest {
 		RowLayout layout1 = RowLayoutBuilder.layout().margin(42, 43).spacing(44).wrap(false).pack(false).fill(true)
 				.center(true).justify(true).get();
 
-		Assert.assertEquals(layout1.type, SWT.HORIZONTAL);
-		Assert.assertEquals(layout1.marginWidth, 42);
-		Assert.assertEquals(layout1.marginHeight, 43);
-		Assert.assertEquals(layout1.marginLeft, 3);
-		Assert.assertEquals(layout1.marginTop, 3);
-		Assert.assertEquals(layout1.marginRight, 3);
-		Assert.assertEquals(layout1.marginBottom, 3);
-		Assert.assertEquals(layout1.spacing, 44);
+		Assert.assertEquals(SWT.HORIZONTAL, layout1.type);
+		Assert.assertEquals(42, layout1.marginWidth);
+		Assert.assertEquals(43, layout1.marginHeight);
+		Assert.assertEquals(3, layout1.marginLeft);
+		Assert.assertEquals(3, layout1.marginTop);
+		Assert.assertEquals(3, layout1.marginRight);
+		Assert.assertEquals(3, layout1.marginBottom);
+		Assert.assertEquals(44, layout1.spacing);
 		Assert.assertFalse(layout1.wrap);
 		Assert.assertFalse(layout1.pack);
 		Assert.assertTrue(layout1.fill);
@@ -53,14 +53,14 @@ public class RowLayoutBuilderTest {
 
 		RowLayout layout2 = RowLayoutBuilder.layout(SWT.VERTICAL).margin(42, 43, 44, 45).get();
 
-		Assert.assertEquals(layout2.type, SWT.VERTICAL);
-		Assert.assertEquals(layout2.marginWidth, 0);
-		Assert.assertEquals(layout2.marginHeight, 0);
-		Assert.assertEquals(layout2.marginLeft, 42);
-		Assert.assertEquals(layout2.marginTop, 43);
-		Assert.assertEquals(layout2.marginRight, 44);
-		Assert.assertEquals(layout2.marginBottom, 45);
-		Assert.assertEquals(layout2.spacing, 3);
+		Assert.assertEquals(SWT.VERTICAL, layout2.type);
+		Assert.assertEquals(0, layout2.marginWidth);
+		Assert.assertEquals(0, layout2.marginHeight);
+		Assert.assertEquals(42, layout2.marginLeft);
+		Assert.assertEquals(43, layout2.marginTop);
+		Assert.assertEquals(44, layout2.marginRight);
+		Assert.assertEquals(45, layout2.marginBottom);
+		Assert.assertEquals(3, layout2.spacing);
 		Assert.assertTrue(layout2.wrap);
 		Assert.assertTrue(layout2.pack);
 		Assert.assertFalse(layout2.fill);
@@ -69,14 +69,14 @@ public class RowLayoutBuilderTest {
 
 		RowData data1 = RowLayoutBuilder.data().size(42, 43).exclude(true).get();
 
-		Assert.assertEquals(data1.width, 42);
-		Assert.assertEquals(data1.height, 43);
+		Assert.assertEquals(42, data1.width);
+		Assert.assertEquals(43, data1.height);
 		Assert.assertTrue(data1.exclude);
 
 		RowData data2 = RowLayoutBuilder.data().get();
 
-		Assert.assertEquals(data2.width, SWT.DEFAULT);
-		Assert.assertEquals(data2.height, SWT.DEFAULT);
+		Assert.assertEquals(SWT.DEFAULT, data2.width);
+		Assert.assertEquals(SWT.DEFAULT, data2.height);
 		Assert.assertFalse(data2.exclude);
 	}
 
