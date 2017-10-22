@@ -185,7 +185,7 @@ public abstract class SWTTester {
 			}
 			Threads.sleep(DISPOSE_TIMEOUT);
 			runWait(display, () -> disposeAll(runner));
-		});
+		}, getClass().getSimpleName());
 
 		testerThread.setDaemon(true);
 		testerThread.start();
