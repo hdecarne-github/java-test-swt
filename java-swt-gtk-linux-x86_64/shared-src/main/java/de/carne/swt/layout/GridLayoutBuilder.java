@@ -142,6 +142,66 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
+		 * Set the layout data's preferred size attributes.
+		 *
+		 * @param widthHint The preferred width in pixels.
+		 * @param heightHint The preferred height in pixels.
+		 * @return The updated builder.
+		 */
+		public DataBuilder preferredSize(int widthHint, int heightHint) {
+			GridData gridData = get();
+
+			gridData.widthHint = widthHint;
+			gridData.heightHint = heightHint;
+			return this;
+		}
+
+		/**
+		 * Set the layout data's minimum size attributes.
+		 *
+		 * @param minimumWidth The minimum width in pixels.
+		 * @param minimumHeight The minimum height in pixels.
+		 * @return The updated builder.
+		 */
+		public DataBuilder minimumSize(int minimumWidth, int minimumHeight) {
+			GridData gridData = get();
+
+			gridData.minimumWidth = minimumWidth;
+			gridData.minimumHeight = minimumHeight;
+			return this;
+		}
+
+		/**
+		 * Set the layout data's indent attributes.
+		 *
+		 * @param horizontalIndent The horizontal indent.
+		 * @param verticalIndent The vertical indent.
+		 * @return The updated builder.
+		 */
+		public DataBuilder indent(int horizontalIndent, int verticalIndent) {
+			GridData gridData = get();
+
+			gridData.horizontalIndent = horizontalIndent;
+			gridData.verticalIndent = verticalIndent;
+			return this;
+		}
+
+		/**
+		 * Set the layout data's span attributes.
+		 *
+		 * @param horizontalSpan The horizontal span.
+		 * @param verticalSpan The vertical span.
+		 * @return The updated builder.
+		 */
+		public DataBuilder span(int horizontalSpan, int verticalSpan) {
+			GridData gridData = get();
+
+			gridData.horizontalSpan = horizontalSpan;
+			gridData.verticalSpan = verticalSpan;
+			return this;
+		}
+
+		/**
 		 * Set the layout data's grab attributes.
 		 *
 		 * @param grabExcessHorizontalSpace Whether to grap excessive horizontal space.
@@ -153,6 +213,17 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 
 			gridData.grabExcessHorizontalSpace = grabExcessHorizontalSpace;
 			gridData.grabExcessVerticalSpace = grabExcessVerticalSpace;
+			return this;
+		}
+
+		/**
+		 * Set the layout data's exclude attribute.
+		 *
+		 * @param exclude Whether to exclude the control during layout.
+		 * @return The updated builder.
+		 */
+		public DataBuilder exclude(boolean exclude) {
+			get().exclude = exclude;
 			return this;
 		}
 
