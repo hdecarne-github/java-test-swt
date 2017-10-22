@@ -36,7 +36,7 @@ public class GridLayoutBuilderTest {
 	public void testGridLayoutBuilder() {
 		GridLayout layout1 = GridLayoutBuilder.layout().margin(42, 43).spacing(44, 45).get();
 
-		Assert.assertEquals(layout1.numColumns, 1);
+		Assert.assertEquals(1, layout1.numColumns);
 		Assert.assertFalse(layout1.makeColumnsEqualWidth);
 		Assert.assertEquals(42, layout1.marginWidth);
 		Assert.assertEquals(43, layout1.marginHeight);
