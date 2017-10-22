@@ -14,40 +14,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt;
+package de.carne.swt.graphics;
 
 /**
- * Indicates that a SWT {@linkplain org.eclipse.swt.graphics.Resource} is not accessible.
+ * Indicates that a SWT {@linkplain org.eclipse.swt.graphics.Resource} cannot be created.
  */
-public class ResourceException extends Exception {
+public class CreateResourceException extends ResourceException {
 
-	private static final long serialVersionUID = 515875293439048677L;
+	private static final long serialVersionUID = -5358133313274639864L;
 
 	/**
-	 * Construct {@linkplain ResourceException}.
+	 * Construct {@linkplain CreateResourceException}.
 	 *
 	 * @param message The exception message.
 	 */
-	public ResourceException(String message) {
+	public CreateResourceException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Construct {@linkplain ResourceException}.
+	 * Construct {@linkplain CreateResourceException}.
 	 *
 	 * @param cause The causing exception.
 	 */
-	public ResourceException(Throwable cause) {
+	public CreateResourceException(Throwable cause) {
 		super(cause.getLocalizedMessage(), cause);
 	}
 
 	/**
-	 * Construct {@linkplain ResourceException}.
+	 * Construct {@linkplain CreateResourceException}.
 	 *
 	 * @param message The exception message.
 	 * @param cause The causing exception.
 	 */
-	public ResourceException(String message, Throwable cause) {
+	public CreateResourceException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

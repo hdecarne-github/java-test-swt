@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.check.Nullable;
+import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Exceptions;
 import de.carne.util.Late;

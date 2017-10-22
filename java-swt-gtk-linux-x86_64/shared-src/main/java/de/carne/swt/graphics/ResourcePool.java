@@ -22,7 +22,6 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Resource;
 
-import de.carne.swt.ResourceException;
 import de.carne.util.function.FunctionException;
 
 /**

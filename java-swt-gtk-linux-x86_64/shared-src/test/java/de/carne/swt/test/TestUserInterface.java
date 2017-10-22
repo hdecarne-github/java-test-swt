@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 
-import de.carne.swt.ResourceException;
 import de.carne.swt.graphics.ImageResourcePool;
+import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;

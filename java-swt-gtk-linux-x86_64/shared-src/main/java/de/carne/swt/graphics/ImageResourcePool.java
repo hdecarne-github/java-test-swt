@@ -27,10 +27,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 
-import de.carne.swt.CreateResourceException;
-import de.carne.swt.ResourceException;
-import de.carne.swt.UnknownResourceException;
-
 /**
  * Resource pool to manage {@linkplain Image} resources identified by their resource {@linkplain URI}s.
  */

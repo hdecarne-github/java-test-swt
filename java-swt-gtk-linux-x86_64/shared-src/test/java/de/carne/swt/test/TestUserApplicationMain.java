@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Assert;
 
 import de.carne.ApplicationMain;
-import de.carne.swt.ResourceException;
 import de.carne.swt.UserApplication;
+import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Exceptions;
 import de.carne.util.cmdline.CmdLineProcessor;

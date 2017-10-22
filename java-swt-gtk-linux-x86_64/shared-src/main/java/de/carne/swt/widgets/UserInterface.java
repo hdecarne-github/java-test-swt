@@ -18,7 +18,7 @@ package de.carne.swt.widgets;
 
 import org.eclipse.swt.widgets.Composite;
 
-import de.carne.swt.ResourceException;
+import de.carne.swt.graphics.ResourceException;
 import de.carne.util.Late;
 
 /**

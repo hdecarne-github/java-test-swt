@@ -22,10 +22,10 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
-import de.carne.swt.CreateResourceException;
-import de.carne.swt.ResourceException;
-import de.carne.swt.UnknownResourceException;
+import de.carne.swt.graphics.CreateResourceException;
 import de.carne.swt.graphics.ImageResourcePool;
+import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.graphics.UnknownResourceException;
 import de.carne.swt.test.Images;
 import de.carne.test.swt.rules.SWTDevice;
 
