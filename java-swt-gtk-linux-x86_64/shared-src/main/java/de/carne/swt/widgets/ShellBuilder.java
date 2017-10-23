@@ -155,7 +155,7 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	 * @return The updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
-	public ShellBuilder onShellDeiconifed(Consumer<ShellEvent> action) {
+	public ShellBuilder onShellDeiconified(Consumer<ShellEvent> action) {
 		EventConsumer<ShellEvent> listener = EventConsumer.shellEvent(action);
 
 		get().addListener(SWT.Deiconify, listener);
@@ -169,7 +169,7 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	 * @return The updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
-	public ShellBuilder onShellDeiconifed(Runnable action) {
+	public ShellBuilder onShellDeiconified(Runnable action) {
 		EventReceiver listener = EventReceiver.any(action);
 
 		get().addListener(SWT.Deiconify, listener);
