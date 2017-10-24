@@ -21,11 +21,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.Tree;
 
 import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.layout.FormLayoutBuilder;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
@@ -70,6 +73,11 @@ public class TestUserInterface extends UserInterface<Shell> {
 			controller.onShellDisposed();
 			this.imagePoolHolder.get().disposeAll();
 		});
+		shell.onShellActivated(controller::onShellEvent);
+		shell.onShellDeactivated(controller::onShellEvent);
+		shell.onShellIconified(controller::onShellEvent);
+		shell.onShellDeiconified(controller::onShellEvent);
+		shell.onShellClosed(controller::onShellEvent);
 		shell.onShellActivated(controller::onShellActivated);
 		buildMenuBar(controller);
 
@@ -110,6 +118,8 @@ public class TestUserInterface extends UserInterface<Shell> {
 		tabs.withControl(buildTab1(tabs.get(), controller));
 		tabs.addItem(SWT.NONE).withText("Tab 2").withImage(itemImage);
 		tabs.withControl(buildTab2(tabs.get(), controller));
+		tabs.addItem(SWT.NONE).withText("Tab 3").withImage(itemImage);
+		tabs.withControl(buildTab3(tabs.get()));
 		return tabs.get();
 	}
 
@@ -127,7 +137,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
 		commands.pack();
-		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(tab);
+		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(group);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
 		return group.get();
@@ -150,6 +160,23 @@ public class TestUserInterface extends UserInterface<Shell> {
 		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).wrap(true).apply(tab);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
+		return group.get();
+	}
+
+	private Control buildTab3(TabFolder tab) {
+		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
+		ControlBuilder<Tree> control11 = group.addTreeChild(SWT.SINGLE);
+		ControlBuilder<List> control12 = group.addListChild(SWT.SINGLE);
+		ControlBuilder<Tree> control21 = group.addTreeChild(SWT.SINGLE);
+		ControlBuilder<List> control22 = group.addListChild(SWT.SINGLE);
+		ControlBuilder<Label> hSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
+		ControlBuilder<Label> vSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
+
+		FormLayoutBuilder.layout().apply(group);
+		FormLayoutBuilder.data().left(0).top(0).right(vSeparator).bottom(hSeparator).apply(control11);
+		FormLayoutBuilder.data().left(vSeparator).top(0).right(100).bottom(hSeparator).apply(control12);
+		FormLayoutBuilder.data().left(0).top(hSeparator).right(vSeparator).bottom(100).apply(control21);
+		FormLayoutBuilder.data().left(vSeparator).top(hSeparator).right(100).bottom(100).apply(control22);
 		return group.get();
 	}
 

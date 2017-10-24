@@ -55,7 +55,7 @@ public abstract class LayoutBuilder<T extends Layout> implements Supplier<T> {
 	 * @param composite The {@linkplain Composite} to apply the layout to.
 	 * @see Composite#setLayout(Layout)
 	 */
-	public void apply(Supplier<Composite> composite) {
+	public void apply(Supplier<? extends Composite> composite) {
 		apply(composite.get());
 	}
 

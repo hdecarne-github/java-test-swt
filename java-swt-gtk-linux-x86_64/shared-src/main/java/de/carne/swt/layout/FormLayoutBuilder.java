@@ -182,7 +182,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param control The control to attach to.
 		 * @return The updated builder.
 		 */
-		public DataBuilder left(Supplier<Control> control) {
+		public DataBuilder left(Supplier<? extends Control> control) {
 			return left(control.get());
 		}
 
@@ -207,7 +207,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param offset The attachment's offset value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder left(Supplier<Control> control, int offset) {
+		public DataBuilder left(Supplier<? extends Control> control, int offset) {
 			return left(control.get(), offset);
 		}
 
@@ -234,7 +234,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param alignment The attachment's alignment value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder left(Supplier<Control> control, int offset, int alignment) {
+		public DataBuilder left(Supplier<? extends Control> control, int offset, int alignment) {
 			return left(control.get(), offset, alignment);
 		}
 
@@ -299,7 +299,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param control The control to attach to.
 		 * @return The updated builder.
 		 */
-		public DataBuilder top(Supplier<Control> control) {
+		public DataBuilder top(Supplier<? extends Control> control) {
 			return top(control.get());
 		}
 
@@ -324,7 +324,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param offset The attachment's offset value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder top(Supplier<Control> control, int offset) {
+		public DataBuilder top(Supplier<? extends Control> control, int offset) {
 			return top(control.get(), offset);
 		}
 
@@ -351,7 +351,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param alignment The attachment's alignment value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder top(Supplier<Control> control, int offset, int alignment) {
+		public DataBuilder top(Supplier<? extends Control> control, int offset, int alignment) {
 			return top(control.get(), offset, alignment);
 		}
 
@@ -416,7 +416,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param control The control to attach to.
 		 * @return The updated builder.
 		 */
-		public DataBuilder right(Supplier<Control> control) {
+		public DataBuilder right(Supplier<? extends Control> control) {
 			return right(control.get());
 		}
 
@@ -441,7 +441,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param offset The attachment's offset value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder right(Supplier<Control> control, int offset) {
+		public DataBuilder right(Supplier<? extends Control> control, int offset) {
 			return right(control.get(), offset);
 		}
 
@@ -468,7 +468,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param alignment The attachment's alignment value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder right(Supplier<Control> control, int offset, int alignment) {
+		public DataBuilder right(Supplier<? extends Control> control, int offset, int alignment) {
 			return right(control.get(), offset, alignment);
 		}
 
@@ -533,7 +533,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param control The control to attach to.
 		 * @return The updated builder.
 		 */
-		public DataBuilder bottom(Supplier<Control> control) {
+		public DataBuilder bottom(Supplier<? extends Control> control) {
 			return bottom(control.get());
 		}
 
@@ -558,7 +558,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param offset The attachment's offset value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder bottom(Supplier<Control> control, int offset) {
+		public DataBuilder bottom(Supplier<? extends Control> control, int offset) {
 			return bottom(control.get(), offset);
 		}
 
@@ -585,7 +585,7 @@ public final class FormLayoutBuilder extends LayoutBuilder<FormLayout> {
 		 * @param alignment The attachment's alignment value.
 		 * @return The updated builder.
 		 */
-		public DataBuilder bottom(Supplier<Control> control, int offset, int alignment) {
+		public DataBuilder bottom(Supplier<? extends Control> control, int offset, int alignment) {
 			return bottom(control.get(), offset, alignment);
 		}
 

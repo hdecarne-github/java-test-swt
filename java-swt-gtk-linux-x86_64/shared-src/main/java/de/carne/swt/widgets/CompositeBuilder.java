@@ -23,7 +23,9 @@ import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.Tree;
 
 /**
  * {@linkplain Composite} builder.
@@ -110,6 +112,26 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public ControlBuilder<Label> addLabelChild(int style) {
 		return addChild(parent -> new ControlBuilder<>(new Label(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain List}.
+	 *
+	 * @param style The {@linkplain List} style.
+	 * @return The added child control.
+	 */
+	public ControlBuilder<List> addListChild(int style) {
+		return addChild(parent -> new ControlBuilder<>(new List(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain Tree}.
+	 *
+	 * @param style The {@linkplain Tree} style.
+	 * @return The added child control.
+	 */
+	public ControlBuilder<Tree> addTreeChild(int style) {
+		return addChild(parent -> new ControlBuilder<>(new Tree(parent, style)));
 	}
 
 }

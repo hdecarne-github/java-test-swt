@@ -21,13 +21,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellEvent;
 
 import de.carne.Application;
+import de.carne.util.logging.Log;
 
 /**
  * Test user agent.
  */
 class TestUserController {
+
+	private static final Log LOG = new Log();
 
 	private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
@@ -35,6 +39,10 @@ class TestUserController {
 
 	TestUserController(TestUserInterface ui) {
 		this.ui = ui;
+	}
+
+	void onShellEvent(ShellEvent event) {
+		LOG.info("Shell event: {0}", event);
 	}
 
 	void onShellDisposed() {
