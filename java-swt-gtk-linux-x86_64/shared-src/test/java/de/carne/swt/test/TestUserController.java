@@ -43,7 +43,11 @@ class TestUserController {
 		this.ui = ui;
 	}
 
-	void onShellEvent(ShellEvent event) {
+	void onShellEvent() {
+		LOG.info("Shell event");
+	}
+
+	void onShellEventEvent(ShellEvent event) {
 		LOG.info("Shell event: {0}", event);
 	}
 

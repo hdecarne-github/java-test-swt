@@ -75,12 +75,16 @@ public class TestUserInterface extends UserInterface<Shell> {
 			this.imagePoolHolder.get().disposeAll();
 		});
 		shell.onDisposed(controller::onShellDisposeEvent);
-		shell.onShellActivated(controller::onShellEvent);
-		shell.onShellDeactivated(controller::onShellEvent);
-		shell.onShellIconified(controller::onShellEvent);
-		shell.onShellDeiconified(controller::onShellEvent);
-		shell.onShellClosed(controller::onShellEvent);
 		shell.onShellActivated(controller::onShellActivated);
+		shell.onShellActivated(controller::onShellEventEvent);
+		shell.onShellDeactivated(controller::onShellEvent);
+		shell.onShellDeactivated(controller::onShellEventEvent);
+		shell.onShellIconified(controller::onShellEvent);
+		shell.onShellIconified(controller::onShellEventEvent);
+		shell.onShellDeiconified(controller::onShellEvent);
+		shell.onShellDeiconified(controller::onShellEventEvent);
+		shell.onShellClosed(controller::onShellEvent);
+		shell.onShellClosed(controller::onShellEventEvent);
 		buildMenuBar(controller);
 
 		TabFolder tabs = buildTabs(controller);
@@ -118,6 +122,9 @@ public class TestUserInterface extends UserInterface<Shell> {
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		tabs.addItem(SWT.NONE).withText("Tab 1").withImage(itemImage);
+
+		Assert.assertNotNull(tabs.currentItem());
+
 		tabs.withControl(buildTab1(tabs.get(), controller));
 		tabs.addItem(SWT.NONE).withText("Tab 2").withImage(itemImage);
 		tabs.withControl(buildTab2(tabs.get(), controller));
@@ -185,10 +192,12 @@ public class TestUserInterface extends UserInterface<Shell> {
 		ControlBuilder<Label> vSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
 
 		FormLayoutBuilder.layout().apply(group);
-		FormLayoutBuilder.data().left(0, 0).top(0).right(vSeparator).bottom(hSeparator).apply(control11);
-		FormLayoutBuilder.data().left(vSeparator).top(0).right(100).bottom(hSeparator).apply(control12);
-		FormLayoutBuilder.data().left(0, 0).top(hSeparator).right(vSeparator).bottom(100).apply(control21);
+		FormLayoutBuilder.data().left(0).top(0).right(vSeparator).bottom(hSeparator, 0).apply(control11);
+		FormLayoutBuilder.data().left(vSeparator, 0, SWT.LEFT).top(0, 0).right(100).bottom(hSeparator).apply(control12);
+		FormLayoutBuilder.data().left(0, 100, 0).top(hSeparator).right(vSeparator).bottom(100).apply(control21);
 		FormLayoutBuilder.data().left(vSeparator).top(hSeparator).right(100).bottom(100).apply(control22);
+		FormLayoutBuilder.data().left(0).top(30).right(100).apply(hSeparator);
+		FormLayoutBuilder.data().left(30).top(0).bottom(100).apply(vSeparator);
 		return group.get();
 	}
 
