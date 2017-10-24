@@ -122,7 +122,7 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 	 * @return The updated builder.
 	 * @see CoolBar#setLocked(boolean)
 	 */
-	public CoolBarBuilder setLocked(boolean locked) {
+	public CoolBarBuilder lock(boolean locked) {
 		get().setLocked(locked);
 		return this;
 	}

@@ -19,12 +19,10 @@ package de.carne.swt.widgets;
 import java.util.function.Function;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
 
 /**
@@ -82,26 +80,6 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public CompositeBuilder<Group> addGroupChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Group(parent, style)));
-	}
-
-	/**
-	 * Add a child of type {@linkplain CoolBar}.
-	 *
-	 * @param style The {@linkplain CoolBar} style.
-	 * @return The added child control.
-	 */
-	public CoolBarBuilder addCoolBarChild(int style) {
-		return addChild(parent -> new CoolBarBuilder(new CoolBar(parent, style)));
-	}
-
-	/**
-	 * Add a child of type {@linkplain ToolBar}.
-	 *
-	 * @param style The {@linkplain ToolBar} style.
-	 * @return The added child control.
-	 */
-	public ToolBarBuilder addToolBarChild(int style) {
-		return addChild(parent -> new ToolBarBuilder(new ToolBar(parent, style)));
 	}
 
 	/**

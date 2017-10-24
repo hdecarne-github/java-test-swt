@@ -64,7 +64,11 @@ class TestUserController {
 		main.runNoWait(() -> this.ui.setStatus(statusText));
 	}
 
-	void onCommandItemSelected(SelectionEvent event) {
+	void onCommandItemSelected() {
+		this.ui.setStatus("Command selected.");
+	}
+
+	void onCommandItemSelectionEvent(SelectionEvent event) {
 		this.ui.setStatus("Command item '" + event.widget + "'selected.");
 	}
 

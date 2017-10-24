@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Tree;
+import org.junit.Assert;
 
 import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.graphics.ResourceException;
@@ -127,18 +128,24 @@ public class TestUserInterface extends UserInterface<Shell> {
 	private Control buildTab1(TabFolder tab, TestUserController controller) throws ResourceException {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.horizontal(group, SWT.NONE);
-		ToolBarBuilder commandsTools = commands.addToolBarChild(SWT.FLAT | SWT.HORIZONTAL);
+		ToolBarBuilder commandsTools = ToolBarBuilder.horizontal(commands, SWT.FLAT);
 		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
+
+		Assert.assertNotNull(commands.currentItem());
+
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onCommandItemSelected);
+
+		Assert.assertNotNull(commandsTools.currentItem());
+
+		commandsTools.onSelected(controller::onCommandItemSelectionEvent);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
-		commandsTools.onSelected(controller::onCommandItemSelected);
+		commandsTools.onSelected(controller::onCommandItemSelectionEvent);
 		commands.withControl(commandsTools);
 		commands.pack();
-		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).fill(true).apply(group);
+		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(group);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
 		return group.get();
@@ -147,18 +154,21 @@ public class TestUserInterface extends UserInterface<Shell> {
 	private Control buildTab2(TabFolder tab, TestUserController controller) throws ResourceException {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.vertical(group, SWT.NONE);
-		ToolBarBuilder commandsTools = commands.addToolBarChild(SWT.FLAT | SWT.VERTICAL);
+		ToolBarBuilder commandsTools = ToolBarBuilder.vertical(commands, SWT.FLAT);
 		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
-		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.addItem(SWT.PUSH).withText("1").withImage(itemImage).withDisabledImage(itemImage);
 		commandsTools.onSelected(controller::onCommandItemSelected);
-		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
+		commandsTools.addItem(SWT.PUSH).withText("2").withImage(itemImage).withDisabledImage(itemImage);
 		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
-		commands.pack();
-		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).fill(true).wrap(true).apply(tab);
+		commands.addItem(SWT.DROP_DOWN);
+		commands.withText("3").withImage(itemImage);
+		commands.onSelected(controller::onCommandItemSelectionEvent);
+		commands.lock(true).pack();
+		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).wrap(true).apply(tab);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
 		return group.get();
