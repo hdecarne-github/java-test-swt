@@ -21,7 +21,6 @@ import java.util.function.Function;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
 
@@ -39,16 +38,6 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public CompositeBuilder(T composite) {
 		super(composite);
-	}
-
-	/**
-	 * Set the {@linkplain Composite}'s {@linkplain Layout}.
-	 *
-	 * @param layout The {@linkplain Layout} to set.
-	 * @see Composite#setLayout(Layout)
-	 */
-	public void setLayout(Layout layout) {
-		get().setLayout(layout);
 	}
 
 	/**

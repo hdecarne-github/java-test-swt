@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 
@@ -46,6 +47,10 @@ class TestUserController {
 		LOG.info("Shell event: {0}", event);
 	}
 
+	void onShellDisposeEvent(DisposeEvent event) {
+		this.ui.setStatus("Shell '" + event.widget + "' disposed.");
+	}
+
 	void onShellDisposed() {
 		this.executorService.shutdownNow();
 		Application.getMain(TestUserApplicationMain.class).setStatus(0);
@@ -69,7 +74,7 @@ class TestUserController {
 	}
 
 	void onCommandItemSelectionEvent(SelectionEvent event) {
-		this.ui.setStatus("Command item '" + event.widget + "'selected.");
+		this.ui.setStatus("Command item '" + event.widget + "' selected.");
 	}
 
 }

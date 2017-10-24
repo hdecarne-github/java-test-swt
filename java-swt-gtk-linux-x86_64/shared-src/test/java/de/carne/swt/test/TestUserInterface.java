@@ -74,6 +74,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 			controller.onShellDisposed();
 			this.imagePoolHolder.get().disposeAll();
 		});
+		shell.onDisposed(controller::onShellDisposeEvent);
 		shell.onShellActivated(controller::onShellEvent);
 		shell.onShellDeactivated(controller::onShellEvent);
 		shell.onShellIconified(controller::onShellEvent);
@@ -184,9 +185,9 @@ public class TestUserInterface extends UserInterface<Shell> {
 		ControlBuilder<Label> vSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
 
 		FormLayoutBuilder.layout().apply(group);
-		FormLayoutBuilder.data().left(0).top(0).right(vSeparator).bottom(hSeparator).apply(control11);
+		FormLayoutBuilder.data().left(0, 0).top(0).right(vSeparator).bottom(hSeparator).apply(control11);
 		FormLayoutBuilder.data().left(vSeparator).top(0).right(100).bottom(hSeparator).apply(control12);
-		FormLayoutBuilder.data().left(0).top(hSeparator).right(vSeparator).bottom(100).apply(control21);
+		FormLayoutBuilder.data().left(0, 0).top(hSeparator).right(vSeparator).bottom(100).apply(control21);
 		FormLayoutBuilder.data().left(vSeparator).top(hSeparator).right(100).bottom(100).apply(control22);
 		return group.get();
 	}

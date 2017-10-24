@@ -66,16 +66,6 @@ public class ControlBuilder<T extends Control> implements Supplier<T> {
 	}
 
 	/**
-	 * Set the {@linkplain Control}'s layout data.
-	 *
-	 * @param layoutData The layout data to set.
-	 * @see Control#setLayoutData(Object)
-	 */
-	public void setLayoutData(Object layoutData) {
-		this.control.setLayoutData(layoutData);
-	}
-
-	/**
 	 * Set {@linkplain DisposeEvent} action.
 	 *
 	 * @param action The action to set.
