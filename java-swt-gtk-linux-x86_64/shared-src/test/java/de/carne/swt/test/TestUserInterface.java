@@ -88,6 +88,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		GridLayoutBuilder.data().align(SWT.FILL, SWT.FILL).grab(true, true).apply(tabs);
 		GridLayoutBuilder.data().align(SWT.FILL, SWT.BOTTOM).grab(true, false).apply(this.status);
 		setStatus("UI ready...");
+		root.layout();
 	}
 
 	private void buildMenuBar(TestUserController controller) throws ResourceException {
@@ -137,7 +138,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
 		commands.pack();
-		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).apply(group);
+		RowLayoutBuilder.layout(SWT.VERTICAL).margin(0, 0).spacing(0).fill(true).apply(group);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
 		return group.get();
@@ -157,7 +158,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		commandsTools.onSelected(controller::onCommandItemSelected);
 		commands.withControl(commandsTools);
 		commands.pack();
-		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).wrap(true).apply(tab);
+		RowLayoutBuilder.layout().margin(2, 2, 2, 2).spacing(2).fill(true).wrap(true).apply(tab);
 		RowLayoutBuilder.data().apply(commands);
 		RowLayoutBuilder.data().apply(separator1);
 		return group.get();

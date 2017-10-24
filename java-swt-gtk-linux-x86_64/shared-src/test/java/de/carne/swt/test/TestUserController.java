@@ -24,6 +24,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 
 import de.carne.Application;
+import de.carne.check.Check;
 import de.carne.util.logging.Log;
 
 /**
@@ -55,8 +56,12 @@ class TestUserController {
 	}
 
 	private void runBackgroundCommand() {
-		Application.getMain(TestUserApplicationMain.class)
-				.runWait(() -> this.ui.setStatus("Background task finished."));
+		TestUserApplicationMain main = Application.getMain(TestUserApplicationMain.class);
+
+		String statusText = Check.notNull(main.runWait(() -> main.getDisplay().toString()));
+
+		main.runWait(() -> main.getDisplay().beep());
+		main.runNoWait(() -> this.ui.setStatus(statusText));
 	}
 
 	void onCommandItemSelected(SelectionEvent event) {
