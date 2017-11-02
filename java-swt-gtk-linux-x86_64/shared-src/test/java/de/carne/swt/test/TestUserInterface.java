@@ -137,7 +137,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.horizontal(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.horizontal(commands, SWT.FLAT);
-		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
+		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.HORIZONTAL);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
@@ -163,7 +163,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.vertical(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.vertical(commands, SWT.FLAT);
-		ControlBuilder<Label> separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
+		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.VERTICAL);
 		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
@@ -184,12 +184,12 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	private Control buildTab3(TabFolder tab) {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
-		ControlBuilder<Tree> control11 = group.addTreeChild(SWT.SINGLE);
-		ControlBuilder<List> control12 = group.addListChild(SWT.SINGLE);
-		ControlBuilder<Tree> control21 = group.addTreeChild(SWT.SINGLE);
-		ControlBuilder<List> control22 = group.addListChild(SWT.SINGLE);
-		ControlBuilder<Label> hSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
-		ControlBuilder<Label> vSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
+		ControlBuilder<Tree> control11 = group.addControlChild(Tree.class, SWT.SINGLE);
+		ControlBuilder<List> control12 = group.addControlChild(List.class, SWT.SINGLE);
+		ControlBuilder<Tree> control21 = group.addControlChild(Tree.class, SWT.SINGLE);
+		ControlBuilder<List> control22 = group.addControlChild(List.class, SWT.SINGLE);
+		ControlBuilder<Label> hSeparator = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.HORIZONTAL);
+		ControlBuilder<Label> vSeparator = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.VERTICAL);
 
 		FormLayoutBuilder.layout().apply(group);
 		FormLayoutBuilder.data().left(0).top(0).right(vSeparator).bottom(hSeparator, 0).apply(control11);

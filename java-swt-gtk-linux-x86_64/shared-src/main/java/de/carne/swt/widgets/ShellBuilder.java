@@ -17,6 +17,7 @@
 package de.carne.swt.widgets;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
@@ -62,6 +63,17 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	public ShellBuilder withImages(Image[] images) {
 		get().setImages(images);
 		return this;
+	}
+
+	/**
+	 * Set {@linkplain Shell}'s images.
+	 *
+	 * @param images The {@linkplain Image}s to set.
+	 * @return The updated builder.
+	 * @see Shell#setImages(Image[])
+	 */
+	public ShellBuilder withImages(Supplier<Image[]> images) {
+		return withImages(images.get());
 	}
 
 	/**

@@ -16,13 +16,14 @@
  */
 package de.carne.swt.widgets;
 
+import java.lang.reflect.Constructor;
 import java.util.function.Function;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Tree;
+
+import de.carne.util.Exceptions;
 
 /**
  * {@linkplain Composite} builder.
@@ -52,6 +53,28 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	}
 
 	/**
+	 * Add a child of the submitted {@linkplain Control} derived type.
+	 * <p>
+	 * The control is created by invoking the constructor with signature {@linkplain Control#Control(Composite, int)}
+	 * via reflection.
+	 *
+	 * @param controlClass The actual control type to add.
+	 * @param style The control style.
+	 * @return The added child control.
+	 */
+	public <C extends Control> ControlBuilder<C> addControlChild(Class<C> controlClass, int style) {
+		return addChild(parent -> {
+			try {
+				Constructor<C> constructor = controlClass.getConstructor(Composite.class, Integer.TYPE);
+
+				return new ControlBuilder<>(constructor.newInstance(parent, style));
+			} catch (ReflectiveOperationException e) {
+				throw Exceptions.toRuntime(e);
+			}
+		});
+	}
+
+	/**
 	 * Add a child of type {@linkplain Composite}.
 	 *
 	 * @param style The {@linkplain Composite} style.
@@ -69,36 +92,6 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public CompositeBuilder<Group> addGroupChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Group(parent, style)));
-	}
-
-	/**
-	 * Add a child of type {@linkplain Label}.
-	 *
-	 * @param style The {@linkplain Label} style.
-	 * @return The added child control.
-	 */
-	public ControlBuilder<Label> addLabelChild(int style) {
-		return addChild(parent -> new ControlBuilder<>(new Label(parent, style)));
-	}
-
-	/**
-	 * Add a child of type {@linkplain List}.
-	 *
-	 * @param style The {@linkplain List} style.
-	 * @return The added child control.
-	 */
-	public ControlBuilder<List> addListChild(int style) {
-		return addChild(parent -> new ControlBuilder<>(new List(parent, style)));
-	}
-
-	/**
-	 * Add a child of type {@linkplain Tree}.
-	 *
-	 * @param style The {@linkplain Tree} style.
-	 * @return The added child control.
-	 */
-	public ControlBuilder<Tree> addTreeChild(int style) {
-		return addChild(parent -> new ControlBuilder<>(new Tree(parent, style)));
 	}
 
 }
