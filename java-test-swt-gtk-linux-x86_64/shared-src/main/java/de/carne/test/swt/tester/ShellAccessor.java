@@ -37,7 +37,7 @@ public class ShellAccessor extends Accessor<Shell> {
 	 *
 	 * @return This {@linkplain Shell}'s menu bar accessor.
 	 */
-	MenuAccessor menuBar() {
+	public MenuAccessor menuBar() {
 		return new MenuAccessor(Accessor.notNull(get().getMenuBar(), "Menu bar not found"));
 	}
 
