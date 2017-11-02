@@ -58,6 +58,7 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 * The control is created by invoking the constructor with signature {@linkplain Control#Control(Composite, int)}
 	 * via reflection.
 	 *
+	 * @param <C> The actual control type.
 	 * @param controlClass The actual control type to add.
 	 * @param style The control style.
 	 * @return The added child control.
