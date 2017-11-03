@@ -138,25 +138,26 @@ public abstract class SWTTester {
 		Threads.sleep(STEP_TIMEOUT);
 
 		int sleepCount = 1;
+		Display display;
 
-		while (Display.findDisplay(runner.displayThread()) == null) {
+		while ((display = Display.findDisplay(runner.displayThread())) == null) {
 			Threads.sleep(STEP_TIMEOUT);
 			sleepCount = ensureSleepLimit(sleepCount);
 		}
 
-		Display display = Display.findDisplay(runner.displayThread());
+		final Display shellReadyDisplay = display;
 
 		Supplier<Boolean> shellReady = () -> {
-			Shell[] shells = display.getShells();
+			Shell[] shells = shellReadyDisplay.getShells();
 
 			return Boolean.valueOf(shells.length > 0 && shells[0].isVisible());
 		};
 
-		while (!runWait(display, shellReady).booleanValue()) {
+		while (!runWait(shellReadyDisplay, shellReady).booleanValue()) {
 			Threads.sleep(STEP_TIMEOUT);
 			sleepCount = ensureSleepLimit(sleepCount);
 		}
-		return display;
+		return shellReadyDisplay;
 	}
 
 	private void disposeAll(Runner runner) {
