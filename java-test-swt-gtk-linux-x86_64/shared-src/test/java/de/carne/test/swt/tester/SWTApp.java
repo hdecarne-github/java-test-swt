@@ -33,16 +33,16 @@ class SWTApp implements Runnable {
 	public static final String TITLE_MENU_APP = "App";
 	public static final String TITLE_MENU_APP_QUIT = "Quit";
 
-	private Late<Shell> shell = new Late<>();
+	private Late<Shell> shellHolder = new Late<>();
 
 	@Override
 	public void run() {
 		Display display = new Display();
+		Shell shell = this.shellHolder.set(new Shell(display));
 
-		this.shell.set(new Shell(display));
 		setupShell();
-		this.shell.get().open();
-		while (!display.isDisposed() && display.getShells().length > 0) {
+		shell.open();
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -50,17 +50,17 @@ class SWTApp implements Runnable {
 	}
 
 	private void setupShell() {
-		this.shell.get().setText(TITLE_SHELL);
+		this.shellHolder.get().setText(TITLE_SHELL);
 		setupShellMenu();
 	}
 
 	private void setupShellMenu() {
-		Menu bar = new Menu(this.shell.get(), SWT.BAR);
+		Menu bar = new Menu(this.shellHolder.get(), SWT.BAR);
 		MenuItem appItem = new MenuItem(bar, SWT.CASCADE);
 		Menu app = new Menu(appItem);
 		MenuItem appQuit = new MenuItem(app, SWT.PUSH);
 
-		this.shell.get().setMenuBar(bar);
+		this.shellHolder.get().setMenuBar(bar);
 		appItem.setText(TITLE_MENU_APP);
 		appItem.setMenu(app);
 		appQuit.setText(TITLE_MENU_APP_QUIT);
@@ -75,7 +75,7 @@ class SWTApp implements Runnable {
 	}
 
 	void onAppQuit() {
-		this.shell.get().close();
+		this.shellHolder.get().close();
 	}
 
 }
