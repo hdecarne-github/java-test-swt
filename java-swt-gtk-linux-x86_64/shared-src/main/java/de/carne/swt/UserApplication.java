@@ -52,15 +52,15 @@ public abstract class UserApplication {
 		this.cmdLineHolder.set(cmdLine);
 
 		Display display = this.displayHolder.set(setupDisplay());
-		UserInterface<Shell> ui = setupUserInterface(display);
+		Shell shell = setupUserInterface(display).root();
 
-		ui.root().open();
+		shell.open();
 		try {
 			cmdLine.process();
 		} catch (CmdLineException e) {
 			Exceptions.warn(e);
 		}
-		while (!display.isDisposed() && display.getShells().length > 0) {
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
