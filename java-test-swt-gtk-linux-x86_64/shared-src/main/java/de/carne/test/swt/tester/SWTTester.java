@@ -19,14 +19,12 @@ package de.carne.test.swt.tester;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.util.Exceptions;
 import de.carne.util.SystemProperties;
 import de.carne.util.Threads;
 
@@ -90,40 +88,15 @@ public abstract class SWTTester {
 	}
 
 	private void runWait(Display display, Runnable runnable) {
-		final CountDownLatch latch = new CountDownLatch(1);
-
-		display.asyncExec(() -> {
-			try {
-				runnable.run();
-			} finally {
-				latch.countDown();
-			}
-		});
-		try {
-			latch.await();
-		} catch (InterruptedException e) {
-			Exceptions.ignore(e);
-			Thread.currentThread().interrupt();
-		}
+		display.syncExec(runnable);
 	}
 
 	private <T> T runWait(Display display, Supplier<T> supplier) {
-		final CountDownLatch latch = new CountDownLatch(1);
 		final AtomicReference<T> resultHolder = new AtomicReference<>();
 
-		display.asyncExec(() -> {
-			try {
-				resultHolder.set(supplier.get());
-			} finally {
-				latch.countDown();
-			}
+		display.syncExec(() -> {
+			resultHolder.set(supplier.get());
 		});
-		try {
-			latch.await();
-		} catch (InterruptedException e) {
-			Exceptions.ignore(e);
-			Thread.currentThread().interrupt();
-		}
 		return resultHolder.get();
 	}
 
