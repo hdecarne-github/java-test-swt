@@ -171,13 +171,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 		return withDisabledImage(image.get());
 	}
 
-	/**
-	 * Set {@linkplain SelectionEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see ToolItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
-	 */
+	@Override
 	public ToolBarBuilder onSelected(Consumer<SelectionEvent> action) {
 		ToolItem item = checkCurrentItem(this.currentItem);
 		EventConsumer<SelectionEvent> listener = EventConsumer.selected(action);
@@ -187,13 +181,7 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 		return this;
 	}
 
-	/**
-	 * Set {@linkplain SelectionEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see ToolItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
-	 */
+	@Override
 	public ToolBarBuilder onSelected(Runnable action) {
 		ToolItem item = checkCurrentItem(this.currentItem);
 		EventReceiver listener = EventReceiver.any(action);

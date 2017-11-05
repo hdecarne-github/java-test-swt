@@ -194,16 +194,9 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 		return withControl(control.get());
 	}
 
-	/**
-	 * Set {@linkplain SelectionEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see CoolItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
-	 */
+	@Override
 	public CoolBarBuilder onSelected(Consumer<SelectionEvent> action) {
 		CoolItem item = checkCurrentItem(this.currentItem);
-
 		EventConsumer<SelectionEvent> listener = EventConsumer.selected(action);
 
 		item.addListener(SWT.Selection, listener);
@@ -211,16 +204,9 @@ public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 		return this;
 	}
 
-	/**
-	 * Set {@linkplain SelectionEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see CoolItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
-	 */
+	@Override
 	public CoolBarBuilder onSelected(Runnable action) {
 		CoolItem item = checkCurrentItem(this.currentItem);
-
 		EventReceiver listener = EventReceiver.any(action);
 
 		item.addListener(SWT.Selection, listener);

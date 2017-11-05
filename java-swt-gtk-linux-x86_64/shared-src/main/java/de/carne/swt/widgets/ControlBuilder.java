@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Control;
 
 import de.carne.swt.events.EventConsumer;
@@ -90,6 +91,34 @@ public class ControlBuilder<T extends Control> implements Supplier<T> {
 		EventReceiver listener = EventReceiver.any(action);
 
 		this.control.addListener(SWT.Dispose, listener);
+		return this;
+	}
+
+	/**
+	 * Set {@linkplain SelectionEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 */
+	public ControlBuilder<T> onSelected(Consumer<SelectionEvent> action) {
+		EventConsumer<SelectionEvent> listener = EventConsumer.selected(action);
+
+		this.control.addListener(SWT.Selection, listener);
+		this.control.addListener(SWT.DefaultSelection, listener);
+		return this;
+	}
+
+	/**
+	 * Set {@linkplain SelectionEvent} action.
+	 *
+	 * @param action The action to set.
+	 * @return The updated builder.
+	 */
+	public ControlBuilder<T> onSelected(Runnable action) {
+		EventReceiver listener = EventReceiver.any(action);
+
+		this.control.addListener(SWT.Selection, listener);
+		this.control.addListener(SWT.DefaultSelection, listener);
 		return this;
 	}
 
