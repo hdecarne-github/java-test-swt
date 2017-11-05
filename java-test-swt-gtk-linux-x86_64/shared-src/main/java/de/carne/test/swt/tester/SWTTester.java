@@ -113,10 +113,12 @@ public abstract class SWTTester {
 		int sleepCount = 1;
 		Display display;
 
-		while ((display = Display.findDisplay(runner.displayThread())) == null) {
+		do {
+			display = Display.findDisplay(runner.displayThread());
+			// Give Display some extra time to finish initialization
 			Threads.sleep(STEP_TIMEOUT);
 			sleepCount = ensureSleepLimit(sleepCount);
-		}
+		} while (display == null);
 
 		final Display shellReadyDisplay = display;
 
