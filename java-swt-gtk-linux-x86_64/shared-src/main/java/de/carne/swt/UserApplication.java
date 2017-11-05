@@ -16,7 +16,6 @@
  */
 package de.carne.swt;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -117,21 +116,7 @@ public abstract class UserApplication {
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
-			final CountDownLatch latch = new CountDownLatch(1);
-
-			display.asyncExec(() -> {
-				try {
-					runnable.run();
-				} finally {
-					latch.countDown();
-				}
-			});
-			try {
-				latch.await();
-			} catch (InterruptedException e) {
-				Exceptions.ignore(e);
-				Thread.currentThread().interrupt();
-			}
+			display.syncExec(runnable);
 		}
 	}
 
@@ -150,22 +135,9 @@ public abstract class UserApplication {
 		if (Thread.currentThread().equals(display.getThread())) {
 			result = supplier.get();
 		} else {
-			final CountDownLatch latch = new CountDownLatch(1);
 			final AtomicReference<T> resultHolder = new AtomicReference<>();
 
-			display.asyncExec(() -> {
-				try {
-					resultHolder.set(supplier.get());
-				} finally {
-					latch.countDown();
-				}
-			});
-			try {
-				latch.await();
-			} catch (InterruptedException e) {
-				Exceptions.ignore(e);
-				Thread.currentThread().interrupt();
-			}
+			display.syncExec(() -> resultHolder.set(supplier.get()));
 			result = resultHolder.get();
 		}
 		return result;
