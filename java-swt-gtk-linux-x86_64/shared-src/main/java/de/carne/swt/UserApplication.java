@@ -45,7 +45,7 @@ public abstract class UserApplication {
 	 *
 	 * @param cmdLine The {@linkplain CmdLineProcessor} to invoke after the user interface has been set up.
 	 * @return The application's exit code (as set by {@linkplain #setStatus(int)}).
-	 * @throws ResourceException If a required resource is not available.
+	 * @throws ResourceException if a required resource is not available.
 	 */
 	public int run(CmdLineProcessor cmdLine) throws ResourceException {
 		this.cmdLineHolder.set(cmdLine);
@@ -71,7 +71,7 @@ public abstract class UserApplication {
 	 * Setup the {@linkplain Display}.
 	 *
 	 * @return The application's {@linkplain Display}.
-	 * @throws ResourceException If a required resource is not available.
+	 * @throws ResourceException if a required resource is not available.
 	 */
 	protected abstract Display setupDisplay() throws ResourceException;
 
@@ -80,7 +80,7 @@ public abstract class UserApplication {
 	 *
 	 * @param display The application's {@linkplain Display}.
 	 * @return The application's start {@linkplain Shell}.
-	 * @throws ResourceException If a required resource is not available.
+	 * @throws ResourceException if a required resource is not available.
 	 */
 	protected abstract UserInterface<Shell> setupUserInterface(Display display) throws ResourceException;
 

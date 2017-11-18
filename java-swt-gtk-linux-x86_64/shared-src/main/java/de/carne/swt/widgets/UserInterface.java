@@ -34,7 +34,7 @@ public abstract class UserInterface<R extends Composite> {
 	 * Set up the interface and accompanying objects.
 	 *
 	 * @param root The interface's root widget.
-	 * @throws ResourceException If a required resource is not available.
+	 * @throws ResourceException if a required resource is not available.
 	 */
 	public void setup(R root) throws ResourceException {
 		build(this.rootHolder.set(root));
