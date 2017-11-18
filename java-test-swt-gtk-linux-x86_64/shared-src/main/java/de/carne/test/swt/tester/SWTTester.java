@@ -94,9 +94,7 @@ public abstract class SWTTester {
 	private <T> T runWait(Display display, Supplier<T> supplier) {
 		final AtomicReference<T> resultHolder = new AtomicReference<>();
 
-		display.syncExec(() -> {
-			resultHolder.set(supplier.get());
-		});
+		display.syncExec(() -> resultHolder.set(supplier.get()));
 		return resultHolder.get();
 	}
 
