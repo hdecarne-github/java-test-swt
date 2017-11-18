@@ -64,7 +64,7 @@ subprojects {
 		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.105.3") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		implementation("de.carne.common:java-default:6-SNAPSHOT")
+		implementation("de.carne.common:java-default:6")
 		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2-SNAPSHOT")
 	}
 	
