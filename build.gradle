@@ -1,7 +1,7 @@
 // Plugins
 plugins {
 	id "org.sonarqube" version "2.6.1" apply false
-	id "com.jfrog.artifactory" version "4.5.4" apply false
+	id "com.jfrog.artifactory" version "4.6.0" apply false
 	id "com.jfrog.bintray" version "1.8.0" apply false
 }
 
@@ -64,7 +64,7 @@ subprojects {
 		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.2") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		implementation("de.carne.common:java-default:6")
+		api("de.carne.common:java-default:6")
 		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2-SNAPSHOT")
 	}
 	
