@@ -33,8 +33,7 @@ public class UserApplicationTest extends SWTTester {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		System.setProperty("de.carne.Application.TEST_MODE", Boolean.TRUE.toString());
-		System.setProperty("de.carne.Application", "test");
+		System.setProperty("de.carne.boot.Application", "test");
 	}
 
 	@Override
