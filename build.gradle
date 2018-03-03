@@ -64,7 +64,8 @@ subprojects {
 		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.2") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		api("de.carne.common:java-default:6")
+		implementation("de.carne.common:java-boot:2-SNAPSHOT")
+		implementation("de.carne.common:java-default:6")
 		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2-SNAPSHOT")
 	}
 	
@@ -81,7 +82,7 @@ subprojects {
 		reports {
 			xml.enabled false
 			html.enabled true
-			html.destination file("${buildDir}/reports/jacocoHtml")
+			html.destination file("${buildDir}/reports/jacoco")
 			csv.enabled false
 		}
 	}
