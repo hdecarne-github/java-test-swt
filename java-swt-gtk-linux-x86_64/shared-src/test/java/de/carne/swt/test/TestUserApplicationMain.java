@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Assert;
 
-import de.carne.ApplicationMain;
+import de.carne.boot.ApplicationMain;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;

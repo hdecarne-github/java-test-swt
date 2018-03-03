@@ -19,7 +19,7 @@ package de.carne.swt.test;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.carne.Application;
+import de.carne.boot.Application;
 import de.carne.swt.UserApplication;
 import de.carne.test.swt.tester.SWTTester;
 

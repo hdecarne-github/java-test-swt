@@ -24,7 +24,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 
-import de.carne.Application;
+import de.carne.boot.Application;
 import de.carne.check.Check;
 import de.carne.util.logging.Log;
 
