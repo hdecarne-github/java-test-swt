@@ -16,12 +16,15 @@
  */
 package de.carne.test.swt.extension;
 
+import java.util.Optional;
+
 import org.eclipse.swt.widgets.Display;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.carne.check.Check;
@@ -48,7 +51,13 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	public Object resolveParameter(@Nullable ParameterContext parameterContext,
 			@Nullable ExtensionContext extensionContext) {
 		ExtensionContext checkedExtensionContext = Check.notNull(extensionContext);
-		Store store = checkedExtensionContext.getParent().get().getStore(EXTENSION_NAMESPACE);
+		Optional<ExtensionContext> optionalParentExtensionContext = checkedExtensionContext.getParent();
+
+		if (!optionalParentExtensionContext.isPresent()) {
+			throw new ParameterResolutionException("Parent extension context missing");
+		}
+
+		Store store = optionalParentExtensionContext.get().getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 
 		if (displayObject == null) {
