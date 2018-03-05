@@ -22,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.carne.check.Check;
@@ -39,7 +38,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 
 	@Override
 	public boolean supportsParameter(@Nullable ParameterContext parameterContext,
-			@Nullable ExtensionContext extensionContext) throws ParameterResolutionException {
+			@Nullable ExtensionContext extensionContext) {
 		ParameterContext checkedParameterContext = Check.notNull(parameterContext);
 
 		return checkedParameterContext.getParameter().getType().equals(Display.class);
@@ -47,7 +46,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 
 	@Override
 	public Object resolveParameter(@Nullable ParameterContext parameterContext,
-			@Nullable ExtensionContext extensionContext) throws ParameterResolutionException {
+			@Nullable ExtensionContext extensionContext) {
 		ExtensionContext checkedExtensionContext = Check.notNull(extensionContext);
 		Store store = checkedExtensionContext.getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
@@ -60,7 +59,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	}
 
 	@Override
-	public void afterAll(@Nullable ExtensionContext context) throws Exception {
+	public void afterAll(@Nullable ExtensionContext context) {
 		ExtensionContext checkedExtensionContext = Check.notNull(context);
 		Store store = checkedExtensionContext.getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
