@@ -16,6 +16,8 @@
  */
 package de.carne.swt.graphics;
 
+import de.carne.util.Exceptions;
+
 /**
  * Indicates that a SWT {@linkplain org.eclipse.swt.graphics.Resource} cannot be found.
  */
@@ -38,7 +40,7 @@ public class UnknownResourceException extends ResourceException {
 	 * @param cause The causing exception.
 	 */
 	public UnknownResourceException(Throwable cause) {
-		super(cause);
+		super(Exceptions.toString(cause), cause);
 	}
 
 	/**

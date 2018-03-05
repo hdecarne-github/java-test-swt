@@ -16,6 +16,8 @@
  */
 package de.carne.swt.graphics;
 
+import de.carne.util.Exceptions;
+
 /**
  * Indicates that a SWT {@linkplain org.eclipse.swt.graphics.Resource} is not accessible.
  */
@@ -38,7 +40,7 @@ public class ResourceException extends Exception {
 	 * @param cause The causing exception.
 	 */
 	public ResourceException(Throwable cause) {
-		super(cause.getLocalizedMessage(), cause);
+		super(Exceptions.toString(cause), cause);
 	}
 
 	/**

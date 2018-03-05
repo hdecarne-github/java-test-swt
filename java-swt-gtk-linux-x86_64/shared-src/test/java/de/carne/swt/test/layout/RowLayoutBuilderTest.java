@@ -19,65 +19,62 @@ package de.carne.swt.test.layout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.swt.layout.RowLayoutBuilder;
 
 /**
  * Test {@linkplain RowLayoutBuilder} class.
  */
-public class RowLayoutBuilderTest {
+class RowLayoutBuilderTest {
 
-	/**
-	 * Test {@linkplain RowLayoutBuilder} class.
-	 */
 	@Test
-	public void testRowLayoutBuilder() {
+	void testRowLayoutBuilder() {
 		RowLayout layout1 = RowLayoutBuilder.layout().margin(42, 43).spacing(44).wrap(false).pack(false).fill(true)
 				.center(true).justify(true).get();
 
-		Assert.assertEquals(SWT.HORIZONTAL, layout1.type);
-		Assert.assertEquals(42, layout1.marginWidth);
-		Assert.assertEquals(43, layout1.marginHeight);
-		Assert.assertEquals(3, layout1.marginLeft);
-		Assert.assertEquals(3, layout1.marginTop);
-		Assert.assertEquals(3, layout1.marginRight);
-		Assert.assertEquals(3, layout1.marginBottom);
-		Assert.assertEquals(44, layout1.spacing);
-		Assert.assertFalse(layout1.wrap);
-		Assert.assertFalse(layout1.pack);
-		Assert.assertTrue(layout1.fill);
-		Assert.assertTrue(layout1.center);
-		Assert.assertTrue(layout1.justify);
+		Assertions.assertEquals(SWT.HORIZONTAL, layout1.type);
+		Assertions.assertEquals(42, layout1.marginWidth);
+		Assertions.assertEquals(43, layout1.marginHeight);
+		Assertions.assertEquals(3, layout1.marginLeft);
+		Assertions.assertEquals(3, layout1.marginTop);
+		Assertions.assertEquals(3, layout1.marginRight);
+		Assertions.assertEquals(3, layout1.marginBottom);
+		Assertions.assertEquals(44, layout1.spacing);
+		Assertions.assertFalse(layout1.wrap);
+		Assertions.assertFalse(layout1.pack);
+		Assertions.assertTrue(layout1.fill);
+		Assertions.assertTrue(layout1.center);
+		Assertions.assertTrue(layout1.justify);
 
 		RowLayout layout2 = RowLayoutBuilder.layout(SWT.VERTICAL).margin(42, 43, 44, 45).get();
 
-		Assert.assertEquals(SWT.VERTICAL, layout2.type);
-		Assert.assertEquals(0, layout2.marginWidth);
-		Assert.assertEquals(0, layout2.marginHeight);
-		Assert.assertEquals(42, layout2.marginLeft);
-		Assert.assertEquals(43, layout2.marginTop);
-		Assert.assertEquals(44, layout2.marginRight);
-		Assert.assertEquals(45, layout2.marginBottom);
-		Assert.assertEquals(3, layout2.spacing);
-		Assert.assertTrue(layout2.wrap);
-		Assert.assertTrue(layout2.pack);
-		Assert.assertFalse(layout2.fill);
-		Assert.assertFalse(layout2.center);
-		Assert.assertFalse(layout2.justify);
+		Assertions.assertEquals(SWT.VERTICAL, layout2.type);
+		Assertions.assertEquals(0, layout2.marginWidth);
+		Assertions.assertEquals(0, layout2.marginHeight);
+		Assertions.assertEquals(42, layout2.marginLeft);
+		Assertions.assertEquals(43, layout2.marginTop);
+		Assertions.assertEquals(44, layout2.marginRight);
+		Assertions.assertEquals(45, layout2.marginBottom);
+		Assertions.assertEquals(3, layout2.spacing);
+		Assertions.assertTrue(layout2.wrap);
+		Assertions.assertTrue(layout2.pack);
+		Assertions.assertFalse(layout2.fill);
+		Assertions.assertFalse(layout2.center);
+		Assertions.assertFalse(layout2.justify);
 
 		RowData data1 = RowLayoutBuilder.data().size(42, 43).exclude(true).get();
 
-		Assert.assertEquals(42, data1.width);
-		Assert.assertEquals(43, data1.height);
-		Assert.assertTrue(data1.exclude);
+		Assertions.assertEquals(42, data1.width);
+		Assertions.assertEquals(43, data1.height);
+		Assertions.assertTrue(data1.exclude);
 
 		RowData data2 = RowLayoutBuilder.data().get();
 
-		Assert.assertEquals(SWT.DEFAULT, data2.width);
-		Assert.assertEquals(SWT.DEFAULT, data2.height);
-		Assert.assertFalse(data2.exclude);
+		Assertions.assertEquals(SWT.DEFAULT, data2.width);
+		Assertions.assertEquals(SWT.DEFAULT, data2.height);
+		Assertions.assertFalse(data2.exclude);
 	}
 
 }

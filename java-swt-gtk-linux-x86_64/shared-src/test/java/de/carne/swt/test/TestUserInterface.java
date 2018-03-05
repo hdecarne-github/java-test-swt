@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Tree;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.graphics.ResourceException;
@@ -123,7 +123,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 		tabs.addItem(SWT.NONE).withText("Tab 1").withImage(itemImage);
 
-		Assert.assertNotNull(tabs.currentItem());
+		Assertions.assertNotNull(tabs.currentItem());
 
 		tabs.withControl(buildTab1(tabs.get(), controller));
 		tabs.addItem(SWT.NONE).withText("Tab 2").withImage(itemImage);
@@ -142,11 +142,11 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 		commands.addItem(SWT.NONE);
 
-		Assert.assertNotNull(commands.currentItem());
+		Assertions.assertNotNull(commands.currentItem());
 
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);
 
-		Assert.assertNotNull(commandsTools.currentItem());
+		Assertions.assertNotNull(commandsTools.currentItem());
 
 		commandsTools.onSelected(controller::onCommandItemSelectionEvent);
 		commandsTools.addItem(SWT.PUSH).withImage(itemImage);

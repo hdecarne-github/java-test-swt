@@ -18,81 +18,53 @@ package de.carne.swt.test.graphics;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.carne.swt.graphics.CreateResourceException;
 import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.graphics.UnknownResourceException;
 import de.carne.swt.test.Images;
-import de.carne.test.swt.rules.SWTDevice;
+import de.carne.test.swt.extension.SWTDisplayParameterResolver;
 
 /**
  * Test {@linkplain ImageResourcePool} class.
  */
-public class ImageResourcePoolTest {
+@ExtendWith(SWTDisplayParameterResolver.class)
+class ImageResourcePoolTest {
 
-	/**
-	 * Test's SWT display.
-	 */
-	@Rule
-	public final SWTDevice<Display> display = new SWTDevice<>(() -> new Display());
-
-	/**
-	 * Test {@linkplain ImageResourcePool#get(Class, String)} with existing images.
-	 *
-	 * @throws ResourceException if a resource is not available
-	 */
 	@Test
-	public void testGetSuccess() throws ResourceException {
-		ImageResourcePool pool = new ImageResourcePool(this.display.get());
+	void testGetSuccess(Display display) throws ResourceException {
+		ImageResourcePool pool = new ImageResourcePool(display);
 		Image singleImage = pool.get(Images.class, Images.IMAGE_A_16);
 
-		Assert.assertNotNull(singleImage);
+		Assertions.assertNotNull(singleImage);
 		pool.disposeAll();
 	}
 
-	/**
-	 * Test {@linkplain ImageResourcePool#get(Class, String)} with unkown image.
-	 *
-	 * @throws ResourceException if a resource is not available
-	 */
-	@Test(expected = UnknownResourceException.class)
-	public void testGetFailure1() throws ResourceException {
-		ImageResourcePool pool = new ImageResourcePool(this.display.get());
-
-		pool.get(Images.class, "unknown.png");
-		pool.disposeAll();
-	}
-
-	/**
-	 * Test {@linkplain ImageResourcePool#get(Class, String)} with invalid image.
-	 *
-	 * @throws ResourceException if a resource is not available
-	 */
-	@Test(expected = CreateResourceException.class)
-	public void testGetFailure2() throws ResourceException {
-		ImageResourcePool pool = new ImageResourcePool(this.display.get());
-
-		pool.get(Images.class, "Images.class");
-		pool.disposeAll();
-	}
-
-	/**
-	 * Test {@linkplain ImageResourcePool#getAll(Class, String...)}.
-	 *
-	 * @throws ResourceException if a resource is not available
-	 */
 	@Test
-	public void testGetAllSuccess() throws ResourceException {
-		ImageResourcePool pool = new ImageResourcePool(this.display.get());
+	void testGetFailure1(Display display) {
+		ImageResourcePool pool = new ImageResourcePool(display);
+
+		Assertions.assertThrows(UnknownResourceException.class, () -> {
+			pool.get(Images.class, "unknown.png");
+		});
+		Assertions.assertThrows(CreateResourceException.class, () -> {
+			pool.get(Images.class, "Images.class");
+		});
+		pool.disposeAll();
+	}
+
+	@Test
+	void testGetAllSuccess(Display display) throws ResourceException {
+		ImageResourcePool pool = new ImageResourcePool(display);
 		Image[] multiImage = pool.getAll(Images.class, Images.IMAGE_A_16, Images.IMAGE_A_32);
 
-		Assert.assertEquals(2, multiImage.length);
-		Assert.assertNotNull(multiImage[0]);
-		Assert.assertNotNull(multiImage[1]);
+		Assertions.assertEquals(2, multiImage.length);
+		Assertions.assertNotNull(multiImage[0]);
+		Assertions.assertNotNull(multiImage[1]);
 		pool.disposeAll();
 	}
 

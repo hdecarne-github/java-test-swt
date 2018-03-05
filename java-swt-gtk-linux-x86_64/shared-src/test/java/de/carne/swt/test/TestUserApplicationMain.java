@@ -18,7 +18,7 @@ package de.carne.swt.test;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
 import de.carne.swt.UserApplication;
@@ -44,7 +44,7 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 		try {
 			status = run(new CmdLineProcessor(name(), args));
 		} catch (ResourceException e) {
-			Assert.fail(Exceptions.toString(e));
+			Assertions.fail(Exceptions.toString(e));
 			status = -1;
 		}
 		return status;

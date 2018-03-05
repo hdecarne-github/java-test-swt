@@ -17,8 +17,8 @@
 package de.carne.swt.test.graphics;
 
 import org.eclipse.swt.widgets.Display;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.swt.graphics.Devices;
 
@@ -27,20 +27,17 @@ import de.carne.swt.graphics.Devices;
  */
 public class DevicesTest {
 
-	/**
-	 * Test {@linkplain Devices#safeDispose(org.eclipse.swt.graphics.Device)}.
-	 */
 	@Test
-	public void testSafeDispose() {
+	void testSafeDispose() {
 		Display display = new Display();
 
 		display = Devices.safeDispose(display);
 
-		Assert.assertNull(display);
+		Assertions.assertNull(display);
 
 		display = Devices.safeDispose(display);
 
-		Assert.assertNull(display);
+		Assertions.assertNull(display);
 	}
 
 }

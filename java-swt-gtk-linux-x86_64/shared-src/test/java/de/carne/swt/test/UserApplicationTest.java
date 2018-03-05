@@ -16,8 +16,8 @@
  */
 package de.carne.swt.test;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.carne.boot.Application;
 import de.carne.swt.UserApplication;
@@ -26,27 +26,21 @@ import de.carne.test.swt.tester.SWTTester;
 /**
  * Test {@linkplain UserApplication} class.
  */
-public class UserApplicationTest extends SWTTester {
+class UserApplicationTest extends SWTTester {
 
-	/**
-	 * Setup the necessary system properties.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpSystemProperties() {
 		System.setProperty("de.carne.boot.Application", "test");
+	}
+
+	@Test
+	void testTestUserApplication() {
+		runner().run();
 	}
 
 	@Override
 	protected void runSWTApplication(String[] args) {
 		Application.main(args);
-	}
-
-	/**
-	 * Run and test the test application.
-	 */
-	@Test
-	public void testTestUserApplication() {
-		runner().run();
 	}
 
 }

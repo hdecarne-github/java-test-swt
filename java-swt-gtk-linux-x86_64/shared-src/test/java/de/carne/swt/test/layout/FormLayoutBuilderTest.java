@@ -19,45 +19,42 @@ package de.carne.swt.test.layout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.swt.layout.FormLayoutBuilder;
 
 /**
  * Test {@linkplain FormLayoutBuilder} class.
  */
-public class FormLayoutBuilderTest {
+class FormLayoutBuilderTest {
 
-	/**
-	 * Test {@linkplain FormLayoutBuilder} class.
-	 */
 	@Test
-	public void testFormLayoutBuilder() {
+	void testFormLayoutBuilder() {
 		FormLayout layout1 = FormLayoutBuilder.layout().margin(42, 43).spacing(44).get();
 
-		Assert.assertEquals(42, layout1.marginWidth);
-		Assert.assertEquals(43, layout1.marginHeight);
-		Assert.assertEquals(0, layout1.marginLeft);
-		Assert.assertEquals(0, layout1.marginTop);
-		Assert.assertEquals(0, layout1.marginRight);
-		Assert.assertEquals(0, layout1.marginBottom);
-		Assert.assertEquals(44, layout1.spacing);
+		Assertions.assertEquals(42, layout1.marginWidth);
+		Assertions.assertEquals(43, layout1.marginHeight);
+		Assertions.assertEquals(0, layout1.marginLeft);
+		Assertions.assertEquals(0, layout1.marginTop);
+		Assertions.assertEquals(0, layout1.marginRight);
+		Assertions.assertEquals(0, layout1.marginBottom);
+		Assertions.assertEquals(44, layout1.spacing);
 
 		FormLayout layout2 = FormLayoutBuilder.layout().margin(42, 43, 44, 45).get();
 
-		Assert.assertEquals(0, layout2.marginWidth);
-		Assert.assertEquals(0, layout2.marginHeight);
-		Assert.assertEquals(42, layout2.marginLeft);
-		Assert.assertEquals(43, layout2.marginTop);
-		Assert.assertEquals(44, layout2.marginRight);
-		Assert.assertEquals(45, layout2.marginBottom);
-		Assert.assertEquals(0, layout2.spacing);
+		Assertions.assertEquals(0, layout2.marginWidth);
+		Assertions.assertEquals(0, layout2.marginHeight);
+		Assertions.assertEquals(42, layout2.marginLeft);
+		Assertions.assertEquals(43, layout2.marginTop);
+		Assertions.assertEquals(44, layout2.marginRight);
+		Assertions.assertEquals(45, layout2.marginBottom);
+		Assertions.assertEquals(0, layout2.spacing);
 
 		FormData data1 = FormLayoutBuilder.data().preferredSize(42, 43).get();
 
-		Assert.assertEquals(42, data1.width);
-		Assert.assertEquals(43, data1.height);
+		Assertions.assertEquals(42, data1.width);
+		Assertions.assertEquals(43, data1.height);
 
 		FormData data2 = FormLayoutBuilder.data().left(42).top(43).right(44).bottom(45).get();
 
@@ -83,9 +80,9 @@ public class FormLayoutBuilderTest {
 	}
 
 	private void verifyAttachment(FormAttachment attachment, int numerator, int denominator, int offset) {
-		Assert.assertEquals(numerator, attachment.numerator);
-		Assert.assertEquals(denominator, attachment.denominator);
-		Assert.assertEquals(offset, attachment.offset);
+		Assertions.assertEquals(numerator, attachment.numerator);
+		Assertions.assertEquals(denominator, attachment.denominator);
+		Assertions.assertEquals(offset, attachment.offset);
 	}
 
 }

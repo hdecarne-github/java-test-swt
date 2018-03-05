@@ -18,34 +18,31 @@ package de.carne.swt.test.layout;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.swt.layout.FillLayoutBuilder;
 
 /**
  * Test {@linkplain FillLayoutBuilder} class.
  */
-public class FillLayoutBuilderTest {
+class FillLayoutBuilderTest {
 
-	/**
-	 * Test {@linkplain FillLayoutBuilder} class.
-	 */
 	@Test
-	public void testFillLayoutBuilder() {
+	void testFillLayoutBuilder() {
 		FillLayout layout1 = FillLayoutBuilder.layout().margin(42, 43).spacing(44).get();
 
-		Assert.assertEquals(SWT.HORIZONTAL, layout1.type);
-		Assert.assertEquals(42, layout1.marginWidth);
-		Assert.assertEquals(43, layout1.marginHeight);
-		Assert.assertEquals(44, layout1.spacing);
+		Assertions.assertEquals(SWT.HORIZONTAL, layout1.type);
+		Assertions.assertEquals(42, layout1.marginWidth);
+		Assertions.assertEquals(43, layout1.marginHeight);
+		Assertions.assertEquals(44, layout1.spacing);
 
 		FillLayout layout2 = FillLayoutBuilder.layout(SWT.VERTICAL).get();
 
-		Assert.assertEquals(SWT.VERTICAL, layout2.type);
-		Assert.assertEquals(0, layout2.marginWidth);
-		Assert.assertEquals(0, layout2.marginHeight);
-		Assert.assertEquals(0, layout2.spacing);
+		Assertions.assertEquals(SWT.VERTICAL, layout2.type);
+		Assertions.assertEquals(0, layout2.marginWidth);
+		Assertions.assertEquals(0, layout2.marginHeight);
+		Assertions.assertEquals(0, layout2.spacing);
 	}
 
 }

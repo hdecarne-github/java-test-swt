@@ -16,7 +16,8 @@
  */
 package de.carne.swt.test.graphics;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.swt.graphics.CreateResourceException;
 import de.carne.swt.graphics.ResourceException;
@@ -25,96 +26,36 @@ import de.carne.swt.graphics.UnknownResourceException;
 /**
  * Test {@linkplain ResourceException} class and derived classes.
  */
-public class ResourceExceptionTest {
+class ResourceExceptionTest {
 
-	/**
-	 * Test {@linkplain ResourceException#ResourceException(String)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = ResourceException.class)
-	public void testResourceException1() throws ResourceException {
-		throw new ResourceException(getClass().getSimpleName());
+	@Test
+	void testResourceException1() {
+		Assertions.assertEquals("ResourceExceptionTest",
+				new ResourceException(getClass().getSimpleName()).getMessage());
+		Assertions.assertEquals("java.lang.NullPointerException",
+				new ResourceException(new NullPointerException()).getMessage());
+		Assertions.assertEquals("ResourceExceptionTest",
+				new ResourceException(getClass().getSimpleName(), new NullPointerException()).getMessage());
 	}
 
-	/**
-	 * Test {@linkplain ResourceException#ResourceException(Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = ResourceException.class)
-	public void testResourceException2() throws ResourceException {
-		throw new ResourceException(new NullPointerException());
+	@Test
+	void testUnknownResourceException1() {
+		Assertions.assertEquals("ResourceExceptionTest",
+				new UnknownResourceException(getClass().getSimpleName()).getMessage());
+		Assertions.assertEquals("java.lang.NullPointerException",
+				new UnknownResourceException(new NullPointerException()).getMessage());
+		Assertions.assertEquals("ResourceExceptionTest",
+				new UnknownResourceException(getClass().getSimpleName(), new NullPointerException()).getMessage());
 	}
 
-	/**
-	 * Test {@linkplain ResourceException#ResourceException(String,Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = ResourceException.class)
-	public void testResourceException3() throws ResourceException {
-		throw new ResourceException(getClass().getSimpleName(), new NullPointerException());
-	}
-
-	/**
-	 * Test {@linkplain UnknownResourceException#UnknownResourceException(String)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = UnknownResourceException.class)
-	public void testUnknownResourceException1() throws ResourceException {
-		throw new UnknownResourceException(getClass().getSimpleName());
-	}
-
-	/**
-	 * Test {@linkplain UnknownResourceException#UnknownResourceException(Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = UnknownResourceException.class)
-	public void testUnknownResourceException2() throws ResourceException {
-		throw new UnknownResourceException(new NullPointerException());
-	}
-
-	/**
-	 * Test {@linkplain UnknownResourceException#UnknownResourceException(String,Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = UnknownResourceException.class)
-	public void testUnknownResourceException3() throws ResourceException {
-		throw new UnknownResourceException(getClass().getSimpleName(), new NullPointerException());
-	}
-
-	/**
-	 * Test {@linkplain CreateResourceException#CreateResourceException(String)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = CreateResourceException.class)
-	public void testCreateResourceException1() throws ResourceException {
-		throw new CreateResourceException(getClass().getSimpleName());
-	}
-
-	/**
-	 * Test {@linkplain CreateResourceException#CreateResourceException(Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = CreateResourceException.class)
-	public void testCreateResourceException2() throws ResourceException {
-		throw new CreateResourceException(new NullPointerException());
-	}
-
-	/**
-	 * Test {@linkplain CreateResourceException#CreateResourceException(String,Throwable)}.
-	 *
-	 * @throws ResourceException always
-	 */
-	@Test(expected = CreateResourceException.class)
-	public void testCreateResourceException3() throws ResourceException {
-		throw new CreateResourceException(getClass().getSimpleName(), new NullPointerException());
+	@Test
+	void testCreateResourceException1() {
+		Assertions.assertEquals("ResourceExceptionTest",
+				new CreateResourceException(getClass().getSimpleName()).getMessage());
+		Assertions.assertEquals("java.lang.NullPointerException",
+				new CreateResourceException(new NullPointerException()).getMessage());
+		Assertions.assertEquals("ResourceExceptionTest",
+				new CreateResourceException(getClass().getSimpleName(), new NullPointerException()).getMessage());
 	}
 
 }
