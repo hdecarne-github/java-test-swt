@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.carne.test.swt.extension.SWTDisplayParameterResolver;
-
 /**
  * Test {@linkplain SWTDisplayParameterResolver} class.
  */
@@ -30,7 +28,13 @@ import de.carne.test.swt.extension.SWTDisplayParameterResolver;
 class SWTDisplayParameterResolverTest {
 
 	@Test
-	void ruleTest(Display display) {
+	void test1stAccess(Display display) {
+		Assertions.assertNotNull(display);
+		Assertions.assertFalse(display.isDisposed());
+	}
+
+	@Test
+	void test2ndAccess(Display display) {
 		Assertions.assertNotNull(display);
 		Assertions.assertFalse(display.isDisposed());
 	}

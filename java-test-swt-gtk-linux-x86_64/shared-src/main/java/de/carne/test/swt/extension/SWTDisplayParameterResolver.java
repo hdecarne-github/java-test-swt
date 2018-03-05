@@ -48,7 +48,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	public Object resolveParameter(@Nullable ParameterContext parameterContext,
 			@Nullable ExtensionContext extensionContext) {
 		ExtensionContext checkedExtensionContext = Check.notNull(extensionContext);
-		Store store = checkedExtensionContext.getStore(EXTENSION_NAMESPACE);
+		Store store = checkedExtensionContext.getParent().get().getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 
 		if (displayObject == null) {
