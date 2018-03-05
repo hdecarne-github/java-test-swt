@@ -64,11 +64,14 @@ subprojects {
 		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.2") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		implementation("de.carne.common:java-default:6")
-		implementation("junit:junit:4.12")
+		implementation("de.carne.common:java-default:7-SNAPSHOT")
+		implementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
+		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.1")
 	}
 	
 	test {
+	    useJUnitPlatform()
 		// SWT display can only be created once per VM
 		forkEvery = 1
 	}

@@ -16,12 +16,13 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@linkplain SWTTester} class.
  */
-public class SWTTesterTestFailure extends SWTTester {
+class SWTTesterTestFailure extends SWTTester {
 
 	@Override
 	protected void runSWTApplication(String[] args) {
@@ -30,12 +31,11 @@ public class SWTTesterTestFailure extends SWTTester {
 		app.run();
 	}
 
-	/**
-	 * Test correct handling of JUnit assertions.
-	 */
-	@Test(expected = AssertionError.class)
+	@Test
 	public void testerTestFailure() {
-		runner().check(this::checkFailure).run();
+		Assertions.assertThrows(AssertionError.class, () -> {
+			runner().check(this::checkFailure).run();
+		});
 	}
 
 	private void checkFailure() {

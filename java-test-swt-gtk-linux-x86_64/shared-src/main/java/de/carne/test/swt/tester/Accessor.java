@@ -18,7 +18,7 @@ package de.carne.test.swt.tester;
 
 import java.util.function.Supplier;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.check.Nullable;
 
@@ -57,7 +57,7 @@ public class Accessor<T> implements Supplier<T> {
 	 */
 	public static <T> T notNull(@Nullable T object, String message) {
 		if (object == null) {
-			Assert.fail(message);
+			Assertions.fail(message);
 		}
 
 		assert object != null;

@@ -14,30 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.rules;
+package de.carne.test.swt.extension;
 
 import org.eclipse.swt.widgets.Display;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import de.carne.test.swt.extension.SWTDisplayParameterResolver;
 
 /**
- * Test {@linkplain SWTDevice} class.
+ * Test {@linkplain SWTDisplayParameterResolver} class.
  */
-public class SWTDeviceRuleTest {
+@ExtendWith(SWTDisplayParameterResolver.class)
+class SWTDisplayParameterResolverTest {
 
-	/**
-	 * Test's SWT display.
-	 */
-	@Rule
-	public final SWTDevice<Display> display = new SWTDevice<>(() -> new Display());
-
-	/**
-	 * Test rule functionality.
-	 */
 	@Test
-	public void ruleTest() {
-		Assert.assertNotNull(this.display.get());
+	void ruleTest(Display display) {
+		Assertions.assertNotNull(display);
+		Assertions.assertFalse(display.isDisposed());
 	}
 
 }

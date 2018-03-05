@@ -16,12 +16,12 @@
  */
 package de.carne.test.swt.tester;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@linkplain SWTTester} class.
  */
-public class SWTTesterStartStop extends SWTTester {
+class SWTTesterStartStop extends SWTTester {
 
 	@Override
 	protected void runSWTApplication(String[] args) {
@@ -30,11 +30,8 @@ public class SWTTesterStartStop extends SWTTester {
 		app.run();
 	}
 
-	/**
-	 * Verify start/stop only.
-	 */
 	@Test
-	public void testerTest() {
+	void testStartStop() {
 		runner().run();
 	}
 
