@@ -1,5 +1,6 @@
 // Plugins
 plugins {
+    id "de.carne.java-tools" version "0.5.5" apply false
 	id "org.sonarqube" version "2.6.2" apply false
 	id "com.jfrog.artifactory" version "4.6.2" apply false
 	id "com.jfrog.bintray" version "1.8.0" apply false
@@ -22,6 +23,7 @@ subprojects {
 
 	apply plugin: "java-library"
 	apply plugin: "jacoco"
+	apply plugin: "de.carne.java-tools"
 	apply plugin: "org.sonarqube"
 	apply plugin: "maven-publish"
 	apply plugin: "com.jfrog.artifactory"
@@ -72,6 +74,7 @@ subprojects {
 	}
 	
 	test {
+	    useJUnitPlatform()
 		// SWT display can only be created once per VM
 		forkEvery = 1
 	}
