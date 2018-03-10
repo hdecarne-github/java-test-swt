@@ -1,6 +1,6 @@
 // Plugins
 plugins {
-    id "de.carne.java-tools" version "0.5.5" apply false
+	id "de.carne.java-tools" version "0.5.5" apply false
 	id "org.sonarqube" version "2.6.2" apply false
 	id "com.jfrog.artifactory" version "4.6.2" apply false
 	id "com.jfrog.bintray" version "1.8.0" apply false
@@ -73,7 +73,7 @@ subprojects {
 	}
 	
 	test {
-	    useJUnitPlatform()
+		useJUnitPlatform()
 		// SWT display can only be created once per VM
 		forkEvery = 1
 	}
@@ -116,20 +116,20 @@ subprojects {
 						licenses {
 							license {
 								name projectLicense
-					            url projectLicenseUrl
-					            distribution "repo"
-					        }
-					    }
-					    developers {
-					        developer {
-					            id project.resolveProperty("developerId", "DEVELOPER_ID")
-					            name project.resolveProperty("developerName", "DEVELOPER_NAME")
-					            email project.resolveProperty("developerEmail", "DEVELOPER_EMAIL")
-					        }
-					    }
-					    scm {
+								url projectLicenseUrl
+								distribution "repo"
+							}
+						}
+						developers {
+							developer {
+								id project.resolveProperty("developerId", "DEVELOPER_ID")
+								name project.resolveProperty("developerName", "DEVELOPER_NAME")
+								email project.resolveProperty("developerEmail", "DEVELOPER_EMAIL")
+							}
+						}
+						scm {
 							url projectScmUrl
-					    }
+						}
 					}
 				}
 			}
@@ -171,7 +171,7 @@ subprojects {
 				gpg {
 					sign = true
 					passphrase = project.resolveProperty("bintrayGpgPassphrase", "BINTRAY_GPG_PASSPHRASE")
-	            }
+				}
 			}
 		}
 	}
