@@ -63,14 +63,14 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.2") {
+		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.+") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		api("de.carne.common:java-boot:2-SNAPSHOT")
-		api("de.carne.common:java-default:6")
-		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2-SNAPSHOT")
-		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.1")
+		api("de.carne.common:java-boot:2.+")
+		api("de.carne.common:java-default:8.+")
+		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2.+")
+		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.+")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.+")
 	}
 	
 	test {
