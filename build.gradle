@@ -76,6 +76,10 @@ subprojects {
 		useJUnitPlatform()
 		// SWT display can only be created once per VM
 		forkEvery = 1
+		testLogging {
+			events "failed"
+			exceptionFormat "full"
+		}
 	}
 
 	jacoco {
