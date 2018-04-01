@@ -11,7 +11,7 @@ def snapshotBuild = project.version.endsWith("-SNAPSHOT")
 
 def resolveProperty(propertyName, envName) {
 	def resolved = (project.findProperty(propertyName) ?: System.getenv(envName));
-	
+
 	if(resolved == null) {
 		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
 	}
@@ -73,6 +73,12 @@ subprojects {
 		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.+")
 	}
 	
+	jar {
+		manifest {
+			attributes "Automatic-Module-Name": automaticModuleName
+		}
+	}
+
 	test {
 		useJUnitPlatform()
 		// SWT display can only be created once per VM
