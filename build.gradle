@@ -1,6 +1,6 @@
 // Plugins
 plugins {
-	id "de.carne.java-tools" version "0.5.6" apply false
+	id "de.carne.java-tools" version "0.6.0" apply false
 	id "org.sonarqube" version "2.6.2" apply false
 	id "com.jfrog.artifactory" version "4.7.0" apply false
 	id "com.jfrog.bintray" version "1.8.0" apply false
@@ -63,14 +63,13 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.+") {
+		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.3") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		api("de.carne.common:java-boot:2.+")
-		api("de.carne.common:java-default:8.+")
-		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2.+")
-		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.+")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.+")
+		api("de.carne.common:java-default:8.3.0")
+		testImplementation("de.carne.common:java-test-swt${platformSuffix}:2.0.0-SNAPSHOT")
+		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.3")
 	}
 	
 	jar {
