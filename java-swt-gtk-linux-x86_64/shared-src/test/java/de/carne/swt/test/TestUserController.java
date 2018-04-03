@@ -26,7 +26,7 @@ import org.eclipse.swt.events.ShellEvent;
 
 import de.carne.boot.Application;
 import de.carne.check.Check;
-import de.carne.util.logging.Log;
+import de.carne.boot.logging.Log;
 
 /**
  * Test user agent.
