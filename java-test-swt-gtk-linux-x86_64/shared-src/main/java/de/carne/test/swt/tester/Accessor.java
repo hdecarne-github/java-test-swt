@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Assertions;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Base class for all accessor objects.

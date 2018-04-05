@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.test.swt.tester;
 
-import de.carne.check.NonNullByDefault;
+import de.carne.boot.check.NonNullByDefault;

@@ -19,7 +19,7 @@ package de.carne.test.swt.tester;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Class providing access to the application's {@linkplain Menu} objects.
