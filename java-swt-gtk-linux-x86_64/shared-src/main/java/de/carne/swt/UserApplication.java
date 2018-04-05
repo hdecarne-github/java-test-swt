@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Exceptions;

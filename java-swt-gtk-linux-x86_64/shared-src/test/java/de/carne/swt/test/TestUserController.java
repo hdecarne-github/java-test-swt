@@ -25,7 +25,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 
 import de.carne.boot.Application;
-import de.carne.check.Check;
+import de.carne.boot.check.Check;
 import de.carne.boot.logging.Log;
 
 /**

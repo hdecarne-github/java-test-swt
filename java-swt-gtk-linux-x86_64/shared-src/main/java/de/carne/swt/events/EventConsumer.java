@@ -26,7 +26,7 @@ import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Event listener for mapping a typed SWT event to a consuming action.

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.events.EventReceiver;
 

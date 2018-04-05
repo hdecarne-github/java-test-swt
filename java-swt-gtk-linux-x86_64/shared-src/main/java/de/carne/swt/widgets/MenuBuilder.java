@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.events.EventReceiver;
 

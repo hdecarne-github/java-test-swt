@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.events.EventReceiver;
 

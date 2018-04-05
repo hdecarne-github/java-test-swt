@@ -19,7 +19,7 @@ package de.carne.swt.events;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.carne.check.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Event listener for mapping a SWT event to a receiving action.
