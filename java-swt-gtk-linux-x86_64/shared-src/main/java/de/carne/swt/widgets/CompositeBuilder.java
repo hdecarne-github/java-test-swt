@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
-import de.carne.util.Exceptions;
+import de.carne.boot.Exceptions;
 
 /**
  * {@linkplain Composite} builder.

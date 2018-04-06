@@ -24,7 +24,7 @@ import de.carne.boot.ApplicationMain;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
-import de.carne.util.Exceptions;
+import de.carne.boot.Exceptions;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**

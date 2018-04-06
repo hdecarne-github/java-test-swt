@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
-import de.carne.util.Exceptions;
+import de.carne.boot.Exceptions;
 import de.carne.util.Late;
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
