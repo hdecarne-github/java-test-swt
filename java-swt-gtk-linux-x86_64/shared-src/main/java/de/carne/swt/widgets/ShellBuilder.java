@@ -33,19 +33,19 @@ import de.carne.swt.events.EventReceiver;
 public class ShellBuilder extends CompositeBuilder<Shell> {
 
 	/**
-	 * Construct {@linkplain ShellBuilder}.
+	 * Constructs a new {@linkplain ShellBuilder} instance.
 	 *
-	 * @param shell The {@linkplain Shell} widget to build up.
+	 * @param shell the {@linkplain Shell} widget to build up.
 	 */
 	public ShellBuilder(Shell shell) {
 		super(shell);
 	}
 
 	/**
-	 * Set the {@linkplain Shell}'s text.
+	 * Sets the {@linkplain Shell}'s text.
 	 *
-	 * @param text The text to set.
-	 * @return The updated builder.
+	 * @param text the text to set.
+	 * @return the updated builder.
 	 * @see Shell#setText(String)
 	 */
 	public ShellBuilder withText(String text) {
@@ -54,10 +54,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set {@linkplain Shell}'s images.
+	 * Sets the {@linkplain Shell}'s images.
 	 *
-	 * @param images The {@linkplain Image}s to set.
-	 * @return The updated builder.
+	 * @param images the {@linkplain Image}s to set.
+	 * @return the updated builder.
 	 * @see Shell#setImages(Image[])
 	 */
 	public ShellBuilder withImages(Image[] images) {
@@ -66,10 +66,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set {@linkplain Shell}'s images.
+	 * Sets the {@linkplain Shell}'s images.
 	 *
-	 * @param images The {@linkplain Image}s to set.
-	 * @return The updated builder.
+	 * @param images the {@linkplain Image}s to set.
+	 * @return the updated builder.
 	 * @see Shell#setImages(Image[])
 	 */
 	public ShellBuilder withImages(Supplier<Image[]> images) {
@@ -77,10 +77,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set activated {@linkplain ShellEvent} action.
+	 * Sets the activated {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellActivated(Consumer<ShellEvent> action) {
@@ -91,10 +91,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set activated {@linkplain ShellEvent} action.
+	 * Sets the activated {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellActivated(Runnable action) {
@@ -105,10 +105,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set deactivated {@linkplain ShellEvent} action.
+	 * Sets the deactivated {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellDeactivated(Consumer<ShellEvent> action) {
@@ -119,10 +119,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set deactivated {@linkplain ShellEvent} action.
+	 * Sets the deactivated {@linkplain ShellEvent} action.
 	 *
 	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellDeactivated(Runnable action) {
@@ -133,10 +133,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set iconified {@linkplain ShellEvent} action.
+	 * Sets the iconified {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellIconified(Consumer<ShellEvent> action) {
@@ -147,10 +147,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set iconified {@linkplain ShellEvent} action.
+	 * Sets the iconified {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellIconified(Runnable action) {
@@ -161,10 +161,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set deiconified {@linkplain ShellEvent} action.
+	 * Sets the deiconified {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellDeiconified(Consumer<ShellEvent> action) {
@@ -175,10 +175,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set deiconified {@linkplain ShellEvent} action.
+	 * Sets the deiconified {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellDeiconified(Runnable action) {
@@ -189,10 +189,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set closed {@linkplain ShellEvent} action.
+	 * Sets the closed {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellClosed(Consumer<ShellEvent> action) {
@@ -203,10 +203,10 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	}
 
 	/**
-	 * Set closed {@linkplain ShellEvent} action.
+	 * Sets the closed {@linkplain ShellEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 * @see Shell#addShellListener(org.eclipse.swt.events.ShellListener)
 	 */
 	public ShellBuilder onShellClosed(Runnable action) {

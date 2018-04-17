@@ -17,10 +17,8 @@
 package de.carne.swt.widgets;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Control;
 
@@ -30,95 +28,57 @@ import de.carne.swt.events.EventReceiver;
 /**
  * {@linkplain Control} builder.
  *
- * @param <T> The actual control type.
+ * @param <T> the actual control type.
  */
-public class ControlBuilder<T extends Control> implements Supplier<T> {
-
-	private final T control;
+public class ControlBuilder<T extends Control> extends WidgetBuilder<T> {
 
 	/**
-	 * Construct {@linkplain ControlBuilder}.
+	 * Constructs a new {@linkplain ControlBuilder} instance.
 	 *
-	 * @param control The control to build.
+	 * @param control the control to build.
 	 */
 	public ControlBuilder(T control) {
-		this.control = control;
+		super(control);
 	}
 
 	/**
-	 * Get the {@linkplain Control} the builder operates on.
+	 * Resizes the {@linkplain Control} to it's preferred size.
 	 *
-	 * @return The {@linkplain Control} the builder operates on.
-	 */
-	@Override
-	public T get() {
-		return this.control;
-	}
-
-	/**
-	 * Resize the {@linkplain Control} to it's preferred size.
-	 *
-	 * @return The updated builder.
+	 * @return the updated builder.
 	 * @see Control#pack()
 	 */
 	public ControlBuilder<T> pack() {
-		this.control.pack(true);
+		get().pack(true);
 		return this;
 	}
 
 	/**
-	 * Set {@linkplain DisposeEvent} action.
+	 * Sets the {@linkplain SelectionEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see Control#addDisposeListener(org.eclipse.swt.events.DisposeListener)
-	 */
-	public ControlBuilder<T> onDisposed(Consumer<DisposeEvent> action) {
-		EventConsumer<DisposeEvent> listener = EventConsumer.disposed(action);
-
-		this.control.addListener(SWT.Dispose, listener);
-		return this;
-	}
-
-	/**
-	 * Set {@linkplain DisposeEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
-	 * @see Control#addDisposeListener(org.eclipse.swt.events.DisposeListener)
-	 */
-	public ControlBuilder<T> onDisposed(Runnable action) {
-		EventReceiver listener = EventReceiver.any(action);
-
-		this.control.addListener(SWT.Dispose, listener);
-		return this;
-	}
-
-	/**
-	 * Set {@linkplain SelectionEvent} action.
-	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 */
 	public ControlBuilder<T> onSelected(Consumer<SelectionEvent> action) {
 		EventConsumer<SelectionEvent> listener = EventConsumer.selected(action);
+		T control = get();
 
-		this.control.addListener(SWT.Selection, listener);
-		this.control.addListener(SWT.DefaultSelection, listener);
+		control.addListener(SWT.Selection, listener);
+		control.addListener(SWT.DefaultSelection, listener);
 		return this;
 	}
 
 	/**
-	 * Set {@linkplain SelectionEvent} action.
+	 * Sets the {@linkplain SelectionEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated builder.
+	 * @param action the action to set.
+	 * @return the updated builder.
 	 */
 	public ControlBuilder<T> onSelected(Runnable action) {
 		EventReceiver listener = EventReceiver.any(action);
+		T control = get();
 
-		this.control.addListener(SWT.Selection, listener);
-		this.control.addListener(SWT.DefaultSelection, listener);
+		control.addListener(SWT.Selection, listener);
+		control.addListener(SWT.DefaultSelection, listener);
 		return this;
 	}
 
