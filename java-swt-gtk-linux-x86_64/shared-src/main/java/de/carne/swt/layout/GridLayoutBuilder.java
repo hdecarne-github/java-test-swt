@@ -29,30 +29,30 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	}
 
 	/**
-	 * Start layout build.
+	 * Starts layout build.
 	 *
-	 * @return The created builder.
+	 * @return the created builder.
 	 */
 	public static GridLayoutBuilder layout() {
 		return new GridLayoutBuilder(new GridLayout());
 	}
 
 	/**
-	 * Start layout build.
+	 * Starts layout build.
 	 *
-	 * @param numColumns The number of grid columns.
-	 * @return The created builder.
+	 * @param numColumns the number of grid columns.
+	 * @return the created builder.
 	 */
 	public static GridLayoutBuilder layout(int numColumns) {
 		return layout(numColumns, false);
 	}
 
 	/**
-	 * Start layout build.
+	 * Starts layout build.
 	 *
-	 * @param numColumns The number of grid columns.
-	 * @param makeColumnsEqualWidth Whether to make the grid columns equal width.
-	 * @return The created builder.
+	 * @param numColumns the number of grid columns.
+	 * @param makeColumnsEqualWidth whether to make the grid columns equal width.
+	 * @return the created builder.
 	 * @see GridLayout#GridLayout(int, boolean)
 	 */
 	public static GridLayoutBuilder layout(int numColumns, boolean makeColumnsEqualWidth) {
@@ -60,11 +60,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	}
 
 	/**
-	 * Set the layout's margin attributes.
+	 * Sets the layout's margin attributes.
 	 *
-	 * @param width The horizontal margin.
-	 * @param height The vertical margin.
-	 * @return The updated builder.
+	 * @param width the horizontal margin.
+	 * @param height the vertical margin.
+	 * @return the updated builder.
 	 */
 	public GridLayoutBuilder margin(int width, int height) {
 		GridLayout layout = get();
@@ -75,13 +75,13 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	}
 
 	/**
-	 * Set the layout's margin attributes.
+	 * Sets the layout's margin attributes.
 	 *
-	 * @param left The left margin.
-	 * @param top The top margin.
-	 * @param right The right margin.
-	 * @param bottom The bottom margin.
-	 * @return The updated builder.
+	 * @param left the left margin.
+	 * @param top the top margin.
+	 * @param right the right margin.
+	 * @param bottom the bottom margin.
+	 * @return the updated builder.
 	 */
 	public GridLayoutBuilder margin(int left, int top, int right, int bottom) {
 		GridLayout layout = get();
@@ -94,11 +94,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	}
 
 	/**
-	 * Set the layout's spacing attributes.
+	 * Sets the layout's spacing attributes.
 	 *
-	 * @param horizontalSpacing The horizontal spacing.
-	 * @param verticalSpacing The vertical spacing.
-	 * @return The updated builder.
+	 * @param horizontalSpacing the horizontal spacing.
+	 * @param verticalSpacing the vertical spacing.
+	 * @return the updated builder.
 	 */
 	public GridLayoutBuilder spacing(int horizontalSpacing, int verticalSpacing) {
 		GridLayout layout = get();
@@ -109,12 +109,23 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 	}
 
 	/**
-	 * Begin layout data build.
+	 * Begins layout data build.
 	 *
-	 * @return The created builder.
+	 * @return the created builder.
 	 */
 	public static DataBuilder data() {
 		return new DataBuilder(new GridData());
+	}
+
+	/**
+	 * Begins layout data build.
+	 *
+	 * @param style the data style.
+	 * @return the created builder.
+	 * @see GridData#GridData(int)
+	 */
+	public static DataBuilder data(int style) {
+		return new DataBuilder(new GridData(style));
 	}
 
 	/**
@@ -127,11 +138,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's alignment attributes.
+		 * Sets the layout data's alignment attributes.
 		 *
-		 * @param horizontalAlignment The horizontal alignment.
-		 * @param verticalAlignment The vertical alignment.
-		 * @return The updated builder.
+		 * @param horizontalAlignment the horizontal alignment.
+		 * @param verticalAlignment the vertical alignment.
+		 * @return the updated builder.
 		 */
 		public DataBuilder align(int horizontalAlignment, int verticalAlignment) {
 			GridData layoutData = get();
@@ -142,11 +153,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's preferred size attributes.
+		 * Sets the layout data's preferred size attributes.
 		 *
-		 * @param widthHint The preferred width in pixels.
-		 * @param heightHint The preferred height in pixels.
-		 * @return The updated builder.
+		 * @param widthHint the preferred width in pixels.
+		 * @param heightHint the preferred height in pixels.
+		 * @return the updated builder.
 		 */
 		public DataBuilder preferredSize(int widthHint, int heightHint) {
 			GridData layoutData = get();
@@ -157,11 +168,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's minimum size attributes.
+		 * Sets the layout data's minimum size attributes.
 		 *
-		 * @param minimumWidth The minimum width in pixels.
-		 * @param minimumHeight The minimum height in pixels.
-		 * @return The updated builder.
+		 * @param minimumWidth the minimum width in pixels.
+		 * @param minimumHeight the minimum height in pixels.
+		 * @return the updated builder.
 		 */
 		public DataBuilder minimumSize(int minimumWidth, int minimumHeight) {
 			GridData layoutData = get();
@@ -172,11 +183,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's indent attributes.
+		 * Sets the layout data's indent attributes.
 		 *
-		 * @param horizontalIndent The horizontal indent.
-		 * @param verticalIndent The vertical indent.
-		 * @return The updated builder.
+		 * @param horizontalIndent the horizontal indent.
+		 * @param verticalIndent the vertical indent.
+		 * @return the updated builder.
 		 */
 		public DataBuilder indent(int horizontalIndent, int verticalIndent) {
 			GridData layoutData = get();
@@ -187,11 +198,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's span attributes.
+		 * Sets the layout data's span attributes.
 		 *
-		 * @param horizontalSpan The horizontal span.
-		 * @param verticalSpan The vertical span.
-		 * @return The updated builder.
+		 * @param horizontalSpan the horizontal span.
+		 * @param verticalSpan the vertical span.
+		 * @return the updated builder.
 		 */
 		public DataBuilder span(int horizontalSpan, int verticalSpan) {
 			GridData layoutData = get();
@@ -202,11 +213,11 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's grab attributes.
+		 * Sets the layout data's grab attributes.
 		 *
-		 * @param grabExcessHorizontalSpace Whether to grap excessive horizontal space.
-		 * @param grabExcessVerticalSpace Whether to grap excessive vertical space.
-		 * @return The updated builder.
+		 * @param grabExcessHorizontalSpace whether to grap excessive horizontal space.
+		 * @param grabExcessVerticalSpace whether to grap excessive vertical space.
+		 * @return the updated builder.
 		 */
 		public DataBuilder grab(boolean grabExcessHorizontalSpace, boolean grabExcessVerticalSpace) {
 			GridData layoutData = get();
@@ -217,10 +228,10 @@ public final class GridLayoutBuilder extends LayoutBuilder<GridLayout> {
 		}
 
 		/**
-		 * Set the layout data's exclude attribute.
+		 * Sets the layout data's exclude attribute.
 		 *
-		 * @param exclude Whether to exclude the control during layout.
-		 * @return The updated builder.
+		 * @param exclude whether to exclude the control during layout.
+		 * @return the updated builder.
 		 */
 		public DataBuilder exclude(boolean exclude) {
 			get().exclude = exclude;
