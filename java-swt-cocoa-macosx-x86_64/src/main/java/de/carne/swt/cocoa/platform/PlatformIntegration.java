@@ -16,10 +16,16 @@
  */
 package de.carne.swt.cocoa.platform;
 
+import java.util.function.Consumer;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
+
+import de.carne.swt.events.EventConsumer;
+import de.carne.swt.events.EventReceiver;
 
 /**
  * Cocoa platform integration.
@@ -33,24 +39,40 @@ public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegrati
 	}
 
 	@Override
-	public void cocoaAddAboutSelectionListener(Display display, SelectionListener listener) {
-		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, listener);
+	public void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, EventConsumer.selected(action));
 	}
 
 	@Override
-	public void cocoaAddPreferencesSelectionListener(Display display, SelectionListener listener) {
-		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, listener);
+	public void cocoaAddAboutSelectionAction(Display display, Runnable action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, EventReceiver.any(action));
 	}
 
 	@Override
-	public void cocoaAddQuitSelectionListener(Display display, SelectionListener listener) {
-		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, listener);
+	public void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, EventConsumer.selected(action));
 	}
 
-	private void addSystemMenuItemSelectionListener(Display display, int itemId, SelectionListener listener) {
+	@Override
+	public void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, EventReceiver.any(action));
+	}
+
+	@Override
+	public void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, EventConsumer.selected(action));
+	}
+
+	@Override
+	public void cocoaAddQuitSelectionAction(Display display, Runnable action) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, EventReceiver.any(action));
+	}
+
+	private void addSystemMenuItemSelectionListener(Display display, int itemId, Listener listener) {
 		for (MenuItem menuItem : display.getSystemMenu().getItems()) {
 			if (menuItem.getID() == itemId) {
-				menuItem.addSelectionListener(listener);
+				menuItem.addListener(SWT.Selection, listener);
+				menuItem.addListener(SWT.DefaultSelection, listener);
 				break;
 			}
 		}

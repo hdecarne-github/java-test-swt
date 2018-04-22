@@ -16,8 +16,10 @@
  */
 package de.carne.swt.platform;
 
+import java.util.function.Consumer;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
@@ -69,33 +71,62 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's about entry is selected.
+	 * Adds a action to be invoked in case the Cocoa application menu's about entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
-	 * @param listener the listener to add.
+	 * @param action the action to add.
 	 */
-	public void cocoaAddAboutSelectionListener(Display display, SelectionListener listener) {
+	public void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		// default is to do nothing
 	}
 
 	/**
-	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's preferences entry is
-	 * selected.
+	 * Adds a action to be invoked in case the Cocoa application menu's about entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
-	 * @param listener the listener to add.
+	 * @param action the action to add.
 	 */
-	public void cocoaAddPreferencesSelectionListener(Display display, SelectionListener listener) {
+	public void cocoaAddAboutSelectionAction(Display display, Runnable action) {
 		// default is to do nothing
 	}
 
 	/**
-	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's quit entry is selected.
+	 * Adds an action to be invoked in case the Cocoa application menu's preferences entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
-	 * @param listener the listener to add.
+	 * @param action the action to add.
 	 */
-	public void cocoaAddQuitSelectionListener(Display display, SelectionListener listener) {
+	public void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		// default is to do nothing
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's preferences entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
+		// default is to do nothing
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's quit entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		// default is to do nothing
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's quit entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public void cocoaAddQuitSelectionAction(Display display, Runnable action) {
 		// default is to do nothing
 	}
 
