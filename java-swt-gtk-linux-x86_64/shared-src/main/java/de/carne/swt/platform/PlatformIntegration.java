@@ -46,6 +46,93 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
+	 * Determines whether this code runs on the Cocoa platform.
+	 *
+	 * @return {@code true} if this code runs on the Cocoa platform.
+	 */
+	public static boolean isCocoa() {
+		return INSTANCE.internalIsCocoa();
+	}
+
+	/**
+	 * Adds a action to be invoked in case the Cocoa application menu's about entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		INSTANCE.internalCocoaAddAboutSelectionAction(display, action);
+	}
+
+	/**
+	 * Adds a action to be invoked in case the Cocoa application menu's about entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddAboutSelectionAction(Display display, Runnable action) {
+		INSTANCE.internalCocoaAddAboutSelectionAction(display, action);
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's preferences entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		INSTANCE.internalCocoaAddPreferencesSelectionAction(display, action);
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's preferences entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
+		INSTANCE.internalCocoaAddPreferencesSelectionAction(display, action);
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's quit entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
+		INSTANCE.internalCocoaAddQuitSelectionAction(display, action);
+	}
+
+	/**
+	 * Adds an action to be invoked in case the Cocoa application menu's quit entry is selected.
+	 *
+	 * @param display the application's {@linkplain Display} instance.
+	 * @param action the action to add.
+	 */
+	public static void cocoaAddQuitSelectionAction(Display display, Runnable action) {
+		INSTANCE.internalCocoaAddQuitSelectionAction(display, action);
+	}
+
+	/**
+	 * Determines whether this code runs on the Win32 platform.
+	 *
+	 * @return {@code true} if this code runs on the Win32 platform.
+	 */
+	public static boolean isWin32() {
+		return INSTANCE.internalIsWin32();
+	}
+
+	/**
+	 * Determines whether this code runs on the GTK platform.
+	 *
+	 * @return {@code true} if this code runs on the GTK platform.
+	 */
+	public static boolean isGtk() {
+		return INSTANCE.internalIsGtk();
+	}
+
+	/**
 	 * Constructs a new {@linkplain PlatformIntegration} instance.
 	 */
 	protected PlatformIntegration() {
@@ -53,20 +140,11 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Get this VM's {@linkplain PlatformIntegration} instance.
-	 *
-	 * @return this VM's {@linkplain PlatformIntegration} instance.
-	 */
-	public static PlatformIntegration getInstance() {
-		return INSTANCE;
-	}
-
-	/**
 	 * Determines whether this code runs on the Cocoa platform.
 	 *
 	 * @return {@code true} if this code runs on the Cocoa platform.
 	 */
-	public boolean isCocoa() {
+	protected boolean internalIsCocoa() {
 		return false;
 	}
 
@@ -76,7 +154,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		// default is to do nothing
 	}
 
@@ -86,7 +164,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddAboutSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddAboutSelectionAction(Display display, Runnable action) {
 		// default is to do nothing
 	}
 
@@ -96,7 +174,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		// default is to do nothing
 	}
 
@@ -106,7 +184,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddPreferencesSelectionAction(Display display, Runnable action) {
 		// default is to do nothing
 	}
 
@@ -116,7 +194,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		// default is to do nothing
 	}
 
@@ -126,7 +204,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param action the action to add.
 	 */
-	public void cocoaAddQuitSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddQuitSelectionAction(Display display, Runnable action) {
 		// default is to do nothing
 	}
 
@@ -135,7 +213,7 @@ public abstract class PlatformIntegration {
 	 *
 	 * @return {@code true} if this code runs on the Win32 platform.
 	 */
-	public boolean isWin32() {
+	protected boolean internalIsWin32() {
 		return false;
 	}
 
@@ -144,7 +222,7 @@ public abstract class PlatformIntegration {
 	 *
 	 * @return {@code true} if this code runs on the GTK platform.
 	 */
-	public boolean isGtk() {
+	protected boolean internalIsGtk() {
 		return false;
 	}
 

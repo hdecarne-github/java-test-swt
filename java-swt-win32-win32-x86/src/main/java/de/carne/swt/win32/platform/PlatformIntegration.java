@@ -23,7 +23,7 @@ package de.carne.swt.win32.platform;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
-	public boolean isWin32() {
+	protected boolean internalIsWin32() {
 		return true;
 	}
 

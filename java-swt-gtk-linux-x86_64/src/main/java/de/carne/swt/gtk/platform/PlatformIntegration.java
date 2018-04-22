@@ -23,7 +23,7 @@ package de.carne.swt.gtk.platform;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
-	public boolean isGtk() {
+	protected boolean internalIsGtk() {
 		return false;
 	}
 

@@ -34,37 +34,37 @@ import de.carne.swt.events.EventReceiver;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
-	public boolean isCocoa() {
+	protected boolean internalIsCocoa() {
 		return true;
 	}
 
 	@Override
-	public void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, EventConsumer.selected(action));
 	}
 
 	@Override
-	public void cocoaAddAboutSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddAboutSelectionAction(Display display, Runnable action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, EventReceiver.any(action));
 	}
 
 	@Override
-	public void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, EventConsumer.selected(action));
 	}
 
 	@Override
-	public void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddPreferencesSelectionAction(Display display, Runnable action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, EventReceiver.any(action));
 	}
 
 	@Override
-	public void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
+	protected void internalCocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, EventConsumer.selected(action));
 	}
 
 	@Override
-	public void cocoaAddQuitSelectionAction(Display display, Runnable action) {
+	protected void internalCocoaAddQuitSelectionAction(Display display, Runnable action) {
 		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, EventReceiver.any(action));
 	}
 
