@@ -69,7 +69,7 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Adds a {@Listener} to be invoked in case the Cocoa application menu's about entry is selected.
+	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's about entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
@@ -79,7 +79,8 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Adds a {@Listener} to be invoked in case the Cocoa application menu's preferences entry is selected.
+	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's preferences entry is
+	 * selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
@@ -89,7 +90,7 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Adds a {@Listener} to be invoked in case the Cocoa application menu's quit entry is selected.
+	 * Adds a {@linkplain SelectionListener} to be invoked in case the Cocoa application menu's quit entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
