@@ -76,6 +76,29 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	}
 
 	/**
+	 * Add a child of the submitted {@linkplain Composite} derived type.
+	 * <p>
+	 * The composite is created by invoking the constructor with signature
+	 * {@linkplain Composite#Composite(Composite, int)} via reflection.
+	 *
+	 * @param <C> The actual composite type.
+	 * @param compositeClass The actual composite type to add.
+	 * @param style The composite style.
+	 * @return The added composite control.
+	 */
+	public <C extends Composite> CompositeBuilder<C> addCompositeChild(Class<C> compositeClass, int style) {
+		return addChild(parent -> {
+			try {
+				Constructor<C> constructor = compositeClass.getConstructor(Composite.class, Integer.TYPE);
+
+				return new CompositeBuilder<>(constructor.newInstance(parent, style));
+			} catch (ReflectiveOperationException e) {
+				throw Exceptions.toRuntime(e);
+			}
+		});
+	}
+
+	/**
 	 * Add a child of type {@linkplain Composite}.
 	 *
 	 * @param style The {@linkplain Composite} style.
