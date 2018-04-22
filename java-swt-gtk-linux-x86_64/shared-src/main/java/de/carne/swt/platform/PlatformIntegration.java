@@ -55,6 +55,15 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
+	 * Determines the preferred button order for the current platform.
+	 *
+	 * @return {@linkplain SWT#LEFT_TO_RIGHT} or {@linkplain SWT#RIGHT_TO_LEFT}.
+	 */
+	public static int getButtonOrder() {
+		return INSTANCE.internalGetButtonOrder();
+	}
+
+	/**
 	 * Adds a action to be invoked in case the Cocoa application menu's about entry is selected.
 	 *
 	 * @param display the application's {@linkplain Display} instance.
@@ -138,6 +147,13 @@ public abstract class PlatformIntegration {
 	protected PlatformIntegration() {
 		// Nothing to do here
 	}
+
+	/**
+	 * Determines the preferred button order for the current platform.
+	 *
+	 * @return {@linkplain SWT#LEFT_TO_RIGHT} or {@linkplain SWT#RIGHT_TO_LEFT}.
+	 */
+	protected abstract int internalGetButtonOrder();
 
 	/**
 	 * Determines whether this code runs on the Cocoa platform.

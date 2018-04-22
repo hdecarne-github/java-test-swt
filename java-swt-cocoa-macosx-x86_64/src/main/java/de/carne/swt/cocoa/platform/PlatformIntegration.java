@@ -34,6 +34,11 @@ import de.carne.swt.events.EventReceiver;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
+	protected int internalGetButtonOrder() {
+		return SWT.RIGHT_TO_LEFT;
+	}
+
+	@Override
 	protected boolean internalIsCocoa() {
 		return true;
 	}

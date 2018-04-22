@@ -16,11 +16,18 @@
  */
 package de.carne.swt.win32.platform;
 
+import org.eclipse.swt.SWT;
+
 /**
  * Win32 platform integration.
  */
 @SuppressWarnings("squid:S2176")
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
+
+	@Override
+	protected int internalGetButtonOrder() {
+		return SWT.LEFT_TO_RIGHT;
+	}
 
 	@Override
 	protected boolean internalIsWin32() {

@@ -16,11 +16,18 @@
  */
 package de.carne.swt.gtk.platform;
 
+import org.eclipse.swt.SWT;
+
 /**
  * GTK platform integration.
  */
 @SuppressWarnings("squid:S2176")
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
+
+	@Override
+	protected int internalGetButtonOrder() {
+		return SWT.RIGHT_TO_LEFT;
+	}
 
 	@Override
 	protected boolean internalIsGtk() {
