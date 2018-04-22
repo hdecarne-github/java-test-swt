@@ -53,7 +53,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	/**
 	 * Constructs a new {@linkplain TestUserInterface} instance.
-	 * 
+	 *
 	 * @param root the root {@linkplain Shell}.
 	 */
 	public TestUserInterface(Shell root) {
@@ -105,6 +105,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		GridLayoutBuilder.data().align(SWT.FILL, SWT.BOTTOM).grab(true, false).apply(this.status);
 		setStatus("UI ready...");
 		root.layout();
+		root.open();
 	}
 
 	private void buildMenuBar(TestUserController controller) throws ResourceException {
