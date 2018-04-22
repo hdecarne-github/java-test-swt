@@ -74,7 +74,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
 	 */
-	public void cocoaAddAboutListener(Display display, SelectionListener listener) {
+	public void cocoaAddAboutSelectionListener(Display display, SelectionListener listener) {
 		// default is to do nothing
 	}
 
@@ -85,7 +85,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
 	 */
-	public void cocoaAddPreferencesListener(Display display, SelectionListener listener) {
+	public void cocoaAddPreferencesSelectionListener(Display display, SelectionListener listener) {
 		// default is to do nothing
 	}
 
@@ -95,7 +95,7 @@ public abstract class PlatformIntegration {
 	 * @param display the application's {@linkplain Display} instance.
 	 * @param listener the listener to add.
 	 */
-	public void cocoaAddQuitListener(Display display, SelectionListener listener) {
+	public void cocoaAddQuitSelectionListener(Display display, SelectionListener listener) {
 		// default is to do nothing
 	}
 

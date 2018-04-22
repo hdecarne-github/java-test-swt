@@ -33,21 +33,21 @@ public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegrati
 	}
 
 	@Override
-	public void cocoaAddAboutListener(Display display, SelectionListener listener) {
-		addSystemMenuItemListener(display, SWT.ID_ABOUT, listener);
+	public void cocoaAddAboutSelectionListener(Display display, SelectionListener listener) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_ABOUT, listener);
 	}
 
 	@Override
-	public void cocoaAddPreferencesListener(Display display, SelectionListener listener) {
-		addSystemMenuItemListener(display, SWT.ID_PREFERENCES, listener);
+	public void cocoaAddPreferencesSelectionListener(Display display, SelectionListener listener) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_PREFERENCES, listener);
 	}
 
 	@Override
-	public void cocoaAddQuitListener(Display display, SelectionListener listener) {
-		addSystemMenuItemListener(display, SWT.ID_QUIT, listener);
+	public void cocoaAddQuitSelectionListener(Display display, SelectionListener listener) {
+		addSystemMenuItemSelectionListener(display, SWT.ID_QUIT, listener);
 	}
 
-	private void addSystemMenuItemListener(Display display, int itemId, SelectionListener listener) {
+	private void addSystemMenuItemSelectionListener(Display display, int itemId, SelectionListener listener) {
 		for (MenuItem menuItem : display.getSystemMenu().getItems()) {
 			if (menuItem.getID() == itemId) {
 				menuItem.addSelectionListener(listener);
