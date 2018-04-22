@@ -52,6 +52,15 @@ public class TestUserInterface extends UserInterface<Shell> {
 	private final Late<Label> status = new Late<>();
 
 	/**
+	 * Constructs a new {@linkplain TestUserInterface} instance.
+	 * 
+	 * @param root the root {@linkplain Shell}.
+	 */
+	public TestUserInterface(Shell root) {
+		super(root);
+	}
+
+	/**
 	 * Set status text.
 	 *
 	 * @param status The status text to set.
@@ -61,7 +70,8 @@ public class TestUserInterface extends UserInterface<Shell> {
 	}
 
 	@Override
-	protected void build(Shell root) throws ResourceException {
+	public void open() throws ResourceException {
+		Shell root = root();
 		this.imagePoolHolder.set(new ImageResourcePool(root.getDisplay()));
 		this.rootHolder.set(root);
 

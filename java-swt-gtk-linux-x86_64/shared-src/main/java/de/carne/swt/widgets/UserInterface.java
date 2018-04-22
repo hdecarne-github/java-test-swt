@@ -17,44 +17,55 @@
 package de.carne.swt.widgets;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.carne.swt.graphics.ResourceException;
-import de.carne.util.Late;
 
 /**
  * Base class for SWT based user interfaces.
  *
- * @param <R> The root widget's type.
+ * @param <R> the root widget's type.
  */
 public abstract class UserInterface<R extends Composite> {
 
-	private final Late<R> rootHolder = new Late<>();
+	private final R root;
 
 	/**
-	 * Set up the interface and accompanying objects.
+	 * Constructs a new {@linkplain UserInterface} instance.
 	 *
-	 * @param root The interface's root widget.
-	 * @throws ResourceException if a required resource is not available.
+	 * @param root the interface's root widget.
 	 */
-	public void setup(R root) throws ResourceException {
-		build(this.rootHolder.set(root));
+	protected UserInterface(R root) {
+		this.root = root;
 	}
 
 	/**
-	 * Build up the interface's widgets and initialize accompanying objects.
+	 * Gets the interface's root widget.
 	 *
-	 * @param root The interface's root widget.
-	 * @throws ResourceException if a required resource is not available.
-	 */
-	protected abstract void build(R root) throws ResourceException;
-
-	/**
-	 * Get the interface's root widget.
-	 *
-	 * @return The interface's root widget.
+	 * @return the interface's root widget.
 	 */
 	public R root() {
-		return this.rootHolder.get();
+		return this.root;
+	}
+
+	/**
+	 * Sets up and opens the interface.
+	 *
+	 * @throws ResourceException if a required resource is not available.
+	 */
+	public abstract void open() throws ResourceException;
+
+	/**
+	 * Runs the event dispatching loop on this {@linkplain UserInterface} instance.
+	 */
+	public void run() {
+		Display display = this.root.getDisplay();
+
+		while (!this.root.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
 	}
 
 }

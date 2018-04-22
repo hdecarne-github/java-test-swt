@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
+import de.carne.boot.Exceptions;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
-import de.carne.boot.Exceptions;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
@@ -58,10 +58,7 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 
 	@Override
 	protected UserInterface<Shell> setupUserInterface(Display display) throws ResourceException {
-		TestUserInterface userInterface = new TestUserInterface();
-
-		userInterface.setup(new Shell(display));
-		return userInterface;
+		return new TestUserInterface(new Shell(display));
 	}
 
 }

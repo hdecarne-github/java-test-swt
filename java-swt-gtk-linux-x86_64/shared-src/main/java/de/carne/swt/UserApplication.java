@@ -22,10 +22,10 @@ import java.util.function.Supplier;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import de.carne.boot.Exceptions;
 import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.UserInterface;
-import de.carne.boot.Exceptions;
 import de.carne.util.Late;
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
@@ -50,20 +50,15 @@ public abstract class UserApplication {
 	public int run(CmdLineProcessor cmdLine) throws ResourceException {
 		this.cmdLineHolder.set(cmdLine);
 
-		Display display = this.displayHolder.set(setupDisplay());
-		Shell shell = setupUserInterface(display).root();
+		UserInterface<Shell> userInterface = setupUserInterface(this.displayHolder.set(setupDisplay()));
 
-		shell.open();
+		userInterface.open();
 		try {
 			cmdLine.process();
 		} catch (CmdLineException e) {
 			Exceptions.warn(e);
 		}
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
+		userInterface.run();
 		return this.status;
 	}
 
