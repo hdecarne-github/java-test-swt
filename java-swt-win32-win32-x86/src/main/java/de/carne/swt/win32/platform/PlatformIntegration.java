@@ -16,8 +16,6 @@
  */
 package de.carne.swt.win32.platform;
 
-import org.eclipse.swt.SWT;
-
 /**
  * Win32 platform integration.
  */
@@ -25,8 +23,8 @@ import org.eclipse.swt.SWT;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
-	protected int internalGetButtonOrder() {
-		return SWT.LEFT_TO_RIGHT;
+	protected boolean internalIsButtonOrderLeftToRight() {
+		return true;
 	}
 
 	@Override

@@ -46,21 +46,21 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
+	 * Determines whether the preferred button order is left-to-right for the current platform.
+	 *
+	 * @return {@code true} if the preferred button order is left-to-right.
+	 */
+	public static boolean isButtonOrderLeftToRight() {
+		return INSTANCE.internalIsButtonOrderLeftToRight();
+	}
+
+	/**
 	 * Determines whether this code runs on the Cocoa platform.
 	 *
 	 * @return {@code true} if this code runs on the Cocoa platform.
 	 */
 	public static boolean isCocoa() {
 		return INSTANCE.internalIsCocoa();
-	}
-
-	/**
-	 * Determines the preferred button order for the current platform.
-	 *
-	 * @return {@linkplain SWT#LEFT_TO_RIGHT} or {@linkplain SWT#RIGHT_TO_LEFT}.
-	 */
-	public static int getButtonOrder() {
-		return INSTANCE.internalGetButtonOrder();
 	}
 
 	/**
@@ -149,11 +149,11 @@ public abstract class PlatformIntegration {
 	}
 
 	/**
-	 * Determines the preferred button order for the current platform.
+	 * Determines whether the preferred button order is left-to-right for the current platform.
 	 *
-	 * @return {@linkplain SWT#LEFT_TO_RIGHT} or {@linkplain SWT#RIGHT_TO_LEFT}.
+	 * @return {@code true} if the preferred button order is left-to-right.
 	 */
-	protected abstract int internalGetButtonOrder();
+	protected abstract boolean internalIsButtonOrderLeftToRight();
 
 	/**
 	 * Determines whether this code runs on the Cocoa platform.

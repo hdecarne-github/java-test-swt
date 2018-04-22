@@ -34,8 +34,8 @@ import de.carne.swt.events.EventReceiver;
 public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
 
 	@Override
-	protected int internalGetButtonOrder() {
-		return SWT.RIGHT_TO_LEFT;
+	protected boolean internalIsButtonOrderLeftToRight() {
+		return false;
 	}
 
 	@Override
