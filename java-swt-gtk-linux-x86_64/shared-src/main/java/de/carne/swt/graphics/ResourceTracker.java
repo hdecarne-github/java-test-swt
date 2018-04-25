@@ -106,6 +106,7 @@ public abstract class ResourceTracker {
 	/**
 	 * Gets a cached {@linkplain Color} resource.
 	 *
+	 * @param <D> the actual descriptor type.
 	 * @param descriptor the descriptor describing the color to get.
 	 * @return the cached {@linkplain Color} resource or {@code null} if not yet cached.
 	 */
@@ -149,6 +150,7 @@ public abstract class ResourceTracker {
 	/**
 	 * Gets a cached {@linkplain Font} resource.
 	 *
+	 * @param <D> the actual descriptor type.
 	 * @param descriptor the descriptor describing the font to get.
 	 * @return the cached {@linkplain Font} resource or {@code null} if not yet cached.
 	 */
@@ -192,6 +194,7 @@ public abstract class ResourceTracker {
 	/**
 	 * Gets a cached {@linkplain Image} resource.
 	 *
+	 * @param <D> the actual descriptor type.
 	 * @param descriptor the descriptor describing the color to get.
 	 * @return the cached {@linkplain Image} resource or {@code null} if not yet cached.
 	 */
