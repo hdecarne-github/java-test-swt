@@ -1,0 +1,293 @@
+/*
+ * Copyright (c) 2007-2018 Holger de Carne and contributors, All Rights Reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.carne.swt.graphics;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Resource;
+import org.eclipse.swt.widgets.Shell;
+
+import de.carne.boot.Exceptions;
+import de.carne.boot.check.Nullable;
+
+/**
+ * Helper class used to track and manage dynamically created {@linkplain Resource} instances.
+ */
+public abstract class ResourceTracker {
+
+	private static final Map<Device, ResourceTracker> deviceTracker = new HashMap<>();
+
+	private final Map<Object, Color> colorCache = new HashMap<>();
+	private final Map<Object, Font> fontCache = new HashMap<>();
+	private final Map<Object, Image> imageCache = new HashMap<>();
+
+	/**
+	 * Gets the {@linkplain Device} this instance is assigned to.
+	 *
+	 * @return the {@linkplain Device} this instance is assigned to.
+	 */
+	public abstract Device getDevice();
+
+	/**
+	 * Disposes any tracked {@linkplain Resource} as well the {@linkplain ResourceTracker} instance assigned to the
+	 * given {@linkplain Device}.
+	 *
+	 * @param device the {@linkplain Device} to dispose the {@linkplain ResourceTracker} instance for.
+	 */
+	protected static void disposeDevice(Device device) {
+		deviceTracker.remove(device).disposeAll();
+	}
+
+	/**
+	 * Disposes any {@linkplain Resource} tracked by this instance.
+	 */
+	public void disposeAll() {
+		this.colorCache.forEach((descriptor, resource) -> resource.dispose());
+		this.colorCache.clear();
+		this.fontCache.forEach((descriptor, resource) -> resource.dispose());
+		this.fontCache.clear();
+		this.imageCache.forEach((descriptor, resource) -> resource.dispose());
+		this.imageCache.clear();
+	}
+
+	/**
+	 * Gets a {@linkplain Color} resource.
+	 *
+	 * @param rgb the {@linkplain RGB} object describing the color to get.
+	 * @return the requested {@linkplain Color} resource.
+	 */
+	public Color getColor(RGB rgb) {
+		return getColor(rgb, this::createColorFromRgb);
+	}
+
+	/**
+	 * Gets a {@linkplain Color} resource for a given descriptor.
+	 *
+	 * @param <D> the actual descriptor type.
+	 * @param descriptor the descriptor describing the color to get.
+	 * @param factory the factory to use for {@linkplain Color} resource creation.
+	 * @return the requested {@linkplain Color} resource.
+	 */
+	public <D> Color getColor(D descriptor, ResourceFactory<D, Color> factory) {
+		Color cachedColor = getCachedColor(descriptor);
+
+		if (cachedColor == null) {
+			cachedColor = factory.create(getDevice(), descriptor);
+			this.colorCache.put(descriptor, cachedColor);
+		}
+		return cachedColor;
+	}
+
+	/**
+	 * Gets a cached {@linkplain Color} resource.
+	 *
+	 * @param descriptor the descriptor describing the color to get.
+	 * @return the cached {@linkplain Color} resource or {@code null} if not yet cached.
+	 */
+	@Nullable
+	protected <D> Color getCachedColor(D descriptor) {
+		return this.colorCache.get(descriptor);
+	}
+
+	private Color createColorFromRgb(Device device, RGB descriptor) {
+		return new Color(device, descriptor);
+	}
+
+	/**
+	 * Gets a {@linkplain Font} resource.
+	 *
+	 * @param fontData the {@linkplain FontData} object describing the font to get.
+	 * @return the requested {@linkplain Font} resource.
+	 */
+	public Font getFont(FontData fontData) {
+		return getFont(fontData, this::createFontFromFontData);
+	}
+
+	/**
+	 * Gets a {@linkplain Font} resource for a given descriptor.
+	 *
+	 * @param <D> the actual descriptor type.
+	 * @param descriptor the descriptor describing the font to get.
+	 * @param factory the factory to use for {@linkplain Font} resource creation.
+	 * @return the requested {@linkplain Font} resource.
+	 */
+	public <D> Font getFont(D descriptor, ResourceFactory<D, Font> factory) {
+		Font cachedFont = getCachedFont(descriptor);
+
+		if (cachedFont == null) {
+			cachedFont = factory.create(getDevice(), descriptor);
+			this.fontCache.put(descriptor, cachedFont);
+		}
+		return cachedFont;
+	}
+
+	/**
+	 * Gets a cached {@linkplain Font} resource.
+	 *
+	 * @param descriptor the descriptor describing the font to get.
+	 * @return the cached {@linkplain Font} resource or {@code null} if not yet cached.
+	 */
+	@Nullable
+	protected <D> Font getCachedFont(D descriptor) {
+		return this.fontCache.get(descriptor);
+	}
+
+	private Font createFontFromFontData(Device device, FontData fontData) {
+		return new Font(device, fontData);
+	}
+
+	/**
+	 * Gets a {@linkplain Image} resource.
+	 *
+	 * @param imageUrl the {@linkplain URL} object describing the image to get.
+	 * @return the requested {@linkplain Image} resource.
+	 */
+	public Image getImage(URL imageUrl) {
+		return getImage(imageUrl, this::createImageFromUrl);
+	}
+
+	/**
+	 * Gets a {@linkplain Image} resource for a given descriptor.
+	 *
+	 * @param <D> the actual descriptor type.
+	 * @param descriptor the descriptor describing the image to get.
+	 * @param factory the factory to use for {@linkplain Image} resource creation.
+	 * @return the requested {@linkplain Image} resource.
+	 */
+	public <D> Image getImage(D descriptor, ResourceFactory<D, Image> factory) {
+		Image cachedImage = getCachedImage(descriptor);
+
+		if (cachedImage == null) {
+			cachedImage = factory.create(getDevice(), descriptor);
+			this.imageCache.put(descriptor, cachedImage);
+		}
+		return cachedImage;
+	}
+
+	/**
+	 * Gets a cached {@linkplain Image} resource.
+	 *
+	 * @param descriptor the descriptor describing the color to get.
+	 * @return the cached {@linkplain Image} resource or {@code null} if not yet cached.
+	 */
+	@Nullable
+	protected <D> Image getCachedImage(D descriptor) {
+		return this.imageCache.get(descriptor);
+	}
+
+	private Image createImageFromUrl(Device device, URL imageUrl) {
+		Image image;
+
+		try (InputStream imageStream = imageUrl.openStream()) {
+			image = new Image(device, imageStream);
+		} catch (IOException e) {
+			SWT.error(SWT.ERROR_IO, e);
+			// Never reached; just to make the compiler happy
+			throw Exceptions.toRuntime(e);
+		}
+		return image;
+	}
+
+	/**
+	 * Gets the {@linkplain ResourceTracker} instance for the given {@linkplain Device}.
+	 *
+	 * @param device the {@linkplain Device} to get the {@linkplain ResourceTracker} instance for.
+	 * @return the requested {@linkplain ResourceTracker} instance.
+	 */
+	public static ResourceTracker forDevice(Device device) {
+		return deviceTracker.computeIfAbsent(device, DeviceResourceTracker::new);
+	}
+
+	/**
+	 * Creates a {@linkplain ResourceTracker} instance for the given {@linkplain Shell}.
+	 *
+	 * @param shell the {@linkplain Shell} to get the {@linkplain ResourceTracker} instance for.
+	 * @return the requested {@linkplain ResourceTracker} instance.
+	 */
+	public ResourceTracker forShell(Shell shell) {
+		return new ShellResourceTracker(shell);
+	}
+
+	private static class DeviceResourceTracker extends ResourceTracker {
+
+		private final Device device;
+
+		DeviceResourceTracker(Device device) {
+			this.device = device;
+		}
+
+		@Override
+		public Device getDevice() {
+			return this.device;
+		}
+
+		@Override
+		public void disposeAll() {
+			disposeDevice(this.device);
+		}
+
+	}
+
+	private class ShellResourceTracker extends ResourceTracker {
+
+		ShellResourceTracker(Shell shell) {
+			shell.addDisposeListener(event -> disposeAll());
+		}
+
+		@Override
+		public Device getDevice() {
+			return ResourceTracker.this.getDevice();
+		}
+
+		@Override
+		@Nullable
+		protected <D> Color getCachedColor(D descriptor) {
+			Color cachedColor = super.getCachedColor(descriptor);
+
+			return (cachedColor != null ? cachedColor : ResourceTracker.this.getCachedColor(descriptor));
+		}
+
+		@Override
+		@Nullable
+		protected <D> Font getCachedFont(D descriptor) {
+			Font cachedFont = super.getCachedFont(descriptor);
+
+			return (cachedFont != null ? cachedFont : ResourceTracker.this.getCachedFont(descriptor));
+		}
+
+		@Override
+		@Nullable
+		protected <D> Image getCachedImage(D descriptor) {
+			Image cachedImage = super.getCachedImage(descriptor);
+
+			return (cachedImage != null ? cachedImage : ResourceTracker.this.getCachedImage(descriptor));
+		}
+
+	}
+
+}

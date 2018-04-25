@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Tree;
 import org.junit.jupiter.api.Assertions;
 
-import de.carne.swt.graphics.ImageResourcePool;
 import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.graphics.ResourceTracker;
 import de.carne.swt.layout.FormLayoutBuilder;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
@@ -47,7 +47,7 @@ import de.carne.util.Late;
  */
 public class TestUserInterface extends UserInterface<Shell> {
 
-	private final Late<ImageResourcePool> imagePoolHolder = new Late<>();
+	private final Late<ResourceTracker> resourceTrackerHolder = new Late<>();
 	private final Late<Shell> rootHolder = new Late<>();
 	private final Late<Label> status = new Late<>();
 
@@ -72,17 +72,16 @@ public class TestUserInterface extends UserInterface<Shell> {
 	@Override
 	public void open() throws ResourceException {
 		Shell root = root();
-		this.imagePoolHolder.set(new ImageResourcePool(root.getDisplay()));
+		this.resourceTrackerHolder.set(ResourceTracker.forDevice(root.getDisplay()));
 		this.rootHolder.set(root);
 
 		TestUserController controller = new TestUserController(this);
 		ShellBuilder shell = new ShellBuilder(root);
 
-		shell.withText(getClass().getSimpleName())
-				.withImages(this.imagePoolHolder.get().getAll(Images.class, Images.IMAGES_A));
+		shell.withText(getClass().getSimpleName()).withImages(Images.getImages(root.getDisplay(), Images.IMAGES_A));
 		shell.onDisposed(() -> {
 			controller.onShellDisposed();
-			this.imagePoolHolder.get().disposeAll();
+			this.resourceTrackerHolder.get().disposeAll();
 		});
 		shell.onDisposed(controller::onShellDisposeEvent);
 		shell.onShellActivated(controller::onShellActivated);
@@ -110,7 +109,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	private void buildMenuBar(TestUserController controller) throws ResourceException {
 		MenuBuilder menu = MenuBuilder.menuBar(this.rootHolder);
-		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
+		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		menu.addItem(SWT.CASCADE).withText("Menu A");
 		menu.beginMenu();
@@ -130,7 +129,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	private TabFolder buildTabs(TestUserController controller) throws ResourceException {
 		TabFolderBuilder tabs = TabFolderBuilder.top(this.rootHolder.get(), SWT.NONE);
-		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
+		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		tabs.addItem(SWT.NONE).withText("Tab 1").withImage(itemImage);
 
@@ -149,7 +148,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		CoolBarBuilder commands = CoolBarBuilder.horizontal(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.horizontal(commands, SWT.FLAT);
 		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.HORIZONTAL);
-		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
+		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
 
@@ -175,7 +174,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 		CoolBarBuilder commands = CoolBarBuilder.vertical(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.vertical(commands, SWT.FLAT);
 		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.VERTICAL);
-		Image itemImage = this.imagePoolHolder.get().get(Images.class, Images.IMAGE_A_16);
+		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
 		commandsTools.addItem(SWT.PUSH).withText("1").withImage(itemImage).withDisabledImage(itemImage);

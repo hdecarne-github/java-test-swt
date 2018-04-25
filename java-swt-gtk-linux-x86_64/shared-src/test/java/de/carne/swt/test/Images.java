@@ -16,6 +16,14 @@
  */
 package de.carne.swt.test;
 
+import java.net.URL;
+
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
+
+import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.graphics.ResourceTracker;
+
 /**
  * Test image resources.
  */
@@ -45,5 +53,46 @@ public final class Images {
 	 * image_a_{16,32,48,128}.png
 	 */
 	public static final String[] IMAGES_A = new String[] { IMAGE_A_16, IMAGE_A_32, IMAGE_A_48, IMAGE_A_128 };
+
+	/**
+	 * Gets the {@linkplain Image} resource for the given name.
+	 *
+	 * @param device the {@linkplain Device} to use for the image.
+	 * @param name the name of the image.
+	 * @return the requested {@linkplain Image} resource.
+	 * @throws ResourceException if the {@linkplain Image} resource is not available.
+	 */
+	public static Image getImage(Device device, String name) throws ResourceException {
+		URL imageUrl = Images.class.getResource(name);
+
+		if (imageUrl == null) {
+			throw new ResourceException("Cannot find image: " + name);
+		}
+		return ResourceTracker.forDevice(device).getImage(imageUrl);
+	}
+
+	/**
+	 * Gets the {@linkplain Image} resources for the given name set.
+	 *
+	 * @param device the {@linkplain Device} to use for the images.
+	 * @param names the names of the images.
+	 * @return the requested {@linkplain Image} resources.
+	 * @throws ResourceException if on ore more of the {@linkplain Image} resources are not available.
+	 */
+	public static Image[] getImages(Device device, String[] names) throws ResourceException {
+		ResourceTracker resourceTracker = ResourceTracker.forDevice(device);
+		Image[] images = new Image[names.length];
+
+		for (int nameIndex = 0; nameIndex < names.length; nameIndex++) {
+			String name = names[nameIndex];
+			URL imageUrl = Images.class.getResource(name);
+
+			if (imageUrl == null) {
+				throw new ResourceException("Cannot find image: " + name);
+			}
+			images[nameIndex] = resourceTracker.getImage(imageUrl);
+		}
+		return images;
+	}
 
 }
