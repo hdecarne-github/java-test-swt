@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ResourceException;
-import de.carne.swt.graphics.ResourceTracker;
 import de.carne.swt.layout.FormLayoutBuilder;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
@@ -47,7 +46,6 @@ import de.carne.util.Late;
  */
 public class TestUserInterface extends UserInterface<Shell> {
 
-	private final Late<ResourceTracker> resourceTrackerHolder = new Late<>();
 	private final Late<Shell> rootHolder = new Late<>();
 	private final Late<Label> status = new Late<>();
 
@@ -72,7 +70,6 @@ public class TestUserInterface extends UserInterface<Shell> {
 	@Override
 	public void open() throws ResourceException {
 		Shell root = root();
-		this.resourceTrackerHolder.set(ResourceTracker.forDevice(root.getDisplay()));
 		this.rootHolder.set(root);
 
 		TestUserController controller = new TestUserController(this);
@@ -81,7 +78,6 @@ public class TestUserInterface extends UserInterface<Shell> {
 		shell.withText(getClass().getSimpleName()).withImages(Images.getImages(root.getDisplay(), Images.IMAGES_A));
 		shell.onDisposed(() -> {
 			controller.onShellDisposed();
-			this.resourceTrackerHolder.get().disposeAll();
 		});
 		shell.onDisposed(controller::onShellDisposeEvent);
 		shell.onShellActivated(controller::onShellActivated);
