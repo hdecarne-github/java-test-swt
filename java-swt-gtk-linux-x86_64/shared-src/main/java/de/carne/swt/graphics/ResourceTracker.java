@@ -166,6 +166,22 @@ public abstract class ResourceTracker {
 	/**
 	 * Gets a {@linkplain Image} resource.
 	 *
+	 * @param clazz the {@linkplain Class} to use for resource access.
+	 * @param name the name of the {@linkplain Image} resource to get.
+	 * @return the requested {@linkplain Image} resource.
+	 */
+	public Image getImage(Class<?> clazz, String name) {
+		URL imageUrl = clazz.getResource(name);
+
+		if (imageUrl == null) {
+			throw new IllegalArgumentException("Unknown image resource: " + clazz.getName() + ":" + name);
+		}
+		return getImage(imageUrl);
+	}
+
+	/**
+	 * Gets a {@linkplain Image} resource.
+	 *
 	 * @param imageUrl the {@linkplain URL} object describing the image to get.
 	 * @return the requested {@linkplain Image} resource.
 	 */
