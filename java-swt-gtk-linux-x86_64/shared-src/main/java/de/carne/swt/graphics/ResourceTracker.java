@@ -180,6 +180,28 @@ public abstract class ResourceTracker {
 	}
 
 	/**
+	 * Gets multiple {@linkplain Image} resources.
+	 *
+	 * @param clazz the {@linkplain Class} to use for resource access.
+	 * @param names the names of the {@linkplain Image} resources to get.
+	 * @return the requested {@linkplain Image} resources.
+	 */
+	public Image[] getImages(Class<?> clazz, String... names) {
+		Image[] images = new Image[names.length];
+
+		for (int imageIndex = 0; imageIndex < images.length; imageIndex++) {
+			String name = names[imageIndex];
+			URL imageUrl = clazz.getResource(name);
+
+			if (imageUrl == null) {
+				throw new IllegalArgumentException("Unknown image resource: " + clazz.getName() + ":" + name);
+			}
+			images[imageIndex] = getImage(imageUrl);
+		}
+		return images;
+	}
+
+	/**
 	 * Gets a {@linkplain Image} resource.
 	 *
 	 * @param imageUrl the {@linkplain URL} object describing the image to get.
