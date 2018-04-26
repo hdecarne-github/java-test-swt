@@ -76,7 +76,7 @@ public class FontDialogBuilder extends DialogBuilder<FontDialog> {
 	 * @return the updated builder.
 	 * @see FontDialog#setFontList(FontData[])
 	 */
-	public FontDialogBuilder withFileName(FontData[] fontData) {
+	public FontDialogBuilder withFontList(FontData[] fontData) {
 		get().setFontList(fontData);
 		return this;
 	}
