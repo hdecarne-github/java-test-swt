@@ -54,13 +54,12 @@ public abstract class ResourceTracker {
 	public abstract Device getDevice();
 
 	/**
-	 * Disposes any tracked {@linkplain Resource} as well the {@linkplain ResourceTracker} instance assigned to the
-	 * given {@linkplain Device}.
+	 * Removes the given {@linkplain Device} instance from the list of tracked {@linkplain Device}s.
 	 *
-	 * @param device the {@linkplain Device} to dispose the {@linkplain ResourceTracker} instance for.
+	 * @param device the {@linkplain Device} to remove.
 	 */
-	protected static void disposeDevice(Device device) {
-		deviceTracker.remove(device).disposeAll();
+	protected static void removeDevice(Device device) {
+		deviceTracker.remove(device);
 	}
 
 	/**
@@ -289,7 +288,8 @@ public abstract class ResourceTracker {
 
 		@Override
 		public void disposeAll() {
-			disposeDevice(this.device);
+			removeDevice(this.device);
+			super.disposeAll();
 		}
 
 	}
