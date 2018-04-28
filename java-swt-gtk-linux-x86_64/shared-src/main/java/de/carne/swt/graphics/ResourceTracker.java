@@ -19,7 +19,9 @@ package de.carne.swt.graphics;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -185,19 +187,18 @@ public abstract class ResourceTracker {
 	 * @param names the names of the {@linkplain Image} resources to get.
 	 * @return the requested {@linkplain Image} resources.
 	 */
-	public Image[] getImages(Class<?> clazz, String... names) {
-		Image[] images = new Image[names.length];
+	public Image[] getImages(Class<?> clazz, Iterable<String> names) {
+		List<Image> images = new ArrayList<>();
 
-		for (int imageIndex = 0; imageIndex < images.length; imageIndex++) {
-			String name = names[imageIndex];
+		for (String name : names) {
 			URL imageUrl = clazz.getResource(name);
 
 			if (imageUrl == null) {
 				throw new IllegalArgumentException("Unknown image resource: " + clazz.getName() + ":" + name);
 			}
-			images[imageIndex] = getImage(imageUrl);
+			images.add(getImage(imageUrl));
 		}
-		return images;
+		return images.toArray(new Image[images.size()]);
 	}
 
 	/**
