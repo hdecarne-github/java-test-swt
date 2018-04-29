@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
 import de.carne.swt.UserApplication;
+import de.carne.util.Lazy;
 
 /**
  * This class provides a generic access to platform specific OS integration features (like the application menu on
@@ -31,18 +32,21 @@ import de.carne.swt.UserApplication;
  */
 public abstract class PlatformIntegration {
 
-	private static final PlatformIntegration INSTANCE;
+	private static final Lazy<PlatformIntegration> INSTANCE_HOLDER = new Lazy<>(PlatformIntegration::getInstance);
 
-	static {
+	private static PlatformIntegration getInstance() {
+		PlatformIntegration instance;
+
 		try {
 			String basePackageName = UserApplication.class.getPackage().getName();
 			String platformName = PlatformIntegration.class.getName().replace(basePackageName,
 					basePackageName + "." + SWT.getPlatform());
 
-			INSTANCE = Class.forName(platformName).asSubclass(PlatformIntegration.class).getConstructor().newInstance();
+			instance = Class.forName(platformName).asSubclass(PlatformIntegration.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {
 			throw Exceptions.toRuntime(e);
 		}
+		return instance;
 	}
 
 	/**
@@ -51,7 +55,7 @@ public abstract class PlatformIntegration {
 	 * @return {@code true} if the preferred button order is left-to-right.
 	 */
 	public static boolean isButtonOrderLeftToRight() {
-		return INSTANCE.internalIsButtonOrderLeftToRight();
+		return INSTANCE_HOLDER.get().internalIsButtonOrderLeftToRight();
 	}
 
 	/**
@@ -60,7 +64,7 @@ public abstract class PlatformIntegration {
 	 * @return {@code true} if this code runs on the Cocoa platform.
 	 */
 	public static boolean isCocoa() {
-		return INSTANCE.internalIsCocoa();
+		return INSTANCE_HOLDER.get().internalIsCocoa();
 	}
 
 	/**
@@ -70,7 +74,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddAboutSelectionAction(Display display, Consumer<SelectionEvent> action) {
-		INSTANCE.internalCocoaAddAboutSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddAboutSelectionAction(display, action);
 	}
 
 	/**
@@ -80,7 +84,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddAboutSelectionAction(Display display, Runnable action) {
-		INSTANCE.internalCocoaAddAboutSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddAboutSelectionAction(display, action);
 	}
 
 	/**
@@ -90,7 +94,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddPreferencesSelectionAction(Display display, Consumer<SelectionEvent> action) {
-		INSTANCE.internalCocoaAddPreferencesSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddPreferencesSelectionAction(display, action);
 	}
 
 	/**
@@ -100,7 +104,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddPreferencesSelectionAction(Display display, Runnable action) {
-		INSTANCE.internalCocoaAddPreferencesSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddPreferencesSelectionAction(display, action);
 	}
 
 	/**
@@ -110,7 +114,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddQuitSelectionAction(Display display, Consumer<SelectionEvent> action) {
-		INSTANCE.internalCocoaAddQuitSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddQuitSelectionAction(display, action);
 	}
 
 	/**
@@ -120,7 +124,7 @@ public abstract class PlatformIntegration {
 	 * @param action the action to add.
 	 */
 	public static void cocoaAddQuitSelectionAction(Display display, Runnable action) {
-		INSTANCE.internalCocoaAddQuitSelectionAction(display, action);
+		INSTANCE_HOLDER.get().internalCocoaAddQuitSelectionAction(display, action);
 	}
 
 	/**
@@ -129,7 +133,7 @@ public abstract class PlatformIntegration {
 	 * @return {@code true} if this code runs on the Win32 platform.
 	 */
 	public static boolean isWin32() {
-		return INSTANCE.internalIsWin32();
+		return INSTANCE_HOLDER.get().internalIsWin32();
 	}
 
 	/**
@@ -138,7 +142,7 @@ public abstract class PlatformIntegration {
 	 * @return {@code true} if this code runs on the GTK platform.
 	 */
 	public static boolean isGtk() {
-		return INSTANCE.internalIsGtk();
+		return INSTANCE_HOLDER.get().internalIsGtk();
 	}
 
 	/**
