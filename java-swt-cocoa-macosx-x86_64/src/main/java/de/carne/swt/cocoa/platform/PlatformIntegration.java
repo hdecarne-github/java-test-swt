@@ -16,14 +16,18 @@
  */
 package de.carne.swt.cocoa.platform;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 
+import de.carne.boot.check.Nullable;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.events.EventReceiver;
 
@@ -76,9 +80,32 @@ public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegrati
 	private void addSystemMenuItemSelectionListener(Display display, int itemId, Listener listener) {
 		for (MenuItem menuItem : display.getSystemMenu().getItems()) {
 			if (menuItem.getID() == itemId) {
-				menuItem.addListener(SWT.Selection, listener);
-				menuItem.addListener(SWT.DefaultSelection, listener);
+				Listener wrappedListener = event -> invokeSystemMenuListener(display, listener, event);
+
+				menuItem.addListener(SWT.Selection, wrappedListener);
+				menuItem.addListener(SWT.DefaultSelection, wrappedListener);
 				break;
+			}
+		}
+	}
+
+	private static void invokeSystemMenuListener(Display display, Listener listener, @Nullable Event event) {
+		Collection<MenuItem> disabledMenuItems = new ArrayList<>();
+
+		try {
+			for (MenuItem menuItem : display.getSystemMenu().getItems()) {
+				int menuItemId = menuItem.getID();
+
+				if ((menuItemId == SWT.ID_ABOUT || menuItemId == SWT.ID_PREFERENCES || menuItemId == SWT.ID_QUIT)
+						&& menuItem.getEnabled()) {
+					disabledMenuItems.add(menuItem);
+					menuItem.setEnabled(false);
+				}
+			}
+			listener.handleEvent(event);
+		} finally {
+			for (MenuItem disabledMenuItem : disabledMenuItems) {
+				disabledMenuItem.setEnabled(true);
 			}
 		}
 	}
