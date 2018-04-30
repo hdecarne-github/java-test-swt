@@ -91,7 +91,7 @@ class AboutInfoUI extends UserInterface<Shell> {
 		buildCopyrights(copyrights);
 		buildButtons(buttons);
 
-		GridLayoutBuilder.layout(2).margin(0, 0).apply(rootBuilder);
+		GridLayoutBuilder.layout(2).apply(rootBuilder);
 		GridLayoutBuilder.data().span(1, 3).apply(logo);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).apply(title);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).apply(version);
