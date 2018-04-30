@@ -24,7 +24,9 @@ import java.net.URL;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -131,6 +133,7 @@ class AboutInfoUI extends UserInterface<Shell> {
 
 				copyrightItem.setControl(copyrightLink.get());
 				copyrightLink.get().setText(copyrightInfo.toString());
+				copyrightLink.onSelected(this::onLinkSelected);
 			} catch (IOException e) {
 				throw new ResourceException("Failed to load copyright info: " + copyrightUrl, e);
 			}
@@ -144,6 +147,12 @@ class AboutInfoUI extends UserInterface<Shell> {
 		closeButton.onSelected(() -> root().close());
 		RowLayoutBuilder.layout().fill(true).apply(buttons);
 		RowLayoutBuilder.data().apply(closeButton);
+	}
+
+	private void onLinkSelected(@Nullable SelectionEvent event) {
+		if (event != null) {
+			Program.launch(event.text);
+		}
 	}
 
 }
