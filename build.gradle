@@ -1,6 +1,6 @@
 // Plugins
 plugins {
-	id "de.carne.java-tools" version "0.6.1" apply false
+	id "de.carne.java-tools" version "0.6.2" apply false
 	id "org.sonarqube" version "2.6.2" apply false
 	id "com.jfrog.artifactory" version "4.7.0" apply false
 	id "com.jfrog.bintray" version "1.8.0" apply false
@@ -48,6 +48,9 @@ subprojects {
 			java {
 				srcDir "${sharedSrcDir}/main/java"
 			}
+			resources {
+				srcDir "${sharedSrcDir}/main/resources"
+			}
 		}
 		test {
 			java {
@@ -55,6 +58,16 @@ subprojects {
 			}
 			resources {
 				srcDir "${sharedSrcDir}/test/resources"
+			}
+		}
+	}
+	
+	javatools {
+		generateI18N {
+			enabled = true
+			genDir = file("${sharedSrcDir}/main/java")
+			bundles = fileTree("${sharedSrcDir}/main/resources") {
+				include "**/*I18N.properties"
 			}
 		}
 	}
