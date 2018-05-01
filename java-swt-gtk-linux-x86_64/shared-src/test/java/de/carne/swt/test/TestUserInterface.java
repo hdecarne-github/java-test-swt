@@ -36,26 +36,25 @@ import de.carne.swt.widgets.ControlBuilder;
 import de.carne.swt.widgets.CoolBarBuilder;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
+import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.TabFolderBuilder;
 import de.carne.swt.widgets.ToolBarBuilder;
-import de.carne.swt.widgets.UserInterface;
 import de.carne.util.Late;
 
 /**
  * Test user interface.
  */
-public class TestUserInterface extends UserInterface<Shell> {
+public class TestUserInterface extends ShellUserInterface {
 
-	private final Late<Shell> rootHolder = new Late<>();
 	private final Late<Label> status = new Late<>();
 
 	/**
 	 * Constructs a new {@linkplain TestUserInterface} instance.
 	 *
-	 * @param root the root {@linkplain Shell}.
+	 * @param shell the user interface {@linkplain Shell}.
 	 */
-	public TestUserInterface(Shell root) {
-		super(root);
+	public TestUserInterface(Shell shell) {
+		super(shell);
 	}
 
 	/**
@@ -69,42 +68,40 @@ public class TestUserInterface extends UserInterface<Shell> {
 
 	@Override
 	public void open() throws ResourceException {
-		Shell root = root();
-		this.rootHolder.set(root);
+		Shell shell = root();
 
 		TestUserController controller = new TestUserController(this);
-		ShellBuilder shell = new ShellBuilder(root);
+		ShellBuilder shellBuilder = new ShellBuilder(shell);
 
-		shell.withText(getClass().getSimpleName()).withImages(Images.getImages(root.getDisplay(), Images.IMAGES_A));
-		shell.onDisposed(() -> {
-			controller.onShellDisposed();
-		});
-		shell.onDisposed(controller::onShellDisposeEvent);
-		shell.onShellActivated(controller::onShellActivated);
-		shell.onShellActivated(controller::onShellEventEvent);
-		shell.onShellDeactivated(controller::onShellEvent);
-		shell.onShellDeactivated(controller::onShellEventEvent);
-		shell.onShellIconified(controller::onShellEvent);
-		shell.onShellIconified(controller::onShellEventEvent);
-		shell.onShellDeiconified(controller::onShellEvent);
-		shell.onShellDeiconified(controller::onShellEventEvent);
-		shell.onShellClosed(controller::onShellEvent);
-		shell.onShellClosed(controller::onShellEventEvent);
+		shellBuilder.withText(getClass().getSimpleName())
+				.withImages(Images.getImages(shell.getDisplay(), Images.IMAGES_A));
+		shellBuilder.onDisposed(controller::onShellDisposed);
+		shellBuilder.onDisposed(controller::onShellDisposeEvent);
+		shellBuilder.onShellActivated(controller::onShellActivated);
+		shellBuilder.onShellActivated(controller::onShellEventEvent);
+		shellBuilder.onShellDeactivated(controller::onShellEvent);
+		shellBuilder.onShellDeactivated(controller::onShellEventEvent);
+		shellBuilder.onShellIconified(controller::onShellEvent);
+		shellBuilder.onShellIconified(controller::onShellEventEvent);
+		shellBuilder.onShellDeiconified(controller::onShellEvent);
+		shellBuilder.onShellDeiconified(controller::onShellEventEvent);
+		shellBuilder.onShellClosed(controller::onShellEvent);
+		shellBuilder.onShellClosed(controller::onShellEventEvent);
 		buildMenuBar(controller);
 
 		TabFolder tabs = buildTabs(controller);
 
-		this.status.set(new Label(root, SWT.HORIZONTAL));
-		GridLayoutBuilder.layout(1).margin(2, 2, 2, 2).spacing(2, 2).apply(root);
+		this.status.set(new Label(shell, SWT.HORIZONTAL));
+		GridLayoutBuilder.layout(1).margin(2, 2, 2, 2).spacing(2, 2).apply(shell);
 		GridLayoutBuilder.data().align(SWT.FILL, SWT.FILL).grab(true, true).apply(tabs);
 		GridLayoutBuilder.data().align(SWT.FILL, SWT.BOTTOM).grab(true, false).apply(this.status);
 		setStatus("UI ready...");
-		root.layout();
-		root.open();
+		shell.layout();
+		shell.open();
 	}
 
 	private void buildMenuBar(TestUserController controller) throws ResourceException {
-		MenuBuilder menu = MenuBuilder.menuBar(this.rootHolder);
+		MenuBuilder menu = MenuBuilder.menuBar(root());
 		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		menu.addItem(SWT.CASCADE).withText("Menu A");
@@ -124,7 +121,7 @@ public class TestUserInterface extends UserInterface<Shell> {
 	}
 
 	private TabFolder buildTabs(TestUserController controller) throws ResourceException {
-		TabFolderBuilder tabs = TabFolderBuilder.top(this.rootHolder.get(), SWT.NONE);
+		TabFolderBuilder tabs = TabFolderBuilder.top(root(), SWT.NONE);
 		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		tabs.addItem(SWT.NONE).withText("Tab 1").withImage(itemImage);

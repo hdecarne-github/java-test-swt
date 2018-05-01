@@ -24,7 +24,7 @@ import de.carne.boot.ApplicationMain;
 import de.carne.boot.Exceptions;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
-import de.carne.swt.widgets.UserInterface;
+import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
@@ -57,7 +57,7 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 	}
 
 	@Override
-	protected UserInterface<Shell> setupUserInterface(Display display) throws ResourceException {
+	protected ShellUserInterface setupUserInterface(Display display) throws ResourceException {
 		return new TestUserInterface(new Shell(display));
 	}
 

@@ -16,8 +16,9 @@
  */
 package de.carne.swt.widgets;
 
+import java.util.function.Supplier;
+
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import de.carne.swt.graphics.ResourceException;
 
@@ -26,7 +27,7 @@ import de.carne.swt.graphics.ResourceException;
  *
  * @param <R> the root widget's type.
  */
-public abstract class UserInterface<R extends Composite> {
+public abstract class UserInterface<R extends Composite> implements Supplier<R> {
 
 	private final R root;
 
@@ -48,24 +49,16 @@ public abstract class UserInterface<R extends Composite> {
 		return this.root;
 	}
 
+	@Override
+	public R get() {
+		return this.root;
+	}
+
 	/**
 	 * Sets up and opens the interface.
 	 *
 	 * @throws ResourceException if a required resource is not available.
 	 */
 	public abstract void open() throws ResourceException;
-
-	/**
-	 * Runs the event dispatching loop on this {@linkplain UserInterface} instance.
-	 */
-	public void run() {
-		Display display = this.root.getDisplay();
-
-		while (!this.root.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
 
 }

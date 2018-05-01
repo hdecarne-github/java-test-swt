@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.carne.boot.Exceptions;
 import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
-import de.carne.swt.widgets.UserInterface;
+import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.Late;
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
@@ -50,7 +50,8 @@ public abstract class UserApplication {
 	public int run(CmdLineProcessor cmdLine) throws ResourceException {
 		this.cmdLineHolder.set(cmdLine);
 
-		UserInterface<Shell> userInterface = setupUserInterface(this.displayHolder.set(setupDisplay()));
+		Display display = this.displayHolder.set(setupDisplay());
+		ShellUserInterface userInterface = setupUserInterface(display);
 
 		userInterface.open();
 		try {
@@ -59,6 +60,7 @@ public abstract class UserApplication {
 			Exceptions.warn(e);
 		}
 		userInterface.run();
+		display.dispose();
 		return this.status;
 	}
 
@@ -77,7 +79,7 @@ public abstract class UserApplication {
 	 * @return The application's start {@linkplain Shell}.
 	 * @throws ResourceException if a required resource is not available.
 	 */
-	protected abstract UserInterface<Shell> setupUserInterface(Display display) throws ResourceException;
+	protected abstract ShellUserInterface setupUserInterface(Display display) throws ResourceException;
 
 	/**
 	 * Get the application's {@linkplain Display}.

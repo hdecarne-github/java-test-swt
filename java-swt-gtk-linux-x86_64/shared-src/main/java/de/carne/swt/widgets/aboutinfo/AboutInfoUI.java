@@ -43,10 +43,10 @@ import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
 import de.carne.swt.widgets.ControlBuilder;
 import de.carne.swt.widgets.ShellBuilder;
-import de.carne.swt.widgets.UserInterface;
+import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.ManifestInfos;
 
-class AboutInfoUI extends UserInterface<Shell> {
+class AboutInfoUI extends ShellUserInterface {
 
 	private final ResourceTracker resources;
 	@Nullable
