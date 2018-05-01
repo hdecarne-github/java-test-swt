@@ -80,7 +80,7 @@ class AboutInfoUI extends ShellUserInterface {
 		ControlBuilder<Label> separator2 = rootBuilder.addControlChild(Label.class, SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NO_BACKGROUND);
 
-		rootBuilder.withText(AboutInfoI18N.i18nTitle(ManifestInfos.APPLICATION_NAME));
+		rootBuilder.withText(AboutInfoI18N.i18nTitle(ManifestInfos.APPLICATION_NAME)).withDefaultImages();
 
 		URL checkedLogoUrl = this.logoUrl;
 
