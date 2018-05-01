@@ -40,14 +40,14 @@ public final class MessagesI18N {
 	/**
 	 * Resource key {@code I18N_MESSAGE_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * 
+	 * An unexpected exception has been encountered.<br>Cause: {0}
 	 */
 	public static final String I18N_MESSAGE_UNEXPECTED_EXCEPTION = "I18N_MESSAGE_UNEXPECTED_EXCEPTION";
 
 	/**
 	 * Resource string {@code I18N_MESSAGE_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * 
+	 * An unexpected exception has been encountered.<br>Cause: {0}
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -57,60 +57,22 @@ public final class MessagesI18N {
 	}
 
 	/**
-	 * Resource key {@code I18N_TEXT_ERROR}
+	 * Resource key {@code I18N_TEXT_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * Error
+	 * Unexpected exception
 	 */
-	public static final String I18N_TEXT_ERROR = "I18N_TEXT_ERROR";
+	public static final String I18N_TEXT_UNEXPECTED_EXCEPTION = "I18N_TEXT_UNEXPECTED_EXCEPTION";
 
 	/**
-	 * Resource string {@code I18N_TEXT_ERROR}
+	 * Resource string {@code I18N_TEXT_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * Error
+	 * Unexpected exception
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
 	 */
-	public static String i18nTextError(Object... arguments) {
-		return format(I18N_TEXT_ERROR, arguments);
-	}
-
-	/**
-	 * Resource key {@code I18N_TEXT_INFORMATION}
-	 * <p>
-	 * Information
-	 */
-	public static final String I18N_TEXT_INFORMATION = "I18N_TEXT_INFORMATION";
-
-	/**
-	 * Resource string {@code I18N_TEXT_INFORMATION}
-	 * <p>
-	 * Information
-	 *
-	 * @param arguments Format arguments.
-	 * @return The formatted string.
-	 */
-	public static String i18nTextInformation(Object... arguments) {
-		return format(I18N_TEXT_INFORMATION, arguments);
-	}
-
-	/**
-	 * Resource key {@code I18N_TEXT_WARNING}
-	 * <p>
-	 * Warning
-	 */
-	public static final String I18N_TEXT_WARNING = "I18N_TEXT_WARNING";
-
-	/**
-	 * Resource string {@code I18N_TEXT_WARNING}
-	 * <p>
-	 * Warning
-	 *
-	 * @param arguments Format arguments.
-	 * @return The formatted string.
-	 */
-	public static String i18nTextWarning(Object... arguments) {
-		return format(I18N_TEXT_WARNING, arguments);
+	public static String i18nTextUnexpectedException(Object... arguments) {
+		return format(I18N_TEXT_UNEXPECTED_EXCEPTION, arguments);
 	}
 
 }

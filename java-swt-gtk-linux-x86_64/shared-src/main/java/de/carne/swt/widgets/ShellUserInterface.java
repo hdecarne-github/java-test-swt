@@ -55,7 +55,7 @@ public abstract class ShellUserInterface extends UserInterface<Shell> {
 	 * @param exception the causing exception.
 	 */
 	protected void unexpectedException(Throwable exception) {
-		MessageBoxBuilder.error(root()).withText(MessagesI18N.i18nTextError())
+		MessageBoxBuilder.error(root()).withText(MessagesI18N.i18nTextUnexpectedException())
 				.withMessage(MessagesI18N.i18nMessageUnexpectedException(Exceptions.toString(exception))).get().open();
 	}
 
