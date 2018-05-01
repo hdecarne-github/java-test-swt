@@ -22,6 +22,8 @@ import java.util.function.Supplier;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.swt.events.EventConsumer;
@@ -74,6 +76,24 @@ public class ShellBuilder extends CompositeBuilder<Shell> {
 	 */
 	public ShellBuilder withImages(Supplier<Image[]> images) {
 		return withImages(images.get());
+	}
+
+	/**
+	 * Sets the {@linkplain Shell}'s images to a suitable default by traversing the widget hierarchy.
+	 *
+	 * @return the updated builder.
+	 */
+	public ShellBuilder withDefaultImages() {
+		Shell shell = get();
+		Composite parent = shell.getParent();
+
+		while (parent != null) {
+			if (parent instanceof Decorations) {
+				shell.setImages(((Decorations) parent).getImages());
+			}
+			parent = parent.getParent();
+		}
+		return this;
 	}
 
 	/**
