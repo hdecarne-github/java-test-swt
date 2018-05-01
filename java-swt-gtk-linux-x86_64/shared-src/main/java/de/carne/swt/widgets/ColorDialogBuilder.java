@@ -35,7 +35,7 @@ public class ColorDialogBuilder extends DialogBuilder<ColorDialog> {
 	}
 
 	/**
-	 * Convenience function for creating a {@linkplain ColorDialogBuilder} instance for a standard font chooser dialog.
+	 * Convenience function for creating a {@linkplain ColorDialogBuilder} instance for a standard color chooser dialog.
 	 *
 	 * @param parent the dialog's parent.
 	 * @return the created builder.
@@ -57,7 +57,7 @@ public class ColorDialogBuilder extends DialogBuilder<ColorDialog> {
 	}
 
 	/**
-	 * Sets the font dialog's initial colors.
+	 * Sets the color dialog's initial colors.
 	 *
 	 * @param rgbs the colors to set.
 	 * @return the updated builder.
