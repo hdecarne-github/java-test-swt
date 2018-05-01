@@ -135,16 +135,13 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 			TransferData preferredDataType) {
 		TransferData acceptedDataType = null;
 
-		for (TransferData supporteDataType : transfer.getSupportedTypes()) {
-			if (supporteDataType.equals(preferredDataType)) {
-				acceptedDataType = preferredDataType;
-				break;
-			} else if (acceptedDataType == null) {
-				for (TransferData dataType : dataTypes) {
-					if (supporteDataType.equals(dataType)) {
-						acceptedDataType = dataType;
-						break;
-					}
+		if (transfer.isSupportedType(preferredDataType)) {
+			acceptedDataType = preferredDataType;
+		} else {
+			for (TransferData dataType : dataTypes) {
+				if (transfer.isSupportedType(dataType)) {
+					acceptedDataType = dataType;
+					break;
 				}
 			}
 		}
