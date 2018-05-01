@@ -59,14 +59,14 @@ public final class MessagesI18N {
 	/**
 	 * Resource key {@code I18N_TEXT_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * Unexpected exception
+	 * Application error
 	 */
 	public static final String I18N_TEXT_UNEXPECTED_EXCEPTION = "I18N_TEXT_UNEXPECTED_EXCEPTION";
 
 	/**
 	 * Resource string {@code I18N_TEXT_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * Unexpected exception
+	 * Application error
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
