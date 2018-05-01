@@ -94,6 +94,11 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 		return withDropListener(new DropTargetAdapter() {
 
 			@Override
+			public void dragEnter(@Nullable DropTargetEvent event) {
+				dropAccept(event);
+			}
+
+			@Override
 			public void drop(@Nullable DropTargetEvent event) {
 				if (event != null) {
 					action.accept(Check.isInstanceOf(event.data, String[].class));
@@ -108,6 +113,13 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 
 					if (acceptedDataType != null) {
 						event.currentDataType = acceptedDataType;
+						if (event.detail == DND.DROP_DEFAULT) {
+							if ((event.operations & DND.DROP_COPY) == DND.DROP_COPY) {
+								event.detail = DND.DROP_COPY;
+							} else if ((event.operations & DND.DROP_LINK) == DND.DROP_LINK) {
+								event.detail = DND.DROP_LINK;
+							}
+						}
 					} else {
 						event.detail = DND.DROP_NONE;
 					}
