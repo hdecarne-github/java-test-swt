@@ -51,11 +51,11 @@ public abstract class ShellUserInterface extends UserInterface<Shell> {
 
 	/**
 	 * Displays a generic unexpected exception error message box.
-	 * 
+	 *
 	 * @param exception the causing exception.
 	 */
 	protected void unexpectedException(Throwable exception) {
-		MessageBoxBuilder.error(root())
+		MessageBoxBuilder.error(root()).withText(MessagesI18N.i18nTextError())
 				.withMessage(MessagesI18N.i18nMessageUnexpectedException(Exceptions.toString(exception))).get().open();
 	}
 
