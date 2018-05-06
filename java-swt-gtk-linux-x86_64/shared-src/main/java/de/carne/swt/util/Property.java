@@ -68,7 +68,7 @@ public class Property<T> implements Supplier<T> {
 	 * @return the old property value.
 	 */
 	@Nullable
-	public T set(T newValue) {
+	public T set(@Nullable T newValue) {
 		T oldValue = this.value;
 
 		this.value = newValue;
