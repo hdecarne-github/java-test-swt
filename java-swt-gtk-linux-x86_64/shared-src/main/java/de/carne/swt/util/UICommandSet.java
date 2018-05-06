@@ -19,6 +19,7 @@ package de.carne.swt.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -66,6 +67,16 @@ public final class UICommandSet implements UICommand {
 	 */
 	public UICommandSet add(ToolItem toolItem) {
 		return add(UICommands.of(toolItem));
+	}
+
+	/**
+	 * Adds a {@linkplain Control} based {@linkplain UICommand} to the set.
+	 *
+	 * @param control the {@linkplain Control} to add.
+	 * @return the updated {@linkplain UICommandSet}.
+	 */
+	public UICommandSet add(Control control) {
+		return add(UICommands.of(control));
 	}
 
 }

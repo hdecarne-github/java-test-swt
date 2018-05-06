@@ -16,6 +16,7 @@
  */
 package de.carne.swt.util;
 
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -48,6 +49,16 @@ public final class UICommands {
 		return new ToolItemUICommand(toolItem);
 	}
 
+	/**
+	 * Creates a {@linkplain Control} based {@linkplain UICommand} instance.
+	 *
+	 * @param control the {@linkplain Control} to wrap.
+	 * @return the created {@linkplain UICommand} instance.
+	 */
+	public static UICommand of(Control control) {
+		return new ControlUICommand(control);
+	}
+
 	private static class MenuItemUICommand implements UICommand {
 
 		private final MenuItem menuItem;
@@ -57,7 +68,7 @@ public final class UICommands {
 		}
 
 		@Override
-		public MenuItemUICommand setEnabled(boolean enabled) {
+		public UICommand setEnabled(boolean enabled) {
 			this.menuItem.setEnabled(enabled);
 			return this;
 		}
@@ -73,8 +84,24 @@ public final class UICommands {
 		}
 
 		@Override
-		public ToolItemUICommand setEnabled(boolean enabled) {
+		public UICommand setEnabled(boolean enabled) {
 			this.toolItem.setEnabled(enabled);
+			return this;
+		}
+
+	}
+
+	private static class ControlUICommand implements UICommand {
+
+		private final Control control;
+
+		ControlUICommand(Control control) {
+			this.control = control;
+		}
+
+		@Override
+		public UICommand setEnabled(boolean enabled) {
+			this.control.setEnabled(enabled);
 			return this;
 		}
 
