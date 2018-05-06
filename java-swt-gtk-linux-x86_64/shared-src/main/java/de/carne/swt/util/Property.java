@@ -69,10 +69,23 @@ public class Property<T> implements Supplier<T> {
 	 */
 	@Nullable
 	public T set(@Nullable T newValue) {
+		return set(newValue, false);
+	}
+
+	/**
+	 * Sets the property value.
+	 *
+	 * @param newValue the value to set.
+	 * @param forceChange whether to always notify registered ({@code true}) or only if value is changed
+	 *        ({@code false}).
+	 * @return the old property value.
+	 */
+	@Nullable
+	public T set(@Nullable T newValue, boolean forceChange) {
 		T oldValue = this.value;
 
 		this.value = newValue;
-		if (!Objects.equals(this.value, oldValue)) {
+		if (forceChange || !Objects.equals(this.value, oldValue)) {
 			for (PropertyChangedListener<T> changedListener : this.changedListeners) {
 				changedListener.changed(this.value, oldValue);
 			}
