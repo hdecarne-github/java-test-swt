@@ -78,7 +78,7 @@ class AboutInfoUI extends ShellUserInterface {
 		ControlBuilder<Label> separator1 = rootBuilder.addControlChild(Label.class, SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<TabFolder> copyrights = rootBuilder.addCompositeChild(TabFolder.class, SWT.BOTTOM);
 		ControlBuilder<Label> separator2 = rootBuilder.addControlChild(Label.class, SWT.HORIZONTAL | SWT.SEPARATOR);
-		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NO_BACKGROUND);
+		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NONE);
 
 		rootBuilder.withText(AboutInfoI18N.i18nTitle(ManifestInfos.APPLICATION_NAME)).withDefaultImages();
 
