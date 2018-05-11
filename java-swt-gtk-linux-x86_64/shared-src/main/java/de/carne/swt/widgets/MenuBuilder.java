@@ -42,15 +42,29 @@ public final class MenuBuilder implements Supplier<Menu> {
 	@Nullable
 	private MenuItem currentItem = null;
 
-	private MenuBuilder(Menu menu) {
+	/**
+	 * Constructs a new {@linkplain MenuBuilder} instance to build up the given menu.
+	 *
+	 * @param menu the {@linkplain Menu} to build up.
+	 */
+	public MenuBuilder(Menu menu) {
 		this.menuStack.push(menu);
 	}
 
 	/**
-	 * Build a {@linkplain Shell}s menu bar.
+	 * Constructs a new {@linkplain MenuBuilder} instance to build up the given menu.
 	 *
-	 * @param shell The {@linkplain Shell} owning the menu bar.
-	 * @return The new {@linkplain MenuBuilder}.
+	 * @param menu the {@linkplain Menu} to build up.
+	 */
+	public MenuBuilder(Supplier<Menu> menu) {
+		this(menu.get());
+	}
+
+	/**
+	 * Builds a {@linkplain Shell}s menu bar.
+	 *
+	 * @param shell the {@linkplain Shell} owning the menu bar.
+	 * @return the new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder menuBar(Shell shell) {
 		Menu menu = new Menu(shell, SWT.BAR);
@@ -60,39 +74,39 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Build a {@linkplain Shell}s menu bar.
+	 * Builds a {@linkplain Shell}s menu bar.
 	 *
-	 * @param shell The {@linkplain Shell} owning the menu bar.
-	 * @return The new {@linkplain MenuBuilder}.
+	 * @param shell the {@linkplain Shell} owning the menu bar.
+	 * @return the new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder menuBar(Supplier<? extends Shell> shell) {
 		return menuBar(shell.get());
 	}
 
 	/**
-	 * Build a pop up menu.
+	 * Builds a pop up menu.
 	 *
-	 * @param parent The {@linkplain Control} owning the the pop up menu.
-	 * @return The new {@linkplain MenuBuilder}.
+	 * @param parent the {@linkplain Control} owning the the pop up menu.
+	 * @return the new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder popupMenu(Control parent) {
 		return new MenuBuilder(new Menu(parent));
 	}
 
 	/**
-	 * Build a pop up menu.
+	 * Builds a pop up menu.
 	 *
-	 * @param parent The {@linkplain Control} owning the the pop up menu.
-	 * @return The new {@linkplain MenuBuilder}.
+	 * @param parent the {@linkplain Control} owning the the pop up menu.
+	 * @return the new {@linkplain MenuBuilder}.
 	 */
 	public static MenuBuilder popupMenu(Supplier<? extends Control> parent) {
 		return popupMenu(parent.get());
 	}
 
 	/**
-	 * Get the {@linkplain Menu} the builder operates on at this state.
+	 * Gets the {@linkplain Menu} the builder operates on at this state.
 	 *
-	 * @return The {@linkplain Menu} the builder operates on at this state.
+	 * @return the {@linkplain Menu} the builder operates on at this state.
 	 */
 	@Override
 	public Menu get() {
@@ -100,20 +114,20 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Get the {@linkplain MenuItem} the builder operates on at this state.
+	 * Gets the {@linkplain MenuItem} the builder operates on at this state.
 	 *
-	 * @return The {@linkplain MenuItem} the builder operates on at this state.
+	 * @return the {@linkplain MenuItem} the builder operates on at this state.
 	 */
 	public MenuItem currentItem() {
 		return checkCurrentItem(this.currentItem);
 	}
 
 	/**
-	 * Start building a new sub menu.
+	 * Starts building a new sub menu.
 	 * <p>
 	 * All subsequent calls will operate on the new sub menu.
 	 *
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 */
 	public MenuBuilder beginMenu() {
 		Menu menu = new Menu(this.menuStack.peek());
@@ -127,11 +141,11 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Finish building the current sub menu.
+	 * Finishes building the current sub menu.
 	 * <p>
 	 * All subsequent calls will operate on the sub menu's parent.
 	 *
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 */
 	public MenuBuilder endMenu() {
 		this.currentItem = null;
@@ -150,7 +164,19 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Add a {@linkplain MenuItem} to the current {@linkplain Menu}.
+	 * Removes all {@linkplain MenuItem}s from the current {@linkplain Menu}.
+	 *
+	 * @return The updated {@linkplain MenuBuilder}.
+	 */
+	public MenuBuilder removeItems() {
+		for (MenuItem item : this.menuStack.peek().getItems()) {
+			item.dispose();
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a {@linkplain MenuItem} to the current {@linkplain Menu}.
 	 * <p>
 	 * All subsequent calls will operate on the new item.
 	 *
@@ -163,10 +189,21 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Set the current {@linkplain MenuItem}'s text.
+	 * Makes the current {@linkplain MenuItem} the default for it's parent {@linkplain Menu}.
 	 *
-	 * @param text The text to set.
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @return the updated {@linkplain MenuBuilder}.
+	 * @see Menu#setDefaultItem(MenuItem)
+	 */
+	public MenuBuilder setDefault() {
+		this.menuStack.peek().setDefaultItem(checkCurrentItem(this.currentItem));
+		return this;
+	}
+
+	/**
+	 * Sets the current {@linkplain MenuItem}'s text.
+	 *
+	 * @param text the text to set.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#setText(String)
 	 */
 	public MenuBuilder withText(String text) {
@@ -175,10 +212,10 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Set the current {@linkplain MenuItem}'s image.
+	 * Sets the current {@linkplain MenuItem}'s image.
 	 *
-	 * @param image The image to set.
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @param image the image to set.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#setImage(Image)
 	 */
 	public MenuBuilder withImage(Image image) {
@@ -187,10 +224,10 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Set the current {@linkplain MenuItem}'s image.
+	 * Sets the current {@linkplain MenuItem}'s image.
 	 *
-	 * @param image The image to set.
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @param image the image to set.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#setImage(Image)
 	 */
 	public MenuBuilder withImage(Supplier<Image> image) {
@@ -198,10 +235,10 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Set {@linkplain SelectionEvent} action.
+	 * Adds a {@linkplain SelectionEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @param action the action to set.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 */
 	public MenuBuilder onSelected(Consumer<SelectionEvent> action) {
@@ -214,10 +251,10 @@ public final class MenuBuilder implements Supplier<Menu> {
 	}
 
 	/**
-	 * Set {@linkplain SelectionEvent} action.
+	 * Adds a {@linkplain SelectionEvent} action.
 	 *
-	 * @param action The action to set.
-	 * @return The updated {@linkplain MenuBuilder}.
+	 * @param action the action to set.
+	 * @return the updated {@linkplain MenuBuilder}.
 	 * @see MenuItem#addSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 */
 	public MenuBuilder onSelected(Runnable action) {
