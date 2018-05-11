@@ -29,7 +29,7 @@ public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegrati
 
 	@Override
 	protected boolean internalIsGtk() {
-		return false;
+		return true;
 	}
 
 }
