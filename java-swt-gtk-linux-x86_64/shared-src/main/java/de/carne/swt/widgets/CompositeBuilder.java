@@ -19,9 +19,11 @@ package de.carne.swt.widgets;
 import java.lang.reflect.Constructor;
 import java.util.function.Function;
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 import de.carne.boot.Exceptions;
 
@@ -116,6 +118,26 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 */
 	public CompositeBuilder<Group> addGroupChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Group(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain Button}.
+	 *
+	 * @param style The {@linkplain Button} style.
+	 * @return The added child control.
+	 */
+	public ButtonBuilder addButtonChild(int style) {
+		return addChild(parent -> new ButtonBuilder(new Button(parent, style)));
+	}
+
+	/**
+	 * Add a child of type {@linkplain Label}.
+	 *
+	 * @param style The {@linkplain Label} style.
+	 * @return The added child control.
+	 */
+	public LabelBuilder addLabelChild(int style) {
+		return addChild(parent -> new LabelBuilder(new Label(parent, style)));
 	}
 
 }

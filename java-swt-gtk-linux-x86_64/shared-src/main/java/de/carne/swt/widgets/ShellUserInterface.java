@@ -20,11 +20,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.boot.Exceptions;
+import de.carne.boot.logging.Log;
 
 /**
  * Base class for {@linkplain Shell} based top-level user interfaces.
  */
 public abstract class ShellUserInterface extends UserInterface<Shell> {
+
+	private static final Log LOG = new Log();
 
 	/**
 	 * Constructs a new {@linkplain ShellUserInterface} instance.
@@ -55,7 +58,8 @@ public abstract class ShellUserInterface extends UserInterface<Shell> {
 	 * @param exception the causing exception.
 	 */
 	protected void unexpectedException(Throwable exception) {
-		Exceptions.warn(exception);
+		LOG.warning(exception, "An unexpected exception occurred while executing ''{0}''", root().getText());
+
 		MessageBoxBuilder.error(root()).withText(MessagesI18N.i18nTextUnexpectedException())
 				.withMessage(MessagesI18N.i18nMessageUnexpectedException(Exceptions.toString(exception))).get().open();
 	}

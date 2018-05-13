@@ -51,7 +51,7 @@ public class WidgetBuilder<T extends Widget> implements Supplier<T> {
 	 * @return the {@linkplain Widget} the builder operates on.
 	 */
 	@Override
-	public T get() {
+	public final T get() {
 		return this.widget;
 	}
 
