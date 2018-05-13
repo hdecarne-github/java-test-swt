@@ -25,13 +25,19 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class MessageBoxBuilder extends DialogBuilder<MessageBox> {
 
+	private MessageBoxBuilder(MessageBox dialog) {
+		super(dialog);
+	}
+
 	/**
 	 * Constructs a new {@linkplain MessageBoxBuilder} instance.
 	 *
-	 * @param dialog the dialog to build.
+	 * @param parent the dialog's parent.
+	 * @param style the dialog's style.
+	 * @return the created builder.
 	 */
-	public MessageBoxBuilder(MessageBox dialog) {
-		super(dialog);
+	public static MessageBoxBuilder build(Shell parent, int style) {
+		return new MessageBoxBuilder(new MessageBox(parent, style));
 	}
 
 	/**
