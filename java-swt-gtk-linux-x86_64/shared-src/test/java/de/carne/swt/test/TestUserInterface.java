@@ -34,6 +34,7 @@ import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
 import de.carne.swt.widgets.ControlBuilder;
 import de.carne.swt.widgets.CoolBarBuilder;
+import de.carne.swt.widgets.LabelBuilder;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
@@ -140,7 +141,7 @@ public class TestUserInterface extends ShellUserInterface {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.horizontal(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.horizontal(commands, SWT.FLAT);
-		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.HORIZONTAL);
+		LabelBuilder separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
 		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
@@ -166,7 +167,7 @@ public class TestUserInterface extends ShellUserInterface {
 		CompositeBuilder<Group> group = new CompositeBuilder<>(new Group(tab, SWT.NONE));
 		CoolBarBuilder commands = CoolBarBuilder.vertical(group, SWT.NONE);
 		ToolBarBuilder commandsTools = ToolBarBuilder.vertical(commands, SWT.FLAT);
-		ControlBuilder<Label> separator1 = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.VERTICAL);
+		LabelBuilder separator1 = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
 		Image itemImage = Images.getImage(root().getDisplay(), Images.IMAGE_A_16);
 
 		commands.addItem(SWT.NONE);
@@ -191,8 +192,8 @@ public class TestUserInterface extends ShellUserInterface {
 		ControlBuilder<List> control12 = group.addControlChild(List.class, SWT.SINGLE);
 		ControlBuilder<Tree> control21 = group.addControlChild(Tree.class, SWT.SINGLE);
 		ControlBuilder<List> control22 = group.addControlChild(List.class, SWT.SINGLE);
-		ControlBuilder<Label> hSeparator = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.HORIZONTAL);
-		ControlBuilder<Label> vSeparator = group.addControlChild(Label.class, SWT.SEPARATOR | SWT.VERTICAL);
+		LabelBuilder hSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.HORIZONTAL);
+		LabelBuilder vSeparator = group.addLabelChild(SWT.SEPARATOR | SWT.VERTICAL);
 
 		FormLayoutBuilder.layout().apply(group);
 		FormLayoutBuilder.data().left(0).top(0).right(vSeparator).bottom(hSeparator, 0).apply(control11);

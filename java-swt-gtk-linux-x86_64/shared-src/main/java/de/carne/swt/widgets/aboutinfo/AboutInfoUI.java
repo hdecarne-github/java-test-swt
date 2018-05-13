@@ -27,9 +27,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -40,8 +38,10 @@ import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.graphics.ResourceTracker;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
+import de.carne.swt.widgets.ButtonBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
 import de.carne.swt.widgets.ControlBuilder;
+import de.carne.swt.widgets.LabelBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.ManifestInfos;
@@ -71,13 +71,13 @@ class AboutInfoUI extends ShellUserInterface {
 
 	private Shell buildRoot() throws ResourceException {
 		ShellBuilder rootBuilder = new ShellBuilder(root());
-		ControlBuilder<Label> logo = rootBuilder.addControlChild(Label.class, SWT.NONE);
-		ControlBuilder<Label> title = rootBuilder.addControlChild(Label.class, SWT.NONE);
-		ControlBuilder<Label> version = rootBuilder.addControlChild(Label.class, SWT.NONE);
-		ControlBuilder<Label> build = rootBuilder.addControlChild(Label.class, SWT.NONE);
-		ControlBuilder<Label> separator1 = rootBuilder.addControlChild(Label.class, SWT.HORIZONTAL | SWT.SEPARATOR);
+		LabelBuilder logo = rootBuilder.addLabelChild(SWT.NONE);
+		LabelBuilder title = rootBuilder.addLabelChild(SWT.NONE);
+		LabelBuilder version = rootBuilder.addLabelChild(SWT.NONE);
+		LabelBuilder build = rootBuilder.addLabelChild(SWT.NONE);
+		LabelBuilder separator1 = rootBuilder.addLabelChild(SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<TabFolder> copyrights = rootBuilder.addCompositeChild(TabFolder.class, SWT.BOTTOM);
-		ControlBuilder<Label> separator2 = rootBuilder.addControlChild(Label.class, SWT.HORIZONTAL | SWT.SEPARATOR);
+		LabelBuilder separator2 = rootBuilder.addLabelChild(SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NONE);
 
 		rootBuilder.withText(AboutInfoI18N.i18nTitle(ManifestInfos.APPLICATION_NAME)).withDefaultImages();
@@ -85,11 +85,11 @@ class AboutInfoUI extends ShellUserInterface {
 		URL checkedLogoUrl = this.logoUrl;
 
 		if (checkedLogoUrl != null) {
-			logo.get().setImage(this.resources.getImage(checkedLogoUrl));
+			logo.withImage(this.resources.getImage(checkedLogoUrl));
 		}
-		title.get().setText(AboutInfoI18N.i18nLabelTitle(ManifestInfos.APPLICATION_NAME));
-		version.get().setText(AboutInfoI18N.i18nLabelVersion(ManifestInfos.APPLICATION_VERSION));
-		build.get().setText(AboutInfoI18N.i18nLabelBuild(ManifestInfos.APPLICATION_BUILD));
+		title.withText(AboutInfoI18N.i18nLabelTitle(ManifestInfos.APPLICATION_NAME));
+		version.withText(AboutInfoI18N.i18nLabelVersion(ManifestInfos.APPLICATION_VERSION));
+		build.withText(AboutInfoI18N.i18nLabelBuild(ManifestInfos.APPLICATION_BUILD));
 		buildCopyrights(copyrights);
 		buildButtons(buttons);
 
@@ -141,9 +141,9 @@ class AboutInfoUI extends ShellUserInterface {
 	}
 
 	private void buildButtons(CompositeBuilder<Composite> buttons) {
-		ControlBuilder<Button> closeButton = buttons.addControlChild(Button.class, SWT.PUSH);
+		ButtonBuilder closeButton = buttons.addButtonChild(SWT.PUSH);
 
-		closeButton.get().setText(AboutInfoI18N.i18nButtonClose());
+		closeButton.withText(AboutInfoI18N.i18nButtonClose());
 		closeButton.onSelected(() -> root().close());
 		RowLayoutBuilder.layout().fill(true).apply(buttons);
 		RowLayoutBuilder.data().apply(closeButton);
