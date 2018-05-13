@@ -57,7 +57,7 @@ public class FileDialogBuilder extends DialogBuilder<FileDialog> {
 	 * @return the created builder.
 	 */
 	public static FileDialogBuilder save(Shell parent) {
-		return new FileDialogBuilder(new FileDialog(parent, SWT.SAVE));
+		return new FileDialogBuilder(new FileDialog(parent, SWT.SAVE)).withOverwrite(true);
 	}
 
 	/**
@@ -124,7 +124,20 @@ public class FileDialogBuilder extends DialogBuilder<FileDialog> {
 	 * @see FileDialog#setFileName(String)
 	 */
 	public FileDialogBuilder withFileName(String file) {
-		get().setFileName(file);
+		int filterPathLength = file.length();
+
+		while (filterPathLength > 0 && "/\\".indexOf(file.charAt(filterPathLength - 1)) < 0) {
+			filterPathLength--;
+		}
+
+		FileDialog fileDialog = get();
+
+		if (filterPathLength > 0) {
+			fileDialog.setFilterPath(file.substring(0, filterPathLength));
+			fileDialog.setFileName(file.substring(filterPathLength));
+		} else {
+			fileDialog.setFileName(file);
+		}
 		return this;
 	}
 
