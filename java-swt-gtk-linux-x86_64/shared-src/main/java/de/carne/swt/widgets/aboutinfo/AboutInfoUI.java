@@ -62,14 +62,18 @@ class AboutInfoUI extends ShellUserInterface {
 
 	@Override
 	public void open() throws ResourceException {
-		Shell root = buildRoot();
+		ShellBuilder rootBuilder = buildRoot();
 
-		root.pack();
+		rootBuilder.pack();
+		rootBuilder.position(SWT.CENTER, SWT.CENTER);
+
+		Shell root = rootBuilder.get();
+
 		root.setMinimumSize(root.getSize());
 		root.open();
 	}
 
-	private Shell buildRoot() throws ResourceException {
+	private ShellBuilder buildRoot() throws ResourceException {
 		ShellBuilder rootBuilder = new ShellBuilder(root());
 		LabelBuilder logo = rootBuilder.addLabelChild(SWT.NONE);
 		LabelBuilder title = rootBuilder.addLabelChild(SWT.NONE);
@@ -102,7 +106,8 @@ class AboutInfoUI extends ShellUserInterface {
 		GridLayoutBuilder.data(GridData.FILL_BOTH).span(2, 1).apply(copyrights);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).span(2, 1).apply(separator2);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).span(2, 1).apply(buttons);
-		return rootBuilder.get();
+
+		return rootBuilder;
 	}
 
 	private void buildCopyrights(CompositeBuilder<TabFolder> copyrights) throws ResourceException {
