@@ -70,6 +70,8 @@ public class HeapInfo extends Canvas implements PaintListener {
 
 		try {
 			size = gc.textExtent("0000B/0000B", SWT.NONE);
+			size.x += 2;
+			size.y += 2;
 		} finally {
 			gc.dispose();
 		}
@@ -102,17 +104,18 @@ public class HeapInfo extends Canvas implements PaintListener {
 			int fillWidth = (clientArea.width * usage) / 100;
 			Color defaultBackground = event.gc.getBackground();
 
-			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 			event.gc.fillRectangle(0, 0, fillWidth, clientArea.height);
-			event.gc.setBackground(defaultBackground);
+			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 			event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
+			event.gc.setBackground(defaultBackground);
 
 			StringBuilder text = new StringBuilder();
 
 			text.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
 					.append(MEM_UNITS[totalMemUnitIndex]);
 
-			event.gc.drawText(text.toString(), 0, 0, SWT.DRAW_TRANSPARENT);
+			event.gc.drawText(text.toString(), 1, 1, SWT.DRAW_TRANSPARENT);
 		}
 	}
 
