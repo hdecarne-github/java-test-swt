@@ -26,6 +26,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import de.carne.boot.check.Nullable;
+
 /**
  * Custom control displaying the current VM heap usage.
  */
@@ -77,39 +79,41 @@ public class HeapInfo extends Canvas implements PaintListener {
 	private static final char[] MEM_UNITS = { 'B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
 
 	@Override
-	public void paintControl(PaintEvent event) {
-		Runtime runtime = Runtime.getRuntime();
+	public void paintControl(@Nullable PaintEvent event) {
+		if (event != null) {
+			Runtime runtime = Runtime.getRuntime();
 
-		long total = runtime.totalMemory();
-		long used = Math.max(0, total - runtime.freeMemory());
-		int usage = (int) ((used * 100) / total);
-		int totalMemUnitIndex = 0;
-		int usedMemUnitIndex = 0;
+			long total = runtime.totalMemory();
+			long used = Math.max(0, total - runtime.freeMemory());
+			int usage = (int) ((used * 100) / total);
+			int totalMemUnitIndex = 0;
+			int usedMemUnitIndex = 0;
 
-		while (total > 1024 && totalMemUnitIndex < MEM_UNITS.length) {
-			total >>= 10;
-			totalMemUnitIndex++;
-			if (used > 1024) {
-				used >>= 10;
-				usedMemUnitIndex++;
+			while (total > 1024 && totalMemUnitIndex < MEM_UNITS.length) {
+				total >>= 10;
+				totalMemUnitIndex++;
+				if (used > 1024) {
+					used >>= 10;
+					usedMemUnitIndex++;
+				}
 			}
+
+			Rectangle clientArea = getClientArea();
+			int fillWidth = (clientArea.width * usage) / 100;
+			Color defaultBackground = event.gc.getBackground();
+
+			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+			event.gc.fillRectangle(0, 0, fillWidth, clientArea.height);
+			event.gc.setBackground(defaultBackground);
+			event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
+
+			StringBuilder text = new StringBuilder();
+
+			text.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
+					.append(MEM_UNITS[totalMemUnitIndex]);
+
+			event.gc.drawText(text.toString(), 0, 0, SWT.DRAW_TRANSPARENT);
 		}
-
-		Rectangle clientArea = getClientArea();
-		int fillWidth = (clientArea.width * usage) / 100;
-		Color defaultBackground = event.gc.getBackground();
-
-		event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
-		event.gc.fillRectangle(0, 0, fillWidth, clientArea.height);
-		event.gc.setBackground(defaultBackground);
-		event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
-
-		StringBuilder text = new StringBuilder();
-
-		text.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
-				.append(MEM_UNITS[totalMemUnitIndex]);
-
-		event.gc.drawText(text.toString(), 0, 0, SWT.DRAW_TRANSPARENT);
 	}
 
 	private void onTimer() {
