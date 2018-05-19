@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.check.Nullable;
 
@@ -103,19 +104,19 @@ public class HeapInfo extends Canvas implements PaintListener {
 			Rectangle clientArea = getClientArea();
 			int fillWidth = (clientArea.width * usage) / 100;
 			Color defaultBackground = event.gc.getBackground();
+			Display display = getDisplay();
 
-			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
+			event.gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 			event.gc.fillRectangle(0, 0, fillWidth, clientArea.height);
-			event.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-			event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
 			event.gc.setBackground(defaultBackground);
+			event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
 
-			StringBuilder text = new StringBuilder();
+			StringBuilder heapInfo = new StringBuilder();
 
-			text.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
+			heapInfo.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
 					.append(MEM_UNITS[totalMemUnitIndex]);
 
-			event.gc.drawText(text.toString(), 1, 1, SWT.DRAW_TRANSPARENT);
+			event.gc.drawString(heapInfo.toString(), 1, 1, true);
 		}
 	}
 
