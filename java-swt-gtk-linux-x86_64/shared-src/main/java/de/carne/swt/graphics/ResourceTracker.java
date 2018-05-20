@@ -16,15 +16,12 @@
  */
 package de.carne.swt.graphics;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
@@ -34,7 +31,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.Exceptions;
 import de.carne.boot.check.Nullable;
 
 /**
@@ -242,16 +238,7 @@ public abstract class ResourceTracker {
 	}
 
 	private Image createImageFromUrl(Device device, URL imageUrl) {
-		Image image;
-
-		try (InputStream imageStream = imageUrl.openStream()) {
-			image = new Image(device, imageStream);
-		} catch (IOException e) {
-			SWT.error(SWT.ERROR_IO, e);
-			// Never reached; just to make the compiler happy
-			throw Exceptions.toRuntime(e);
-		}
-		return image;
+		return new Image(device, new ScaledImageResourceProvider(imageUrl));
 	}
 
 	/**
