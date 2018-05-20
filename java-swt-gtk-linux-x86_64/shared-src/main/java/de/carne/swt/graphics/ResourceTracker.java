@@ -204,7 +204,7 @@ public abstract class ResourceTracker {
 	 * @return the requested {@linkplain Image} resource.
 	 */
 	public Image getImage(URL imageUrl) {
-		return getImage(imageUrl, this::createImageFromUrl);
+		return getImage(imageUrl, ScaledImageResourceProvider::createImageFromUrl);
 	}
 
 	/**
@@ -235,10 +235,6 @@ public abstract class ResourceTracker {
 	@Nullable
 	protected <D> Image getCachedImage(D descriptor) {
 		return this.imageCache.get(descriptor);
-	}
-
-	private Image createImageFromUrl(Device device, URL imageUrl) {
-		return new Image(device, new ScaledImageResourceProvider(imageUrl));
 	}
 
 	/**

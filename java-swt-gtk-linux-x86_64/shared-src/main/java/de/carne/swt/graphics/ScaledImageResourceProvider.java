@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageDataProvider;
 
@@ -31,8 +33,12 @@ final class ScaledImageResourceProvider implements ImageDataProvider {
 
 	private final URL url;
 
-	public ScaledImageResourceProvider(URL url) {
+	private ScaledImageResourceProvider(URL url) {
 		this.url = url;
+	}
+
+	public static Image createImageFromUrl(Device device, URL imageUrl) {
+		return new Image(device, new ScaledImageResourceProvider(imageUrl));
 	}
 
 	@Override
