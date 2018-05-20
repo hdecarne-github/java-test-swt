@@ -68,9 +68,9 @@ subprojects {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
 		implementation("de.carne.common:java-default:8.4.0")
-		api("org.junit.jupiter:junit-jupiter-api:5.1.0")
-		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.3")
+		api("org.junit.jupiter:junit-jupiter-api:5.2.0")
+		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.2.0")
 	}
 	
 	jar {
