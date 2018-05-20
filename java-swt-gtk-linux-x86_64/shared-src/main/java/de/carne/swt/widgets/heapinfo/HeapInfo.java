@@ -71,8 +71,8 @@ public class HeapInfo extends Canvas implements PaintListener {
 
 		try {
 			size = gc.textExtent("0000B/0000B", SWT.NONE);
-			size.x += 2;
-			size.y += 2;
+			size.x += 4;
+			size.y += 4;
 		} finally {
 			gc.dispose();
 		}
@@ -116,7 +116,7 @@ public class HeapInfo extends Canvas implements PaintListener {
 			heapInfo.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
 					.append(MEM_UNITS[totalMemUnitIndex]);
 
-			event.gc.drawString(heapInfo.toString(), 1, 1, true);
+			event.gc.drawString(heapInfo.toString(), 2, 2, true);
 		}
 	}
 
