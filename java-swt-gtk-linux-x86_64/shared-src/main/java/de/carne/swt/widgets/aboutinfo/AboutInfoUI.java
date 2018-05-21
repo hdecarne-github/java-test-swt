@@ -21,10 +21,14 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +36,9 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
@@ -45,6 +52,7 @@ import de.carne.swt.widgets.LabelBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.ManifestInfos;
+import de.carne.util.Strings;
 
 class AboutInfoUI extends ShellUserInterface {
 
@@ -80,7 +88,7 @@ class AboutInfoUI extends ShellUserInterface {
 		LabelBuilder version = rootBuilder.addLabelChild(SWT.NONE);
 		LabelBuilder build = rootBuilder.addLabelChild(SWT.NONE);
 		LabelBuilder separator1 = rootBuilder.addLabelChild(SWT.HORIZONTAL | SWT.SEPARATOR);
-		CompositeBuilder<TabFolder> copyrights = rootBuilder.addCompositeChild(TabFolder.class, SWT.BOTTOM);
+		CompositeBuilder<TabFolder> infos = rootBuilder.addCompositeChild(TabFolder.class, SWT.BOTTOM);
 		LabelBuilder separator2 = rootBuilder.addLabelChild(SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NONE);
 
@@ -94,8 +102,13 @@ class AboutInfoUI extends ShellUserInterface {
 		title.withText(AboutInfoI18N.i18nLabelTitle(ManifestInfos.APPLICATION_NAME));
 		version.withText(AboutInfoI18N.i18nLabelVersion(ManifestInfos.APPLICATION_VERSION));
 		build.withText(AboutInfoI18N.i18nLabelBuild(ManifestInfos.APPLICATION_BUILD));
-		buildCopyrights(copyrights);
+		buildCopyrightTabs(infos);
+		buildSystemPropertiesTab(infos);
 		buildButtons(buttons);
+
+		TabFolder infosTab = infos.get();
+		Point infoSize = infosTab.getItem(0).getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point infosSize = infosTab.computeSize(infoSize.x, infoSize.y);
 
 		GridLayoutBuilder.layout(2).apply(rootBuilder);
 		GridLayoutBuilder.data().span(1, 3).apply(logo);
@@ -103,14 +116,15 @@ class AboutInfoUI extends ShellUserInterface {
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).apply(version);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).apply(build);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).span(2, 1).apply(separator1);
-		GridLayoutBuilder.data(GridData.FILL_BOTH).span(2, 1).apply(copyrights);
+		GridLayoutBuilder.data(GridData.FILL_BOTH).span(2, 1).preferredSize(infosSize.x, infosSize.y).apply(infos);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).span(2, 1).apply(separator2);
 		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).span(2, 1).apply(buttons);
 
+		infos.get().pack();
 		return rootBuilder;
 	}
 
-	private void buildCopyrights(CompositeBuilder<TabFolder> copyrights) throws ResourceException {
+	private void buildCopyrightTabs(CompositeBuilder<TabFolder> infos) throws ResourceException {
 		for (URL copyrightUrl : this.copyrightUrls) {
 			try (BufferedReader copyrightReader = new BufferedReader(
 					new InputStreamReader(copyrightUrl.openStream()))) {
@@ -130,11 +144,11 @@ class AboutInfoUI extends ShellUserInterface {
 					copyrightInfo.append(copyrightInfoLine);
 				}
 
-				TabItem copyrightItem = new TabItem(copyrights.get(), SWT.NONE);
+				TabItem copyrightItem = new TabItem(infos.get(), SWT.NONE);
 
 				copyrightItem.setText(copyrightTitle);
 
-				ControlBuilder<Link> copyrightLink = copyrights.addControlChild(Link.class, SWT.NONE);
+				ControlBuilder<Link> copyrightLink = infos.addControlChild(Link.class, SWT.NONE);
 
 				copyrightItem.setControl(copyrightLink.get());
 				copyrightLink.get().setText(copyrightInfo.toString());
@@ -143,6 +157,38 @@ class AboutInfoUI extends ShellUserInterface {
 				throw new ResourceException("Failed to load copyright info: " + copyrightUrl, e);
 			}
 		}
+	}
+
+	private void buildSystemPropertiesTab(CompositeBuilder<TabFolder> infos) {
+		TabItem systemPropertiesItem = new TabItem(infos.get(), SWT.NONE);
+
+		systemPropertiesItem.setText(AboutInfoI18N.i18nTabSystemProperties());
+
+		Table keyValueTable = infos.addControlChild(Table.class, SWT.H_SCROLL | SWT.V_SCROLL).get();
+
+		systemPropertiesItem.setControl(keyValueTable);
+		keyValueTable.setHeaderVisible(true);
+		keyValueTable.setLinesVisible(true);
+
+		TableColumn keyColumn = new TableColumn(keyValueTable, SWT.NONE);
+		TableColumn valueColumn = new TableColumn(keyValueTable, SWT.NONE);
+
+		keyColumn.setText(AboutInfoI18N.i18nLabelSystemPropertyKey());
+		valueColumn.setText(AboutInfoI18N.i18nLabelSystemPropertyValue());
+
+		Properties systemProperties = System.getProperties();
+		List<String> keys = systemProperties.keySet().stream().map(Object::toString).collect(Collectors.toList());
+
+		Collections.sort(keys);
+		for (String key : keys) {
+			String value = systemProperties.getProperty(key);
+			TableItem keyValueItem = new TableItem(keyValueTable, SWT.NONE);
+
+			keyValueItem.setText(0, Strings.encode(key));
+			keyValueItem.setText(1, Strings.encode(value));
+		}
+		keyColumn.pack();
+		valueColumn.pack();
 	}
 
 	private void buildButtons(CompositeBuilder<Composite> buttons) {

@@ -76,6 +76,44 @@ public final class AboutInfoI18N {
 	}
 
 	/**
+	 * Resource key {@code I18N_LABEL_SYSTEM_PROPERTY_KEY}
+	 * <p>
+	 * Key
+	 */
+	public static final String I18N_LABEL_SYSTEM_PROPERTY_KEY = "I18N_LABEL_SYSTEM_PROPERTY_KEY";
+
+	/**
+	 * Resource string {@code I18N_LABEL_SYSTEM_PROPERTY_KEY}
+	 * <p>
+	 * Key
+	 *
+	 * @param arguments Format arguments.
+	 * @return The formatted string.
+	 */
+	public static String i18nLabelSystemPropertyKey(Object... arguments) {
+		return format(I18N_LABEL_SYSTEM_PROPERTY_KEY, arguments);
+	}
+
+	/**
+	 * Resource key {@code I18N_LABEL_SYSTEM_PROPERTY_VALUE}
+	 * <p>
+	 * Value
+	 */
+	public static final String I18N_LABEL_SYSTEM_PROPERTY_VALUE = "I18N_LABEL_SYSTEM_PROPERTY_VALUE";
+
+	/**
+	 * Resource string {@code I18N_LABEL_SYSTEM_PROPERTY_VALUE}
+	 * <p>
+	 * Value
+	 *
+	 * @param arguments Format arguments.
+	 * @return The formatted string.
+	 */
+	public static String i18nLabelSystemPropertyValue(Object... arguments) {
+		return format(I18N_LABEL_SYSTEM_PROPERTY_VALUE, arguments);
+	}
+
+	/**
 	 * Resource key {@code I18N_LABEL_TITLE}
 	 * <p>
 	 * {0}
@@ -111,6 +149,25 @@ public final class AboutInfoI18N {
 	 */
 	public static String i18nLabelVersion(Object... arguments) {
 		return format(I18N_LABEL_VERSION, arguments);
+	}
+
+	/**
+	 * Resource key {@code I18N_TAB_SYSTEM_PROPERTIES}
+	 * <p>
+	 * System Properties
+	 */
+	public static final String I18N_TAB_SYSTEM_PROPERTIES = "I18N_TAB_SYSTEM_PROPERTIES";
+
+	/**
+	 * Resource string {@code I18N_TAB_SYSTEM_PROPERTIES}
+	 * <p>
+	 * System Properties
+	 *
+	 * @param arguments Format arguments.
+	 * @return The formatted string.
+	 */
+	public static String i18nTabSystemProperties(Object... arguments) {
+		return format(I18N_TAB_SYSTEM_PROPERTIES, arguments);
 	}
 
 	/**
