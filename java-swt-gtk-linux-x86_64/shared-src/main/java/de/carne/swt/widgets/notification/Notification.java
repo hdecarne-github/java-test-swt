@@ -19,6 +19,9 @@ package de.carne.swt.widgets.notification;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -26,6 +29,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import de.carne.boot.check.Check;
 import de.carne.boot.check.Nullable;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.util.Strings;
@@ -126,17 +130,21 @@ public class Notification {
 	 * Opens and displays the notification to the user.
 	 */
 	public void open() {
+		Display display = this.parent.getDisplay();
+		Color background = display.getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+		Color foreground = display.getSystemColor(SWT.COLOR_INFO_FOREGROUND);
+
 		Shell shell = new Shell(this.parent, this.style | SWT.MODELESS);
-		Display display = shell.getDisplay();
-
-		shell.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-		shell.setForeground(display.getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-		shell.addFocusListener(FocusListener.focusLostAdapter(this::onFocusLost));
-
 		Label iconLabel = new Label(shell, SWT.NONE);
 		Label textLabel = new Label(shell, SWT.SINGLE);
 		Label messageLabel = new Label(shell, SWT.WRAP);
 
+		shell.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		shell.setForeground(display.getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		shell.addFocusListener(FocusListener.focusLostAdapter(this::onFocusLost));
+		shell.addKeyListener(KeyListener.keyPressedAdapter(this::onKeyPressed));
+		iconLabel.setBackground(background);
+		iconLabel.setForeground(foreground);
 		if (this.icon != null) {
 			iconLabel.setImage(this.icon);
 		} else {
@@ -147,7 +155,11 @@ public class Notification {
 				}
 			}
 		}
+		textLabel.setBackground(background);
+		textLabel.setForeground(foreground);
 		textLabel.setText(Strings.safe(this.text));
+		messageLabel.setBackground(background);
+		messageLabel.setForeground(foreground);
 		messageLabel.setText(Strings.safe(this.message));
 
 		GridLayoutBuilder.layout(2).apply(shell);
@@ -166,7 +178,13 @@ public class Notification {
 	}
 
 	private void onFocusLost(FocusEvent event) {
-		event.widget.dispose();
+		Check.isInstanceOf(event.widget, Shell.class).close();
+	}
+
+	private void onKeyPressed(KeyEvent event) {
+		if ("\u001b\r ".indexOf(event.keyCode) >= 0) {
+			Check.isInstanceOf(event.widget, Shell.class).close();
+		}
 	}
 
 }
