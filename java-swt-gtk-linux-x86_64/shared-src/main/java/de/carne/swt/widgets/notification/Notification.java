@@ -69,7 +69,7 @@ public class Notification {
 	 * @param parent the notification's parent.
 	 * @return the created {@linkplain Notification} instance.
 	 */
-	public static Notification info(Shell parent) {
+	public static Notification information(Shell parent) {
 		return new Notification(parent, SWT.ICON_INFORMATION);
 	}
 
