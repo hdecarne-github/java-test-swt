@@ -126,6 +126,18 @@ public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 	}
 
 	/**
+	 * Set the current {@linkplain ToolItem}'s tooltip text.
+	 *
+	 * @param text The text to set.
+	 * @return The updated builder.
+	 * @see ToolItem#setText(String)
+	 */
+	public ToolBarBuilder withToolTipText(String text) {
+		checkCurrentItem(this.currentItem).setToolTipText(text);
+		return this;
+	}
+
+	/**
 	 * Set the current {@linkplain ToolItem}'s image.
 	 *
 	 * @param image The {@linkplain Image} to set.
