@@ -17,10 +17,9 @@
 package de.carne.swt.widgets.notification;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.carne.boot.check.Check;
 import de.carne.boot.check.Nullable;
+import de.carne.swt.events.EventConsumer;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.util.Strings;
 
@@ -141,7 +141,7 @@ public class Notification {
 
 		shell.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		shell.setForeground(display.getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-		shell.addFocusListener(FocusListener.focusLostAdapter(this::onFocusLost));
+		shell.addListener(SWT.Deactivate, EventConsumer.shellEvent(this::onDeactivated));
 		shell.addKeyListener(KeyListener.keyPressedAdapter(this::onKeyPressed));
 		iconLabel.setBackground(background);
 		iconLabel.setForeground(foreground);
@@ -174,10 +174,10 @@ public class Notification {
 
 		shell.setLocation(this.parent.toDisplay(location));
 		shell.setVisible(true);
-		shell.setFocus();
+		shell.forceActive();
 	}
 
-	private void onFocusLost(FocusEvent event) {
+	private void onDeactivated(ShellEvent event) {
 		Check.isInstanceOf(event.widget, Shell.class).close();
 	}
 
