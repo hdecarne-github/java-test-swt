@@ -67,10 +67,9 @@ subprojects {
 		implementation("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.106.3") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
-		implementation("de.carne.common:java-default:8.5.1")
+		implementation("de.carne.common:java-default:8.6.0")
 		api("org.junit.jupiter:junit-jupiter-api:5.2.0")
 		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.2.0")
 	}
 	
 	jar {
@@ -90,7 +89,7 @@ subprojects {
 	}
 
 	jacoco {
-		toolVersion = "0.8.1"
+		toolVersion = "0.8.2"
 	}
 		
 	jacocoTestReport {
