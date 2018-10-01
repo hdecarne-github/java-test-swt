@@ -77,7 +77,7 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.107.0") {
+		api("org.eclipse.platform:org.eclipse.swt${swtPlatformSuffix}:3.108.0") {
 			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
 		}
 		api("de.carne.common:java-default:8.6.0")
