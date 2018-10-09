@@ -69,10 +69,10 @@ subprojects {
 
 		api(group: "de.carne.common", name: "java-default", version: "8.7.0-SNAPSHOT")
 		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: "3.108.0") {
-			exclude group: 'org.eclipse.platform', module: 'org.eclipse.swt.${osgi.platform}'
+			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
 		
-		testImplementation(group: "org.junit.jupiter", name: "junit-jupiter-api", version: "5.3.1")
+		implementation(group: "org.junit.jupiter", name: "junit-jupiter-api", version: "5.3.1")
 		testRuntimeOnly(group: "org.junit.jupiter", name: "junit-jupiter-engine", version: "5.3.1")
 	}
 	
