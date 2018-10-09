@@ -64,9 +64,6 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace('-', '.')
 
 	dependencies {
-		implementation(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: "2.2.100")
-		configurations.runtime.exclude(group: "org.eclipse.jdt", module: "org.eclipse.jdt.annotation")
-
 		api(group: "de.carne.common", name: "java-default", version: "8.7.0-SNAPSHOT")
 		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: "3.108.0") {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
