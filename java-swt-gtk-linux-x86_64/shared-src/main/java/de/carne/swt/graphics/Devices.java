@@ -16,9 +16,8 @@
  */
 package de.carne.swt.graphics;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.Device;
-
-import de.carne.boot.check.Nullable;
 
 /**
  * Utility class providing {@linkplain Device} related functions.

@@ -16,6 +16,7 @@
  */
 package de.carne.swt.widgets.heapinfo;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -26,8 +27,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
-import de.carne.boot.check.Nullable;
 
 /**
  * Custom control displaying the current VM heap usage.

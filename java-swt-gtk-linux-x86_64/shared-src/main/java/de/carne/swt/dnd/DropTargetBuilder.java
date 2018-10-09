@@ -19,6 +19,7 @@ package de.carne.swt.dnd;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
@@ -30,7 +31,6 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Control;
 
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain DropTarget} builder.

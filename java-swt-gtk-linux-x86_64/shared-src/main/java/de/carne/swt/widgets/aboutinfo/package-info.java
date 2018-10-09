@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.swt.widgets.aboutinfo;
 
-import de.carne.boot.check.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;

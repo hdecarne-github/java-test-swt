@@ -16,6 +16,7 @@
  */
 package de.carne.swt.widgets.notification;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -29,7 +30,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.util.Strings;

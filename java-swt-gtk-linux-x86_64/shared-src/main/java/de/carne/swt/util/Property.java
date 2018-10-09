@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * This class represents an observable property value.
@@ -77,7 +77,7 @@ public class Property<T> implements Supplier<T> {
 	 *
 	 * @param newValue the value to set.
 	 * @param forceChange whether to always notify registered ({@code true}) or only if value is changed
-	 *        ({@code false}).
+	 * ({@code false}).
 	 * @return the old property value.
 	 */
 	@Nullable

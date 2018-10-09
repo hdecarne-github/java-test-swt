@@ -16,7 +16,7 @@
  */
 package de.carne.swt.util;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Functional interface used to signal a property value has been changed.

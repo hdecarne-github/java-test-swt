@@ -20,11 +20,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.check.Nullable;
 import de.carne.swt.graphics.ResourceException;
 
 /**

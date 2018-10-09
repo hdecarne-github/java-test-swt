@@ -19,14 +19,13 @@ package de.carne.swt.events;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-
-import de.carne.boot.check.Nullable;
 
 /**
  * Event listener for mapping a typed SWT event to a consuming action.

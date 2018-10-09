@@ -18,14 +18,13 @@ package de.carne.swt.widgets;
 
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-
-import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain TabFolder} builder.
