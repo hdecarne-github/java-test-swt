@@ -18,6 +18,7 @@ package de.carne.test.swt.extension;
 
 import java.util.Optional;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -28,7 +29,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain ParameterResolver} that takes care of creation and disposal of a needed SWT {@linkplain Display} during

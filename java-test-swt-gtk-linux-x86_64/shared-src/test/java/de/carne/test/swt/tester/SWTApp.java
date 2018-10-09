@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.tester;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,7 +25,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.check.Nullable;
 import de.carne.util.Late;
 
 class SWTApp implements Runnable {

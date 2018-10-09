@@ -18,9 +18,8 @@ package de.carne.test.swt.tester;
 
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
-
-import de.carne.boot.check.Nullable;
 
 /**
  * Base class for all accessor objects.
