@@ -13,7 +13,7 @@ def resolveProperty(propertyName, envName) {
 	def resolved = (project.findProperty(propertyName) ?: System.getenv(envName));
 	
 	if(resolved == null) {
-		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
+		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}'")
 	}
 	return resolved; 
 }
@@ -61,7 +61,7 @@ subprojects {
 	}
 	
 	def platformSuffix = project.name.substring(rootProject.name.length())
-	def swtPlatformSuffix = platformSuffix.replace('-', '.')
+	def swtPlatformSuffix = platformSuffix.replace("-", ".")
 
 	dependencies {
 		api(group: "de.carne.common", name: "java-default", version: "8.7.0-SNAPSHOT")
