@@ -57,8 +57,7 @@ import de.carne.util.Strings;
 class AboutInfoUI extends ShellUserInterface {
 
 	private final ResourceTracker resources;
-	@Nullable
-	private final URL logoUrl;
+	private final @Nullable URL logoUrl;
 	private final List<URL> copyrightUrls;
 
 	public AboutInfoUI(Shell root, @Nullable URL logoUrl, List<URL> copyrightUrls) {
@@ -185,7 +184,7 @@ class AboutInfoUI extends ShellUserInterface {
 			TableItem keyValueItem = new TableItem(keyValueTable, SWT.NONE);
 
 			keyValueItem.setText(0, Strings.encode(key));
-			keyValueItem.setText(1, Strings.encode(value));
+			keyValueItem.setText(1, Strings.encode(Strings.valueOf(value)));
 		}
 		keyColumn.pack();
 		valueColumn.pack();

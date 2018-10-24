@@ -16,6 +16,8 @@
  */
 package de.carne.swt.widgets.notification;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -45,12 +47,9 @@ public class Notification {
 
 	private final Shell parent;
 	private final int style;
-	@Nullable
-	private Image icon = null;
-	@Nullable
-	private String text = null;
-	@Nullable
-	private String message = null;
+	private @Nullable Image icon = null;
+	private @Nullable String text = null;
+	private @Nullable String message = null;
 
 	/**
 	 * Constructs a new {@linkplain Notification} instance.
@@ -181,7 +180,9 @@ public class Notification {
 		Check.isInstanceOf(event.widget, Shell.class).close();
 	}
 
-	private void onKeyPressed(KeyEvent event) {
+	private void onKeyPressed(@Nullable KeyEvent event) {
+		Objects.requireNonNull(event);
+
 		if ("\u001b\r ".indexOf(event.keyCode) >= 0) {
 			Check.isInstanceOf(event.widget, Shell.class).close();
 		}

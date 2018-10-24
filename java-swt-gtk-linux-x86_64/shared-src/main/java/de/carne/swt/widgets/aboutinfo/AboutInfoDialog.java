@@ -32,8 +32,7 @@ import de.carne.swt.graphics.ResourceException;
  */
 public class AboutInfoDialog extends Dialog {
 
-	@Nullable
-	private URL logoUrl = null;
+	private @Nullable URL logoUrl = null;
 	private List<URL> copyrightUrls = new ArrayList<>();
 
 	/**

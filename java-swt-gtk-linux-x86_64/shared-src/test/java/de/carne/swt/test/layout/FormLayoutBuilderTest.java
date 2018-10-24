@@ -16,6 +16,9 @@
  */
 package de.carne.swt.test.layout;
 
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -79,7 +82,9 @@ class FormLayoutBuilderTest {
 		verifyAttachment(data4.bottom, 51, 52, 53);
 	}
 
-	private void verifyAttachment(FormAttachment attachment, int numerator, int denominator, int offset) {
+	private void verifyAttachment(@Nullable FormAttachment attachment, int numerator, int denominator, int offset) {
+		Objects.requireNonNull(attachment);
+
 		Assertions.assertEquals(numerator, attachment.numerator);
 		Assertions.assertEquals(denominator, attachment.denominator);
 		Assertions.assertEquals(offset, attachment.offset);

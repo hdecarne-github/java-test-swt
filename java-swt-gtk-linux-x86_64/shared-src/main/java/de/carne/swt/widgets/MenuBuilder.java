@@ -18,6 +18,7 @@ package de.carne.swt.widgets;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -38,9 +39,8 @@ import de.carne.swt.events.EventReceiver;
  */
 public final class MenuBuilder implements Supplier<Menu> {
 
-	private Deque<Menu> menuStack = new LinkedList<>();
-	@Nullable
-	private MenuItem currentItem = null;
+	private Deque<@Nullable Menu> menuStack = new LinkedList<>();
+	private @Nullable MenuItem currentItem = null;
 
 	/**
 	 * Constructs a new {@linkplain MenuBuilder} instance to build up the given menu.
@@ -110,7 +110,7 @@ public final class MenuBuilder implements Supplier<Menu> {
 	 */
 	@Override
 	public Menu get() {
-		return this.menuStack.peek();
+		return Objects.requireNonNull(this.menuStack.peek());
 	}
 
 	/**
@@ -169,7 +169,7 @@ public final class MenuBuilder implements Supplier<Menu> {
 	 * @return The updated {@linkplain MenuBuilder}.
 	 */
 	public MenuBuilder removeItems() {
-		for (MenuItem item : this.menuStack.peek().getItems()) {
+		for (MenuItem item : get().getItems()) {
 			item.dispose();
 		}
 		return this;
@@ -184,7 +184,7 @@ public final class MenuBuilder implements Supplier<Menu> {
 	 * @return The updated {@linkplain MenuBuilder}.
 	 */
 	public MenuBuilder addItem(int style) {
-		this.currentItem = new MenuItem(this.menuStack.peek(), style);
+		this.currentItem = new MenuItem(get(), style);
 		return this;
 	}
 
@@ -195,7 +195,7 @@ public final class MenuBuilder implements Supplier<Menu> {
 	 * @see Menu#setDefaultItem(MenuItem)
 	 */
 	public MenuBuilder setDefault() {
-		this.menuStack.peek().setDefaultItem(checkCurrentItem(this.currentItem));
+		get().setDefaultItem(checkCurrentItem(this.currentItem));
 		return this;
 	}
 

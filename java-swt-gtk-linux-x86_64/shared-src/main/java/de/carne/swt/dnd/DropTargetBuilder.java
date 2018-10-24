@@ -16,6 +16,7 @@
  */
 package de.carne.swt.dnd;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -108,8 +109,8 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 			@Override
 			public void dropAccept(@Nullable DropTargetEvent event) {
 				if (event != null) {
-					TransferData acceptedDataType = acceptDataType(FileTransfer.getInstance(), event.dataTypes,
-							event.currentDataType);
+					TransferData acceptedDataType = acceptDataType(FileTransfer.getInstance(),
+							Objects.requireNonNull(event.dataTypes), Objects.requireNonNull(event.currentDataType));
 
 					if (acceptedDataType != null) {
 						event.currentDataType = acceptedDataType;

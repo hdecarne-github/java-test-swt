@@ -16,6 +16,7 @@
  */
 package de.carne.swt.test;
 
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 
 import de.carne.boot.Application;
-import de.carne.boot.check.Check;
 import de.carne.boot.logging.Log;
 
 /**
@@ -67,7 +67,7 @@ class TestUserController {
 	private void runBackgroundCommand() {
 		TestUserApplicationMain main = Application.getMain(TestUserApplicationMain.class);
 
-		String statusText = Check.notNull(main.runWait(() -> main.getDisplay().toString()));
+		String statusText = Objects.requireNonNull(main.runWait(() -> main.getDisplay().toString()));
 
 		main.runWait(() -> main.getDisplay().beep());
 		main.runNoWait(() -> this.ui.setStatus(statusText));

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
@@ -89,7 +90,7 @@ public abstract class ResourceTracker {
 	 * @param factory the factory to use for {@linkplain Color} resource creation.
 	 * @return the requested {@linkplain Color} resource.
 	 */
-	public <D> Color getColor(D descriptor, ResourceFactory<D, Color> factory) {
+	public <@NonNull D> Color getColor(D descriptor, ResourceFactory<D, Color> factory) {
 		Color cachedColor = getCachedColor(descriptor);
 
 		if (cachedColor == null) {
@@ -107,7 +108,7 @@ public abstract class ResourceTracker {
 	 * @return the cached {@linkplain Color} resource or {@code null} if not yet cached.
 	 */
 	@Nullable
-	protected <D> Color getCachedColor(D descriptor) {
+	protected <@NonNull D> Color getCachedColor(D descriptor) {
 		return this.colorCache.get(descriptor);
 	}
 
@@ -133,7 +134,7 @@ public abstract class ResourceTracker {
 	 * @param factory the factory to use for {@linkplain Font} resource creation.
 	 * @return the requested {@linkplain Font} resource.
 	 */
-	public <D> Font getFont(D descriptor, ResourceFactory<D, Font> factory) {
+	public <@NonNull D> Font getFont(D descriptor, ResourceFactory<D, Font> factory) {
 		Font cachedFont = getCachedFont(descriptor);
 
 		if (cachedFont == null) {
@@ -151,7 +152,7 @@ public abstract class ResourceTracker {
 	 * @return the cached {@linkplain Font} resource or {@code null} if not yet cached.
 	 */
 	@Nullable
-	protected <D> Font getCachedFont(D descriptor) {
+	protected <@NonNull D> Font getCachedFont(D descriptor) {
 		return this.fontCache.get(descriptor);
 	}
 
@@ -193,7 +194,7 @@ public abstract class ResourceTracker {
 			}
 			images.add(getImage(imageUrl));
 		}
-		return images.toArray(new Image[images.size()]);
+		return images.toArray(new @Nullable Image[images.size()]);
 	}
 
 	/**
@@ -214,7 +215,7 @@ public abstract class ResourceTracker {
 	 * @param factory the factory to use for {@linkplain Image} resource creation.
 	 * @return the requested {@linkplain Image} resource.
 	 */
-	public <D> Image getImage(D descriptor, ResourceFactory<D, Image> factory) {
+	public <@NonNull D> Image getImage(D descriptor, ResourceFactory<D, Image> factory) {
 		Image cachedImage = getCachedImage(descriptor);
 
 		if (cachedImage == null) {
@@ -232,7 +233,7 @@ public abstract class ResourceTracker {
 	 * @return the cached {@linkplain Image} resource or {@code null} if not yet cached.
 	 */
 	@Nullable
-	protected <D> Image getCachedImage(D descriptor) {
+	protected <@NonNull D> Image getCachedImage(D descriptor) {
 		return this.imageCache.get(descriptor);
 	}
 
@@ -290,7 +291,7 @@ public abstract class ResourceTracker {
 
 		@Override
 		@Nullable
-		protected <D> Color getCachedColor(D descriptor) {
+		protected <@NonNull D> Color getCachedColor(D descriptor) {
 			Color cachedColor = super.getCachedColor(descriptor);
 
 			return (cachedColor != null ? cachedColor : ResourceTracker.this.getCachedColor(descriptor));
@@ -298,7 +299,7 @@ public abstract class ResourceTracker {
 
 		@Override
 		@Nullable
-		protected <D> Font getCachedFont(D descriptor) {
+		protected <@NonNull D> Font getCachedFont(D descriptor) {
 			Font cachedFont = super.getCachedFont(descriptor);
 
 			return (cachedFont != null ? cachedFont : ResourceTracker.this.getCachedFont(descriptor));
@@ -306,7 +307,7 @@ public abstract class ResourceTracker {
 
 		@Override
 		@Nullable
-		protected <D> Image getCachedImage(D descriptor) {
+		protected <@NonNull D> Image getCachedImage(D descriptor) {
 			Image cachedImage = super.getCachedImage(descriptor);
 
 			return (cachedImage != null ? cachedImage : ResourceTracker.this.getCachedImage(descriptor));

@@ -31,8 +31,7 @@ import org.eclipse.swt.widgets.TabItem;
  */
 public final class TabFolderBuilder extends CompositeBuilder<TabFolder> {
 
-	@Nullable
-	private TabItem currentItem = null;
+	private @Nullable TabItem currentItem = null;
 
 	private TabFolderBuilder(TabFolder tabFolder) {
 		super(tabFolder);

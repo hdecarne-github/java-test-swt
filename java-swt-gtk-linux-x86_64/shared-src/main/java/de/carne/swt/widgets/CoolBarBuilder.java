@@ -37,8 +37,7 @@ import de.carne.swt.events.EventReceiver;
  */
 public final class CoolBarBuilder extends CompositeBuilder<CoolBar> {
 
-	@Nullable
-	private CoolItem currentItem = null;
+	private @Nullable CoolItem currentItem = null;
 
 	/**
 	 * Construct {@linkplain CoolBarBuilder}.

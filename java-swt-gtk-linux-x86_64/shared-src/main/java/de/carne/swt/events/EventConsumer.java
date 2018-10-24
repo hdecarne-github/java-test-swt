@@ -16,6 +16,7 @@
  */
 package de.carne.swt.events;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -74,7 +75,7 @@ public class EventConsumer<T extends TypedEvent> implements Listener {
 
 	@Override
 	public void handleEvent(@Nullable Event event) {
-		this.consumer.accept(this.eventFactory.apply(event));
+		this.consumer.accept(this.eventFactory.apply(Objects.requireNonNull(event)));
 	}
 
 }

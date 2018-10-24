@@ -16,6 +16,7 @@
  */
 package de.carne.swt.test;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
@@ -34,11 +35,11 @@ public class TestUserApplicationMain extends UserApplication implements Applicat
 
 	@Override
 	public String name() {
-		return getClass().getTypeName();
+		return getClass().getName();
 	}
 
 	@Override
-	public int run(String[] args) {
+	public int run(@NonNull String[] args) {
 		int status;
 
 		try {

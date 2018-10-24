@@ -35,8 +35,7 @@ import de.carne.swt.events.EventReceiver;
  */
 public final class ToolBarBuilder extends CompositeBuilder<ToolBar> {
 
-	@Nullable
-	private ToolItem currentItem = null;
+	private @Nullable ToolItem currentItem = null;
 
 	/**
 	 * Construct {@linkplain ToolBarBuilder}.

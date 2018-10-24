@@ -106,6 +106,7 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 * @param style The {@linkplain Composite} style.
 	 * @return The added child control.
 	 */
+	@SuppressWarnings("null")
 	public CompositeBuilder<Composite> addCompositeChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Composite(parent, style)));
 	}
@@ -116,6 +117,7 @@ public class CompositeBuilder<T extends Composite> extends ControlBuilder<T> {
 	 * @param style The {@linkplain Group} style.
 	 * @return The added child control.
 	 */
+	@SuppressWarnings("null")
 	public CompositeBuilder<Group> addGroupChild(int style) {
 		return addChild(parent -> new CompositeBuilder<>(new Group(parent, style)));
 	}

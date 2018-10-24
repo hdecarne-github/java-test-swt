@@ -28,10 +28,9 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> the actual property type.
  */
-public class Property<T> implements Supplier<T> {
+public class Property<T> implements Supplier<@Nullable T> {
 
-	@Nullable
-	private T value;
+	private @Nullable T value;
 	private List<PropertyChangedListener<T>> changedListeners = new ArrayList<>();
 
 	/**
@@ -81,8 +80,8 @@ public class Property<T> implements Supplier<T> {
 	 * @return the old property value.
 	 */
 	@Nullable
-	public T set(@Nullable T newValue, boolean forceChange) {
-		T oldValue = this.value;
+	public synchronized T set(@Nullable T newValue, boolean forceChange) {
+		@Nullable T oldValue = this.value;
 
 		this.value = newValue;
 		if (forceChange || !Objects.equals(this.value, oldValue)) {
@@ -101,7 +100,7 @@ public class Property<T> implements Supplier<T> {
 	 * @param changedListener the listener to add.
 	 * @return the updated {@linkplain Property} instance.
 	 */
-	public Property<T> addChangedListener(PropertyChangedListener<T> changedListener) {
+	public synchronized Property<T> addChangedListener(PropertyChangedListener<T> changedListener) {
 		this.changedListeners.add(changedListener);
 		return this;
 	}
@@ -112,7 +111,7 @@ public class Property<T> implements Supplier<T> {
 	 * @param changedListener the listener to remove.
 	 * @return the updated {@linkplain Property} instance.
 	 */
-	public Property<T> removeChangedListener(PropertyChangedListener<T> changedListener) {
+	public synchronized Property<T> removeChangedListener(PropertyChangedListener<T> changedListener) {
 		this.changedListeners.remove(changedListener);
 		return this;
 	}

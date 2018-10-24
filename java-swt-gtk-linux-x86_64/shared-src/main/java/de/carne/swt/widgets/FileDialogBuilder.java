@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -87,8 +88,8 @@ public class FileDialogBuilder extends DialogBuilder<FileDialog> {
 
 		FileDialog fileDialog = get();
 
-		fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
-		fileDialog.setFilterNames(names.toArray(new String[names.size()]));
+		fileDialog.setFilterExtensions(extensions.toArray(new @Nullable String[extensions.size()]));
+		fileDialog.setFilterNames(names.toArray(new @Nullable String[names.size()]));
 		return this;
 	}
 
