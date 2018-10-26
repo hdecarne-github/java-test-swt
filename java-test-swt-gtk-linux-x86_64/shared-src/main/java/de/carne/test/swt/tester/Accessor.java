@@ -18,6 +18,7 @@ package de.carne.test.swt.tester;
 
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
 
@@ -54,6 +55,7 @@ public class Accessor<T> implements Supplier<T> {
 	 * @param message The message to use for test case failure.
 	 * @return The checked object.
 	 */
+	@NonNull
 	public static <T> T notNull(@Nullable T object, String message) {
 		if (object == null) {
 			Assertions.fail(message);

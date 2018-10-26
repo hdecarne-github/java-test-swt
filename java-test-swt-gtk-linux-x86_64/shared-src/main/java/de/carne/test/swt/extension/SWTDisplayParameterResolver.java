@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.extension;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -42,22 +43,23 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	@Override
 	public boolean supportsParameter(@Nullable ParameterContext parameterContext,
 			@Nullable ExtensionContext extensionContext) {
-		ParameterContext checkedParameterContext = Check.notNull(parameterContext);
+		Objects.requireNonNull(parameterContext);
 
-		return checkedParameterContext.getParameter().getType().equals(Display.class);
+		return parameterContext.getParameter().getType().equals(Display.class);
 	}
 
 	@Override
 	public Object resolveParameter(@Nullable ParameterContext parameterContext,
 			@Nullable ExtensionContext extensionContext) {
-		ExtensionContext checkedExtensionContext = Check.notNull(extensionContext);
-		Optional<ExtensionContext> optionalParentExtensionContext = checkedExtensionContext.getParent();
+		Objects.requireNonNull(extensionContext);
+
+		Optional<@Nullable ExtensionContext> optionalParentExtensionContext = extensionContext.getParent();
 
 		if (!optionalParentExtensionContext.isPresent()) {
 			throw new ParameterResolutionException("Parent extension context missing");
 		}
 
-		Store store = optionalParentExtensionContext.get().getStore(EXTENSION_NAMESPACE);
+		@SuppressWarnings("null") Store store = optionalParentExtensionContext.get().getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 
 		if (displayObject == null) {
@@ -69,8 +71,9 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 
 	@Override
 	public void afterAll(@Nullable ExtensionContext context) {
-		ExtensionContext checkedExtensionContext = Check.notNull(context);
-		Store store = checkedExtensionContext.getStore(EXTENSION_NAMESPACE);
+		Objects.requireNonNull(context);
+
+		Store store = context.getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 
 		if (displayObject != null) {
