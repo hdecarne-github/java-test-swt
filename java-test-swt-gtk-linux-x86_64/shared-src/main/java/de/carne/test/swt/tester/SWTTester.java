@@ -120,7 +120,7 @@ public abstract class SWTTester {
 
 		final Display shellReadyDisplay = display;
 
-		Supplier<Boolean> shellReady = () -> {
+		@SuppressWarnings("squid:S4276") Supplier<Boolean> shellReady = () -> {
 			Shell[] shells = shellReadyDisplay.getShells();
 
 			return Boolean.valueOf(shells.length > 0 && shells[0].isVisible());

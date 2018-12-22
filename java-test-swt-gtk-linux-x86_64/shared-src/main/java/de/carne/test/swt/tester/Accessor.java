@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -57,13 +58,9 @@ public class Accessor<T> implements Supplier<T> {
 	 */
 	@NonNull
 	public static <T> T notNull(@Nullable T object, String message) {
-		if (object == null) {
-			Assertions.fail(message);
-		}
+		Assertions.assertNotNull(object, message);
 
-		assert object != null;
-
-		return object;
+		return Objects.requireNonNull(object);
 	}
 
 }

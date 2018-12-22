@@ -14,29 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.extension;
+@NonNullByDefault
+package de.carne.test.swt.test.extension;
 
-import org.eclipse.swt.widgets.Display;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-/**
- * Test {@linkplain SWTDisplayParameterResolver} class.
- */
-@ExtendWith(SWTDisplayParameterResolver.class)
-class SWTDisplayParameterResolverTest {
-
-	@Test
-	void test1stAccess(Display display) {
-		Assertions.assertNotNull(display);
-		Assertions.assertFalse(display.isDisposed());
-	}
-
-	@Test
-	void test2ndAccess(Display display) {
-		Assertions.assertNotNull(display);
-		Assertions.assertFalse(display.isDisposed());
-	}
-
-}
+import org.eclipse.jdt.annotation.NonNullByDefault;

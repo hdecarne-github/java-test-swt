@@ -14,29 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+@NonNullByDefault
+package de.carne.test.swt.test.tester;
 
-import org.junit.jupiter.api.Test;
-
-/**
- * Test {@linkplain SWTTester} class.
- */
-class SWTTesterTest extends SWTTester {
-
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
-	}
-
-	@Test
-	void testTester() {
-		runner().sleep(1000).check(this::checkAppQuit).run();
-	}
-
-	private void checkAppQuit() {
-		getShell(SWTApp.TITLE_SHELL).menuBar().item(SWTApp.TITLE_MENU_APP_QUIT).select();
-	}
-
-}
+import org.eclipse.jdt.annotation.NonNullByDefault;

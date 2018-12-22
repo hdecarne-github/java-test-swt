@@ -16,7 +16,6 @@
  */
 package de.carne.test.swt.extension;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -41,25 +40,19 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	private static final String DISPLAY_KEY = "Display";
 
 	@Override
-	public boolean supportsParameter(@Nullable ParameterContext parameterContext,
-			@Nullable ExtensionContext extensionContext) {
-		Objects.requireNonNull(parameterContext);
-
+	public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
 		return parameterContext.getParameter().getType().equals(Display.class);
 	}
 
 	@Override
-	public Object resolveParameter(@Nullable ParameterContext parameterContext,
-			@Nullable ExtensionContext extensionContext) {
-		Objects.requireNonNull(extensionContext);
-
+	public @Nullable Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
 		Optional<@Nullable ExtensionContext> optionalParentExtensionContext = extensionContext.getParent();
 
 		if (!optionalParentExtensionContext.isPresent()) {
 			throw new ParameterResolutionException("Parent extension context missing");
 		}
 
-		@SuppressWarnings("null") Store store = optionalParentExtensionContext.get().getStore(EXTENSION_NAMESPACE);
+		Store store = optionalParentExtensionContext.get().getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 
 		if (displayObject == null) {
@@ -70,9 +63,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 	}
 
 	@Override
-	public void afterAll(@Nullable ExtensionContext context) {
-		Objects.requireNonNull(context);
-
+	public void afterAll(ExtensionContext context) {
 		Store store = context.getStore(EXTENSION_NAMESPACE);
 		Object displayObject = store.get(DISPLAY_KEY);
 

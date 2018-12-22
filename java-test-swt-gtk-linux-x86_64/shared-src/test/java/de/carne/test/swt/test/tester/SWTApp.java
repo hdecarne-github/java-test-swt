@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+package de.carne.test.swt.test.tester;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;

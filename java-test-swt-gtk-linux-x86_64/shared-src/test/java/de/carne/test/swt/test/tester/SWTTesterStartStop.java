@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+package de.carne.test.swt.test.tester;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import de.carne.test.swt.tester.SWTTester;
 
 /**
  * Test {@linkplain SWTTester} class.
  */
-class SWTTesterTestFailure extends SWTTester {
+class SWTTesterStartStop extends SWTTester {
 
 	@Override
 	protected void runSWTApplication(String[] args) {
@@ -32,14 +33,8 @@ class SWTTesterTestFailure extends SWTTester {
 	}
 
 	@Test
-	public void testerTestFailure() {
-		Assertions.assertThrows(AssertionError.class, () -> {
-			runner().check(this::checkFailure).run();
-		});
-	}
-
-	private void checkFailure() {
-		getShell("unknown").get().close();
+	void testStartStop() {
+		runner().run();
 	}
 
 }

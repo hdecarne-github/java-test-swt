@@ -14,25 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+package de.carne.test.swt.test.extension;
 
+import org.eclipse.swt.widgets.Display;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import de.carne.test.swt.extension.SWTDisplayParameterResolver;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Test {@linkplain SWTDisplayParameterResolver} class.
  */
-class SWTTesterStartStop extends SWTTester {
+@ExtendWith(SWTDisplayParameterResolver.class)
+// TODO: Set fixed test order with JUnit-5.4.0
+class SWTDisplayParameterResolverTest {
 
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
+	@Test
+	void test1stAccess(Display display) {
+		Assertions.assertNotNull(display);
+		Assertions.assertFalse(display.isDisposed());
 	}
 
 	@Test
-	void testStartStop() {
-		runner().run();
+	void test2ndAccess(Display display) {
+		Assertions.assertNotNull(display);
+		Assertions.assertFalse(display.isDisposed());
 	}
 
 }
