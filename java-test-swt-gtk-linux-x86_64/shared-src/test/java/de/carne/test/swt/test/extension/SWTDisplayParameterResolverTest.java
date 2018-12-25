@@ -19,6 +19,8 @@ package de.carne.test.swt.test.extension;
 import org.eclipse.swt.widgets.Display;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.carne.test.swt.extension.SWTDisplayParameterResolver;
@@ -27,7 +29,7 @@ import de.carne.test.swt.extension.SWTDisplayParameterResolver;
  * Test {@linkplain SWTDisplayParameterResolver} class.
  */
 @ExtendWith(SWTDisplayParameterResolver.class)
-// TODO: Set fixed test order with JUnit-5.4.0
+@TestMethodOrder(Alphanumeric.class)
 class SWTDisplayParameterResolverTest {
 
 	@Test
