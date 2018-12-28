@@ -17,10 +17,6 @@ addons:
 jdk:
   - oraclejdk8
 
-os:
-  - linux
-  - osx
-
 git:
   depth: false  
 
