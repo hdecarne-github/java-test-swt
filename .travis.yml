@@ -4,9 +4,6 @@ env:
   JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
 
 addons:
-  apt:
-    packages:
-    - metacity
   sonarcloud:
     organization: "hdecarne-github"
 
@@ -15,19 +12,18 @@ jdk:
 
 os:
   - linux
+  - osx
+
+osx_image: xcode9.3
 
 git:
   depth: false  
 
-before_script:
-  - "export DISPLAY=:99.0"
-  - "export DBUS_SESSION_BUS_ADDRESS=/dev/null"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 10 # give xvfb some time to start
-  - "metacity --sm-disable --replace 2> metacity.err &"
-  - sleep 10 # give metacity some time to start
 script:
-  - ./gradlew --stacktrace build artifactoryPublish sonarqube
+  - ./gradlew --stacktrace clean build
+
+after_success:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./gradlew --stacktrace artifactoryPublish sonarqube; fi
 
 notifications:
   email:
