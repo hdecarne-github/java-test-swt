@@ -16,14 +16,17 @@
  */
 package de.carne.test.swt.test.tester;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTester;
 
 /**
  * Test {@linkplain SWTTester} class.
  */
-class SWTTesterStartStop extends SWTTester {
+@DisableIfThreadNotSWTCapable
+class SWTTesterFailureTest extends SWTTester {
 
 	@Override
 	protected void runSWTApplication(String[] args) {
@@ -33,8 +36,14 @@ class SWTTesterStartStop extends SWTTester {
 	}
 
 	@Test
-	void testStartStop() {
-		runner().run();
+	public void testerTestFailure() {
+		Assertions.assertThrows(AssertionError.class, () -> {
+			runner().check(this::checkFailure).run();
+		});
+	}
+
+	private void checkFailure() {
+		getShell("unknown").get().close();
 	}
 
 }

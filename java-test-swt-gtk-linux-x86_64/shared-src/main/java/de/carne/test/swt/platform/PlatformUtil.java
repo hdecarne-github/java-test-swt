@@ -19,7 +19,7 @@ package de.carne.test.swt.platform;
 import org.eclipse.swt.SWT;
 
 import de.carne.boot.Exceptions;
-import de.carne.test.swt.DisableIfNotSWTCapable;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.util.Lazy;
 
 /**
@@ -33,7 +33,7 @@ public abstract class PlatformUtil {
 		PlatformUtil instance;
 
 		try {
-			String basePackageName = DisableIfNotSWTCapable.class.getPackage().getName();
+			String basePackageName = DisableIfThreadNotSWTCapable.class.getPackage().getName();
 			String platformName = PlatformUtil.class.getName().replace(basePackageName,
 					basePackageName + "." + SWT.getPlatform());
 

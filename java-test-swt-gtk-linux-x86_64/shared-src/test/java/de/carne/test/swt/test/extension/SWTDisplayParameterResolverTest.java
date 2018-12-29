@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.carne.test.swt.DisableIfNotSWTCapable;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.extension.SWTDisplayParameterResolver;
 
 /**
@@ -31,7 +31,7 @@ import de.carne.test.swt.extension.SWTDisplayParameterResolver;
  */
 @ExtendWith(SWTDisplayParameterResolver.class)
 @TestMethodOrder(Alphanumeric.class)
-@DisableIfNotSWTCapable
+@DisableIfThreadNotSWTCapable
 class SWTDisplayParameterResolverTest {
 
 	@Test

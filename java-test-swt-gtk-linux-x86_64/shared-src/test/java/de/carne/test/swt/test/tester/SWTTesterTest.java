@@ -18,11 +18,13 @@ package de.carne.test.swt.test.tester;
 
 import org.junit.jupiter.api.Test;
 
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTester;
 
 /**
  * Test {@linkplain SWTTester} class.
  */
+@DisableIfThreadNotSWTCapable
 class SWTTesterTest extends SWTTester {
 
 	@Override

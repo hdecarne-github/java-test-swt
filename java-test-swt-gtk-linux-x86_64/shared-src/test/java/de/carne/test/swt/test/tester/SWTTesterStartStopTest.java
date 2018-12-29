@@ -14,29 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt;
+package de.carne.test.swt.test.tester;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import org.junit.jupiter.api.Test;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import de.carne.test.swt.condition.DisableIfNotSWTCapableCondition;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.tester.SWTTester;
 
 /**
- * Tests tagged with this annotation are only executed if SWT can be used in the current execution context.
+ * Test {@linkplain SWTTester} class.
  */
-@Documented
-@Retention(RUNTIME)
-@Target({ TYPE, METHOD })
-@ExtendWith(DisableIfNotSWTCapableCondition.class)
-public @interface DisableIfNotSWTCapable {
+@DisableIfThreadNotSWTCapable
+class SWTTesterStartStopTest extends SWTTester {
 
-	// Nothing to do here
+	@Override
+	protected void runSWTApplication(String[] args) {
+		SWTApp app = new SWTApp();
+
+		app.run();
+	}
+
+	@Test
+	void testStartStop() {
+		runner().run();
+	}
 
 }

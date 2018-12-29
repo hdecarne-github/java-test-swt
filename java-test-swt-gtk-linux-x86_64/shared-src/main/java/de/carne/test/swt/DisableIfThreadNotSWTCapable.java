@@ -14,23 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.condition;
+package de.carne.test.swt;
 
-import org.junit.jupiter.api.extension.ConditionEvaluationResult;
-import org.junit.jupiter.api.extension.ExecutionCondition;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import de.carne.test.swt.platform.PlatformUtil;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import de.carne.test.swt.condition.DisableIfThreadNotSWTCapableCondition;
 
 /**
- * Test condition for checking whether SWT can be used in the current execution context.
+ * Tests tagged with this annotation are only executed if SWT code can be executed on the current thread.
  */
-public class DisableIfNotSWTCapableCondition implements ExecutionCondition {
+@Documented
+@Retention(RUNTIME)
+@Target({ TYPE, METHOD })
+@ExtendWith(DisableIfThreadNotSWTCapableCondition.class)
+public @interface DisableIfThreadNotSWTCapable {
 
-	@Override
-	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-		return (PlatformUtil.isCurrentThreadSWTCapable() ? ConditionEvaluationResult.enabled("")
-				: ConditionEvaluationResult.disabled(""));
-	}
+	// Nothing to do here
 
 }

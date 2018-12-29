@@ -14,34 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.test.tester;
+package de.carne.test.swt.condition;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ConditionEvaluationResult;
+import org.junit.jupiter.api.extension.ExecutionCondition;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
-import de.carne.test.swt.tester.SWTTester;
+import de.carne.test.swt.platform.PlatformUtil;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Test condition for checking whether SWT can be executed on the current thread.
  */
-class SWTTesterTestFailure extends SWTTester {
+public class DisableIfThreadNotSWTCapableCondition implements ExecutionCondition {
 
 	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
-	}
-
-	@Test
-	public void testerTestFailure() {
-		Assertions.assertThrows(AssertionError.class, () -> {
-			runner().check(this::checkFailure).run();
-		});
-	}
-
-	private void checkFailure() {
-		getShell("unknown").get().close();
+	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
+		return (PlatformUtil.isCurrentThreadSWTCapable() ? ConditionEvaluationResult.enabled("Test enabled")
+				: ConditionEvaluationResult.disabled("Test disabled (due to missing SWT support)"));
 	}
 
 }
