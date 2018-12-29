@@ -21,10 +21,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.swt.graphics.Devices;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 
 /**
  * Test {@linkplain Devices} class.
  */
+@DisableIfThreadNotSWTCapable
 public class DevicesTest {
 
 	@Test

@@ -21,11 +21,13 @@ import org.junit.jupiter.api.Test;
 
 import de.carne.boot.Application;
 import de.carne.swt.UserApplication;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTester;
 
 /**
  * Test {@linkplain UserApplication} class.
  */
+@DisableIfThreadNotSWTCapable
 class UserApplicationTest extends SWTTester {
 
 	@BeforeAll
