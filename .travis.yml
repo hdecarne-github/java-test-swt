@@ -11,9 +11,9 @@ dist: trusty
 osx_image: xcode9.3
 
 env:
-  - JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
-  - DISPLAY=":99.0"
-  - DBUS_SESSION_BUS_ADDRESS="/dev/null"
+  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
+  DISPLAY=":99.0"
+  DBUS_SESSION_BUS_ADDRESS="/dev/null"
 
 addons:
   apt:
