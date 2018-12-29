@@ -19,6 +19,7 @@ package de.carne.test.swt.win32.platform;
 /**
  * Win32 platform support.
  */
+@SuppressWarnings("squid:S2176")
 public class PlatformUtil extends de.carne.test.swt.platform.PlatformUtil {
 
 	// Nothing to do here

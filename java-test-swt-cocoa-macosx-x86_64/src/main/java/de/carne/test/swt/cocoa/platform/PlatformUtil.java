@@ -21,6 +21,7 @@ import org.eclipse.swt.internal.cocoa.NSThread;
 /**
  * Cocoa platform support.
  */
+@SuppressWarnings("squid:S2176")
 public class PlatformUtil extends de.carne.test.swt.platform.PlatformUtil {
 
 	@Override
