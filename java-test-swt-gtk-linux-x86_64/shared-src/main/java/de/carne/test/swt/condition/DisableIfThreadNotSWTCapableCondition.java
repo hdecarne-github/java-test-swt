@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,20 @@ import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import de.carne.test.swt.platform.PlatformUtil;
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.platform.PlatformHelper;
 
 /**
- * Test condition for checking whether SWT can be executed on the current thread.
+ * {@linkplain ExecutionCondition} that makes sure that a test is only executed if SWT code is expected to work on the
+ * current thread.
+ *
+ * @see DisableIfThreadNotSWTCapable
  */
 public class DisableIfThreadNotSWTCapableCondition implements ExecutionCondition {
 
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-		return (PlatformUtil.isCurrentThreadSWTCapable() ? ConditionEvaluationResult.enabled("Test enabled")
+		return (PlatformHelper.isCurrentThreadSWTCapable() ? ConditionEvaluationResult.enabled("Test enabled")
 				: ConditionEvaluationResult.disabled("Test disabled (due to missing SWT support)"));
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,30 +20,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.tester.SWTTester;
+import de.carne.test.swt.tester.SWTTest;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Test {@linkplain SWTTest} class.
  */
 @DisableIfThreadNotSWTCapable
-class SWTTesterFailureTest extends SWTTester {
-
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
-	}
+class SWTTesterFailureTest extends SWTTest {
 
 	@Test
-	public void testerTestFailure() {
+	public void testFailure() {
 		Assertions.assertThrows(AssertionError.class, () -> {
-			runner().check(this::checkFailure).run();
+			script(new SWTApp()).add(this::checkFailure).run();
 		});
 	}
 
 	private void checkFailure() {
-		getShell("unknown").get().close();
+		accessShell().get().close();
+		accessShell().get().close();
 	}
 
 }

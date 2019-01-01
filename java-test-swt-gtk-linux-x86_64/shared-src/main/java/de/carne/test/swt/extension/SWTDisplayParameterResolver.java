@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import de.carne.boot.check.Check;
 
 /**
- * {@linkplain ParameterResolver} that takes care of creation and disposal of a needed SWT {@linkplain Display} during
+ * {@linkplain ParameterResolver} that takes care of creation and disposal of the SWT {@linkplain Display} needed during
  * test execution.
  */
 public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllCallback {

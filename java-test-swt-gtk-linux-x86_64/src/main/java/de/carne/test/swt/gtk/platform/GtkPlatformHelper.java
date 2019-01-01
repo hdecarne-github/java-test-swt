@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,19 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.cocoa.platform;
+package de.carne.test.swt.gtk.platform;
 
-import org.eclipse.swt.internal.cocoa.NSThread;
+import de.carne.test.swt.platform.PlatformHelper;
 
 /**
- * Cocoa platform support.
+ * GTK platform helper.
  */
-@SuppressWarnings("squid:S2176")
-public class PlatformUtil extends de.carne.test.swt.platform.PlatformUtil {
+public class GtkPlatformHelper extends PlatformHelper {
 
-	@Override
-	protected boolean internalIsCurrentThreadSWTCapable() {
-		return NSThread.isMainThread();
-	}
+	// Nothing to do here
 
 }

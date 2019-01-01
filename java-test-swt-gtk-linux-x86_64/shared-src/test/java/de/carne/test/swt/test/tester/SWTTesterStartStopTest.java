@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,17 @@ package de.carne.test.swt.test.tester;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.tester.SWTTester;
+import de.carne.test.swt.tester.SWTTest;
 
 /**
- * Test {@linkplain SWTTester} class.
+ * Test {@linkplain SWTTest} class.
  */
 @DisableIfThreadNotSWTCapable
-class SWTTesterStartStopTest extends SWTTester {
-
-	@Override
-	protected void runSWTApplication(String[] args) {
-		SWTApp app = new SWTApp();
-
-		app.run();
-	}
+class SWTTesterStartStopTest extends SWTTest {
 
 	@Test
 	void testStartStop() {
-		runner().run();
+		script(new SWTApp()).run();
 	}
 
 }

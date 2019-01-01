@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+package de.carne.test.swt.tester.accessor;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Menu;
@@ -26,24 +26,25 @@ import org.eclipse.swt.widgets.MenuItem;
 public class MenuAccessor extends Accessor<Menu> {
 
 	/**
-	 * Construct {@linkplain MenuAccessor}.
+	 * Constructs a new {@linkplain MenuAccessor}.
 	 *
-	 * @param menu The {@linkplain Menu} object to wrap.
+	 * @param menu the {@linkplain Menu} object to access.
 	 */
 	public MenuAccessor(Menu menu) {
 		super(menu);
 	}
 
 	/**
-	 * Get the accessor for a specific {@linkplain MenuItem}.
+	 * Gets the accessor for a specific {@linkplain MenuItem}.
 	 * <p>
 	 * If no menu item is found for the given name, this function signals a test failure.
+	 * </p>
 	 *
-	 * @param text The text of the {@linkplain MenuItem} to get.
-	 * @return The accessor for the found object.
+	 * @param text the text of the {@linkplain MenuItem} to get.
+	 * @return the accessor for the found object.
 	 */
 	public MenuItemAccessor item(String text) {
-		MenuItem foundItem = Accessor.notNull(findMenuItem(get(), text), "Menu item not found: " + text);
+		MenuItem foundItem = Accessor.accessNonNull(findMenuItem(get(), text), "Menu item not found: " + text);
 
 		return new MenuItemAccessor(foundItem);
 	}

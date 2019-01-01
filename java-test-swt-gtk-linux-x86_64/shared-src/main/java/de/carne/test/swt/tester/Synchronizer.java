@@ -14,7 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault
-package de.carne.test.swt.extension;
+package de.carne.test.swt.tester;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+@FunctionalInterface
+interface Synchronizer {
+
+	void sync(long timeout) throws InterruptedException;
+
+}

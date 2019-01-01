@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester;
+package de.carne.test.swt.tester.accessor;
 
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * Class providing access to the application's {@linkplain Shell} objects.
+ * Class providing access to the application's {@linkplain MenuItem} objects.
  */
-public class ShellAccessor extends Accessor<Shell> {
+public class MenuItemAccessor extends Accessor<MenuItem> {
 
 	/**
-	 * Construct {@linkplain ShellAccessor}.
+	 * Construct {@linkplain MenuItemAccessor}.
 	 *
-	 * @param shell The {@linkplain Shell} object to wrap.
+	 * @param menuItem The {@linkplain MenuItem} object to wrap.
 	 */
-	public ShellAccessor(Shell shell) {
-		super(shell);
+	public MenuItemAccessor(MenuItem menuItem) {
+		super(menuItem);
 	}
 
 	/**
-	 * Get this {@linkplain Shell}'s menu bar accessor.
-	 *
-	 * @return This {@linkplain Shell}'s menu bar accessor.
+	 * Generate a selection event to the {@linkplain MenuItem}.
 	 */
-	public MenuAccessor menuBar() {
-		return new MenuAccessor(Accessor.notNull(get().getMenuBar(), "Menu bar not found"));
+	public void select() {
+		get().notifyListeners(SWT.Selection, new Event());
 	}
 
 }

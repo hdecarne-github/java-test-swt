@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+import de.carne.boot.ApplicationMain;
 import de.carne.util.Late;
 
-class SWTApp implements Runnable {
+class SWTApp implements ApplicationMain {
 
 	public static final String TITLE_SHELL = "Shell";
 	public static final String TITLE_MENU_APP = "App";
@@ -36,7 +37,7 @@ class SWTApp implements Runnable {
 	private Late<Shell> shellHolder = new Late<>();
 
 	@Override
-	public void run() {
+	public int run(String[] args) {
 		Display display = new Display();
 		Shell shell = this.shellHolder.set(new Shell(display));
 
@@ -47,6 +48,8 @@ class SWTApp implements Runnable {
 				display.sleep();
 			}
 		}
+		display.dispose();
+		return 0;
 	}
 
 	private void setupShell() {

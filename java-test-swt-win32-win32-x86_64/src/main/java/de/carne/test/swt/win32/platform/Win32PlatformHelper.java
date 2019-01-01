@@ -14,7 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault
-package de.carne.test.swt.extension;
+package de.carne.test.swt.win32.platform;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import de.carne.test.swt.platform.PlatformHelper;
+
+/**
+ * Win32 platform helper.
+ */
+public class Win32PlatformHelper extends PlatformHelper {
+
+	// Nothing to do here
+
+}

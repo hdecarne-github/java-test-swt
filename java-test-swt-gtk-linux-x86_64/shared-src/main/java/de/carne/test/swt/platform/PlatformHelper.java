@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2019 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,19 +25,22 @@ import de.carne.util.Lazy;
 /**
  * Utility class providing platform specific functions.
  */
-public abstract class PlatformUtil {
+public abstract class PlatformHelper {
 
-	private static final Lazy<PlatformUtil> INSTANCE_HOLDER = new Lazy<>(PlatformUtil::getInstance);
+	private static final Lazy<PlatformHelper> INSTANCE_HOLDER = new Lazy<>(PlatformHelper::getInstance);
 
-	private static PlatformUtil getInstance() {
-		PlatformUtil instance;
+	private static PlatformHelper getInstance() {
+		PlatformHelper instance;
 
 		try {
+			String platform = SWT.getPlatform();
 			String basePackageName = DisableIfThreadNotSWTCapable.class.getPackage().getName();
-			String platformName = PlatformUtil.class.getName().replace(basePackageName,
-					basePackageName + "." + SWT.getPlatform());
+			String baseClassName = PlatformHelper.class.getSimpleName();
+			String platformName = PlatformHelper.class.getName()
+					.replace(basePackageName, basePackageName + "." + platform).replace(baseClassName,
+							platform.substring(0, 1).toUpperCase() + platform.substring(1) + baseClassName);
 
-			instance = Class.forName(platformName).asSubclass(PlatformUtil.class).getConstructor().newInstance();
+			instance = Class.forName(platformName).asSubclass(PlatformHelper.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {
 			throw Exceptions.toRuntime(e);
 		}
@@ -45,15 +48,15 @@ public abstract class PlatformUtil {
 	}
 
 	/**
-	 * Constructs a new {@linkplain PlatformUtil} instance.
+	 * Constructs a new {@linkplain PlatformHelper} instance.
 	 */
-	protected PlatformUtil() {
+	protected PlatformHelper() {
 		// Nothing to do here
 	}
 
 	/**
 	 * Checks whether SWT code can be executed by the current thread.
-	 * 
+	 *
 	 * @return {@code true} if the current thread can execute SWT code.
 	 */
 	public static boolean isCurrentThreadSWTCapable() {
