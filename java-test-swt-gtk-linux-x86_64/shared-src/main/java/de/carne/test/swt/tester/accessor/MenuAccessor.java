@@ -16,17 +16,21 @@
  */
 package de.carne.test.swt.tester.accessor;
 
-import org.eclipse.jdt.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * Class providing access to the application's {@linkplain Menu} objects.
+ * Accessor class for {@linkplain Menu} objects.
  */
 public class MenuAccessor extends Accessor<Menu> {
 
 	/**
-	 * Constructs a new {@linkplain MenuAccessor}.
+	 * Constructs a new {@linkplain MenuAccessor} instance.
 	 *
 	 * @param menu the {@linkplain Menu} object to access.
 	 */
@@ -35,39 +39,73 @@ public class MenuAccessor extends Accessor<Menu> {
 	}
 
 	/**
-	 * Gets the accessor for a specific {@linkplain MenuItem}.
+	 * Gets all {@linkplain MenuItem}s of this {@linkplain Menu}.
 	 * <p>
-	 * If no menu item is found for the given name, this function signals a test failure.
+	 * Calling this function is equivalent to calling {@code items(Integer.MAX_VALUE, true)}.
 	 * </p>
 	 *
-	 * @param text the text of the {@linkplain MenuItem} to get.
-	 * @return the accessor for the found object.
+	 * @return all {@linkplain MenuItem}s of this {@linkplain Menu}.
+	 * @see #items(int, boolean)
 	 */
-	public MenuItemAccessor item(String text) {
-		MenuItem foundItem = Accessor.accessNonNull(findMenuItem(get(), text), "Menu item not found: " + text);
-
-		return new MenuItemAccessor(foundItem);
+	public Stream<MenuItem> items() {
+		return items(Integer.MAX_VALUE, true);
 	}
 
-	@Nullable
-	private MenuItem findMenuItem(Menu menu, String text) {
-		MenuItem foundItem = null;
+	/**
+	 * Gets all {@linkplain MenuItem}s of this {@linkplain Menu}.
+	 *
+	 * @param maxDepth the maximum number of sub-levels to search for items.
+	 * @param depthsFirst whether to collect depths first or not.
+	 * @return all {@linkplain MenuItem}s of this {@linkplain Menu}.
+	 */
+	public Stream<MenuItem> items(int maxDepth, boolean depthsFirst) {
+		return collectItems(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream();
+	}
 
-		for (MenuItem item : menu.getItems()) {
-			if (foundItem != null) {
-				break;
-			}
-			if (text.equals(item.getText())) {
-				foundItem = item;
+	private List<MenuItem> collectItems(List<MenuItem> items, Menu menu, int depth, int maxDepth, boolean depthsFirst) {
+		if (depth <= maxDepth) {
+			@NonNull MenuItem[] menuItems = menu.getItems();
+
+			if (depthsFirst) {
+				for (MenuItem menuItem : menuItems) {
+					items.add(menuItem);
+					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
+				}
 			} else {
-				Menu subMenu = item.getMenu();
-
-				if (subMenu != null) {
-					foundItem = findMenuItem(subMenu, text);
+				for (MenuItem menuItem : menuItems) {
+					items.add(menuItem);
+				}
+				for (MenuItem menuItem : menuItems) {
+					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
 				}
 			}
 		}
-		return foundItem;
+		return items;
+	}
+
+	private List<MenuItem> collectItems(List<MenuItem> items, MenuItem item, int depth, int maxDepth,
+			boolean depthsFirst) {
+		if (depth <= maxDepth) {
+			Menu itemMenu = item.getMenu();
+
+			if (itemMenu != null) {
+				collectItems(items, itemMenu, depth, maxDepth, depthsFirst);
+			}
+		}
+		return items;
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain MenuItem} identified by it's text.
+	 * <p>
+	 * A test failure is signaled if either none or more than one {@linkplain MenuItem} with the given text exists.
+	 * </p>
+	 *
+	 * @param text the text of the {@linkplain MenuItem} to get.
+	 * @return the found {@linkplain MenuItem}.
+	 */
+	public MenuItemAccessor accessItem(String text) {
+		return Accessor.accessUnique(items().filter(ItemAccessor.matchText(text)), MenuItemAccessor::new);
 	}
 
 }

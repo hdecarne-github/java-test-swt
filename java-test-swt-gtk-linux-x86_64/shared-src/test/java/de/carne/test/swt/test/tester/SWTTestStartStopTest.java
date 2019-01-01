@@ -16,7 +16,6 @@
  */
 package de.carne.test.swt.test.tester;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
@@ -26,18 +25,11 @@ import de.carne.test.swt.tester.SWTTest;
  * Test {@linkplain SWTTest} class.
  */
 @DisableIfThreadNotSWTCapable
-class SWTTesterFailureTest extends SWTTest {
+class SWTTestStartStopTest extends SWTTest {
 
 	@Test
-	public void testFailure() {
-		Assertions.assertThrows(AssertionError.class, () -> {
-			script(new SWTApp()).add(this::checkFailure).run();
-		});
-	}
-
-	private void checkFailure() {
-		accessShell().get().close();
-		accessShell().get().close();
+	void testStartStop() {
+		script(new SWTApp()).execute(true);
 	}
 
 }

@@ -16,6 +16,8 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +30,8 @@ import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 
 import de.carne.boot.logging.Log;
+import de.carne.boot.logging.LogLevel;
+import de.carne.util.Strings;
 
 /**
  * {@linkplain Thread} class used to run the configured script actions against the SWT application.
@@ -38,12 +42,14 @@ final class ScriptRunnerThread extends Thread {
 
 	private final Thread displayThread;
 	private final Iterable<Runnable> actions;
+	private final boolean ignoreRemaining;
 	private final AtomicReference<AssertionError> assertionStatus = new AtomicReference<>();
 
-	ScriptRunnerThread(Iterable<Runnable> actions) {
+	ScriptRunnerThread(Iterable<Runnable> actions, boolean ignoreRemaining) {
 		super(ScriptRunnerThread.class.getName());
 		this.displayThread = Thread.currentThread();
 		this.actions = actions;
+		this.ignoreRemaining = ignoreRemaining;
 	}
 
 	@Override
@@ -60,35 +66,56 @@ final class ScriptRunnerThread extends Thread {
 			LOG.debug("Initial Shell is visible; starting actions...");
 
 			Display display = getDisplay();
+			int actionId = 1;
 
 			for (Runnable action : this.actions) {
+				long start = System.nanoTime();
+
 				runWait(display, action);
+
+				long elapsed = System.nanoTime() - start;
+
+				LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
+
 				Timing.step();
+				actionId++;
 			}
 
 			LOG.debug("All actions processed; cleaning up...");
 
-			if (!display.isDisposed()) {
-				runWait(display, () -> {
-					while (!display.isDisposed()) {
-						Shell[] shells = display.getShells();
-
-						for (Shell shell : shells) {
-							if (!shell.isDisposed()) {
-								LOG.info("Closing remaining Shell ''{0}''", shell.getText());
-
-								shell.close();
-								shell.dispose();
-							}
-						}
-						display.dispose();
-					}
-				});
-			}
+			disposeRemaining(display);
 		} catch (Exception e) {
-			this.assertionStatus.set(new AssertionFailedError("Uncaught exception", e));
+			this.assertionStatus.set(new AssertionFailedError("Uncaught exception: " + e.getClass().getName(), e));
 		} catch (AssertionError e) {
 			this.assertionStatus.set(e);
+		}
+	}
+
+	private void disposeRemaining(Display display) {
+		if (!display.isDisposed()) {
+			List<String> remainingShellText = runWait(display, () -> {
+				Shell[] shells = display.getShells();
+				List<String> remainingShellTexts0 = new ArrayList<>();
+
+				for (Shell shell : shells) {
+					if (!shell.isDisposed()) {
+						String shellText = shell.getText();
+
+						LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
+								"Closing remaining Shell ''{0}''", shellText);
+
+						remainingShellTexts0.add(shellText);
+						shell.close();
+						shell.dispose();
+					}
+				}
+				display.dispose();
+				return remainingShellTexts0;
+			});
+
+			if (!this.ignoreRemaining && !remainingShellText.isEmpty()) {
+				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellText, ", "));
+			}
 		}
 	}
 

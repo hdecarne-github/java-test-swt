@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.Assertions;
+import org.opentest4j.AssertionFailedError;
 
 /**
  * Base class for all kinds of accessor objects.
@@ -81,16 +82,13 @@ public class Accessor<O> implements Supplier<O> {
 		return Accessor.assertPresent(stream.reduce(Accessor::assertUnique).map(mapper), "Object not found");
 	}
 
-	private static <T> T assertUnique(T t1, @SuppressWarnings("unused") T t2) {
-		Assertions.fail("Object not unique");
-		return t1;
+	private static <T> T assertUnique(T o1, T o2) {
+		Assertions.fail("Object not unique (o1: " + o1 + "; o2: " + o2 + ")");
+		return o1;
 	}
 
 	private static <T> T assertPresent(Optional<T> optional, String message) {
-		if (!optional.isPresent()) {
-			Assertions.fail(message);
-		}
-		return optional.get();
+		return optional.orElseThrow(() -> new AssertionFailedError(message));
 	}
 
 }

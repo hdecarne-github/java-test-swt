@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * Class providing access to the application's {@linkplain MenuItem} objects.
+ * Accessor class for {@linkplain MenuItem} objects.
  */
-public class MenuItemAccessor extends Accessor<MenuItem> {
+public class MenuItemAccessor extends ItemAccessor<MenuItem> {
 
 	/**
 	 * Construct {@linkplain MenuItemAccessor}.

@@ -19,22 +19,22 @@ package de.carne.test.swt.tester.accessor;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.widgets.Decorations;
+import org.eclipse.swt.widgets.Item;
 
 /**
- * Accessor class for {@linkplain Decorations} based widgets.
+ * Accessor class for {@linkplain Item} based widgets.
  *
  * @param <T> the actual type providing access to.
  */
-public class DecorationsAccessor<T extends Decorations> extends Accessor<T> {
+public class ItemAccessor<T extends Item> extends Accessor<T> {
 
 	/**
-	 * Constructs a new {@linkplain DecorationsAccessor} instance.
+	 * Constructs a new {@linkplain ItemAccessor} instance.
 	 *
-	 * @param decorations the widget to access.
+	 * @param item the widget to access.
 	 */
-	protected DecorationsAccessor(T decorations) {
-		super(decorations);
+	protected ItemAccessor(T item) {
+		super(item);
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class DecorationsAccessor<T extends Decorations> extends Accessor<T> {
 	 * @return the created {@linkplain Predicate}.
 	 * @param <S> the actual widget type.
 	 */
-	public static <S extends Decorations> Predicate<S> matchText(String text) {
+	public static <S extends Item> Predicate<S> matchText(String text) {
 		return decorations -> text.equals(decorations.getText());
 	}
 
@@ -55,7 +55,7 @@ public class DecorationsAccessor<T extends Decorations> extends Accessor<T> {
 	 * @return the created {@linkplain Predicate}.
 	 * @param <S> the actual widget type.
 	 */
-	public static <S extends Decorations> Predicate<S> matchText(Pattern textPattern) {
+	public static <S extends Item> Predicate<S> matchText(Pattern textPattern) {
 		return decorations -> textPattern.matcher(decorations.getText()).matches();
 	}
 

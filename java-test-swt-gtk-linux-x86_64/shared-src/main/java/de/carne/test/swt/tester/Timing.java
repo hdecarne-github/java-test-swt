@@ -51,6 +51,7 @@ final class Timing {
 			Assertions.fail(timeoutMessage);
 		}
 		this.synchronizer.sync(STEP_TIMEOUT);
+		this.stepCount++;
 	}
 
 	@SuppressWarnings("squid:S2925")

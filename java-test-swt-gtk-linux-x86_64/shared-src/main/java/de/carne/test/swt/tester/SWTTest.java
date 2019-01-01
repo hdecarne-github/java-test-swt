@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import de.carne.boot.ApplicationMain;
 import de.carne.boot.logging.Log;
 import de.carne.test.swt.tester.accessor.Accessor;
+import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
 import de.carne.util.Strings;
 
@@ -62,9 +63,10 @@ public abstract class SWTTest {
 	 * <li>the optional command line arguments submitted to the SWT application.</li>
 	 * <li>one or more script actions performing the actual test actions and checks.</li>
 	 * </ul>
-	 * By invoking the {@linkplain #run()} function the SWT application is started and the scripts actions are executed.
+	 * By invoking the {@linkplain #execute()} function the SWT application is started and the scripts actions are
+	 * executed.
 	 */
-	public final class Script implements Runnable {
+	public final class Script {
 
 		private final ApplicationMain application;
 		private String[] applicationArgs = new String[0];
@@ -102,16 +104,34 @@ public abstract class SWTTest {
 			return this;
 		}
 
-		@Override
-		public void run() {
-			runScript(this.application, this.applicationArgs, this.actions);
+		/**
+		 * Execute all script actions.
+		 * <p>
+		 * Invoking this function is equivalent to invoking {@code execute(false)}.
+		 * </p>
+		 *
+		 * @see #execute(boolean)
+		 */
+		public void execute() {
+			execute(false);
+		}
+
+		/**
+		 * Execute all script actions.
+		 *
+		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
+		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 */
+		public void execute(boolean ignoreRemaining) {
+			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining);
 		}
 
 	}
 
-	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<Runnable> actions) {
+	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<Runnable> actions,
+			boolean ignoreRemaining) {
 		try {
-			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions);
+			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining);
 
 			scriptRunnerThread.setDaemon(true);
 			scriptRunnerThread.start();
@@ -131,7 +151,7 @@ public abstract class SWTTest {
 				throw error;
 			});
 		} catch (Exception e) {
-			Assertions.fail(e);
+			Assertions.fail("Uncaught exception: " + e.getClass().getName(), e);
 		}
 	}
 
@@ -168,6 +188,19 @@ public abstract class SWTTest {
 	 */
 	protected ShellAccessor accessShell() {
 		return Accessor.accessUnique(shells(), ShellAccessor::new);
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain Shell} identified by it's text.
+	 * <p>
+	 * A test failure is signaled if either none or more than one {@linkplain Shell} with the given text exists.
+	 * </p>
+	 *
+	 * @param text the text of the {@linkplain Shell} to get.
+	 * @return the found {@linkplain Shell}.
+	 */
+	protected ShellAccessor accessShell(String text) {
+		return Accessor.accessUnique(shells().filter(DecorationsAccessor.matchText(text)), ShellAccessor::new);
 	}
 
 }

@@ -19,14 +19,14 @@ package de.carne.test.swt.tester.accessor;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Class providing access to the application's {@linkplain Shell} objects.
+ * Accessor class for {@linkplain Shell} objects.
  */
 public class ShellAccessor extends DecorationsAccessor<Shell> {
 
 	/**
-	 * Constructs a new {@linkplain ShellAccessor}.
+	 * Constructs a new {@linkplain ShellAccessor} instance.
 	 *
-	 * @param shell the {@linkplain Shell} object to wrap.
+	 * @param shell the {@linkplain Shell} object to access.
 	 */
 	public ShellAccessor(Shell shell) {
 		super(shell);
@@ -37,7 +37,7 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	 *
 	 * @return this {@linkplain Shell}'s menu bar accessor.
 	 */
-	public MenuAccessor menuBar() {
+	public MenuAccessor accessMenuBar() {
 		return new MenuAccessor(Accessor.accessNonNull(get().getMenuBar(), "Menu bar not found"));
 	}
 
