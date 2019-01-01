@@ -16,11 +16,12 @@
  */
 package de.carne.swt.gtk.platform;
 
+import de.carne.swt.platform.PlatformIntegration;
+
 /**
  * GTK platform integration.
  */
-@SuppressWarnings("squid:S2176")
-public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
+public class GtkPlatformIntegration extends PlatformIntegration {
 
 	@Override
 	protected boolean internalIsButtonOrderLeftToRight() {

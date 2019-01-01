@@ -30,12 +30,12 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.events.EventReceiver;
+import de.carne.swt.platform.PlatformIntegration;
 
 /**
  * Cocoa platform integration.
  */
-@SuppressWarnings("squid:S2176")
-public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
+public class CocoaPlatformIntegration extends PlatformIntegration {
 
 	@Override
 	protected boolean internalIsButtonOrderLeftToRight() {

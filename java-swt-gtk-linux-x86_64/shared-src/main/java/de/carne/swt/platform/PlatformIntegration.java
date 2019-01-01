@@ -38,9 +38,12 @@ public abstract class PlatformIntegration {
 		PlatformIntegration instance;
 
 		try {
+			String platform = SWT.getPlatform();
 			String basePackageName = UserApplication.class.getPackage().getName();
-			String platformName = PlatformIntegration.class.getName().replace(basePackageName,
-					basePackageName + "." + SWT.getPlatform());
+			String baseClassName = PlatformIntegration.class.getSimpleName();
+			String platformName = PlatformIntegration.class.getName()
+					.replace(basePackageName, basePackageName + "." + platform).replace(baseClassName,
+							platform.substring(0, 1).toUpperCase() + platform.substring(1) + baseClassName);
 
 			instance = Class.forName(platformName).asSubclass(PlatformIntegration.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {

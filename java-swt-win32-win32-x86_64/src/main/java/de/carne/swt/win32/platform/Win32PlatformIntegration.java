@@ -16,11 +16,12 @@
  */
 package de.carne.swt.win32.platform;
 
+import de.carne.swt.platform.PlatformIntegration;
+
 /**
  * Win32 platform integration.
  */
-@SuppressWarnings("squid:S2176")
-public class PlatformIntegration extends de.carne.swt.platform.PlatformIntegration {
+public class Win32PlatformIntegration extends PlatformIntegration {
 
 	@Override
 	protected boolean internalIsButtonOrderLeftToRight() {
