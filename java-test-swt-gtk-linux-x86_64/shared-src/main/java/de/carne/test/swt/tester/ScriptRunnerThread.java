@@ -93,30 +93,35 @@ final class ScriptRunnerThread extends Thread {
 
 	private void disposeRemaining(Display display) {
 		if (!display.isDisposed()) {
-			List<String> remainingShellText = runWait(display, () -> {
-				Shell[] shells = display.getShells();
-				List<String> remainingShellTexts0 = new ArrayList<>();
-
-				for (Shell shell : shells) {
-					if (!shell.isDisposed()) {
-						String shellText = shell.getText();
-
-						LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
-								"Closing remaining Shell ''{0}''", shellText);
-
-						remainingShellTexts0.add(shellText);
-						shell.close();
-						shell.dispose();
-					}
-				}
-				display.dispose();
-				return remainingShellTexts0;
-			});
+			List<String> remainingShellText = runWait(display, () -> disposeRemaining0(display));
 
 			if (!this.ignoreRemaining && !remainingShellText.isEmpty()) {
 				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellText, ", "));
 			}
 		}
+	}
+
+	private List<String> disposeRemaining0(Display display) {
+		List<String> remainingShellTexts = new ArrayList<>();
+
+		if (!display.isDisposed()) {
+			Shell[] shells = display.getShells();
+
+			for (Shell shell : shells) {
+				if (!shell.isDisposed()) {
+					String shellText = shell.getText();
+
+					LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
+							"Closing remaining Shell ''{0}''", shellText);
+
+					remainingShellTexts.add(shellText);
+					shell.close();
+					shell.dispose();
+				}
+			}
+			display.dispose();
+		}
+		return remainingShellTexts;
 	}
 
 	public Optional<AssertionError> assertionStatus() {
