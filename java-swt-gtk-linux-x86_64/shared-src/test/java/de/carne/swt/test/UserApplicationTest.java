@@ -22,13 +22,13 @@ import org.junit.jupiter.api.Test;
 import de.carne.boot.Application;
 import de.carne.swt.UserApplication;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.tester.SWTTester;
+import de.carne.test.swt.tester.SWTTest;
 
 /**
  * Test {@linkplain UserApplication} class.
  */
 @DisableIfThreadNotSWTCapable
-class UserApplicationTest extends SWTTester {
+class UserApplicationTest extends SWTTest {
 
 	@BeforeAll
 	static void setUpSystemProperties() {
@@ -37,12 +37,7 @@ class UserApplicationTest extends SWTTester {
 
 	@Test
 	void testTestUserApplication() {
-		runner().run();
-	}
-
-	@Override
-	protected void runSWTApplication(String[] args) {
-		Application.main(args);
+		script(Application::run).execute(true);
 	}
 
 }

@@ -44,11 +44,11 @@ class TestUserController {
 	}
 
 	void onShellEvent() {
-		LOG.info("Shell event");
+		LOG.debug("Shell event");
 	}
 
 	void onShellEventEvent(ShellEvent event) {
-		LOG.info("Shell event: {0}", event);
+		LOG.debug("Shell event: {0}", event);
 	}
 
 	void onShellDisposeEvent(DisposeEvent event) {
