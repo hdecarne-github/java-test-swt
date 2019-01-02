@@ -17,6 +17,7 @@
 package de.carne.test.swt.tester;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -66,24 +67,31 @@ final class ScriptRunnerThread extends Thread {
 			LOG.debug("Initial Shell is visible; starting actions...");
 
 			Display display = getDisplay();
-			int actionId = 1;
+			List<String> remainingShellTexts;
 
-			for (Runnable action : this.actions) {
-				long start = System.nanoTime();
+			try {
+				int actionId = 1;
 
-				runWait(display, action);
+				for (Runnable action : this.actions) {
+					long start = System.nanoTime();
 
-				long elapsed = System.nanoTime() - start;
+					runWait(display, action);
 
-				LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
+					long elapsed = System.nanoTime() - start;
 
-				Timing.step();
-				actionId++;
+					LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
+
+					Timing.step();
+					actionId++;
+				}
+
+				LOG.debug("All actions processed; cleaning up...");
+			} finally {
+				remainingShellTexts = disposeRemaining(display);
 			}
-
-			LOG.debug("All actions processed; cleaning up...");
-
-			disposeRemaining(display);
+			if (!this.ignoreRemaining && !remainingShellTexts.isEmpty()) {
+				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellTexts, ", "));
+			}
 		} catch (Exception e) {
 			this.assertionStatus.set(new AssertionFailedError("Uncaught exception: " + e.getClass().getName(), e));
 		} catch (AssertionError e) {
@@ -91,14 +99,8 @@ final class ScriptRunnerThread extends Thread {
 		}
 	}
 
-	private void disposeRemaining(Display display) {
-		if (!display.isDisposed()) {
-			List<String> remainingShellText = runWait(display, () -> disposeRemaining0(display));
-
-			if (!this.ignoreRemaining && !remainingShellText.isEmpty()) {
-				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellText, ", "));
-			}
-		}
+	private List<String> disposeRemaining(Display display) {
+		return (display.isDisposed() ? Collections.emptyList() : runWait(display, () -> disposeRemaining0(display)));
 	}
 
 	private List<String> disposeRemaining0(Display display) {
