@@ -30,16 +30,16 @@ import de.carne.util.Late;
 
 class SWTApp implements ApplicationMain {
 
-	public static final String TITLE_SHELL = "Shell";
-	public static final String TITLE_MENU_APP = "App";
-	public static final String TITLE_MENU_APP_QUIT = "Quit";
+	static final String TITLE_SHELL = "Shell";
+	static final String TITLE_MENU_APP = "App";
+	static final String TITLE_MENU_APP_QUIT = "Quit";
 
-	private Late<Shell> shellHolder = new Late<>();
+	private Late<Shell> rootShellHolder = new Late<>();
 
 	@Override
 	public int run(String[] args) {
 		Display display = new Display();
-		Shell shell = this.shellHolder.set(new Shell(display));
+		Shell shell = this.rootShellHolder.set(new Shell(display));
 
 		setupShell();
 		shell.open();
@@ -53,17 +53,17 @@ class SWTApp implements ApplicationMain {
 	}
 
 	private void setupShell() {
-		this.shellHolder.get().setText(TITLE_SHELL);
+		this.rootShellHolder.get().setText(TITLE_SHELL);
 		setupShellMenu();
 	}
 
 	private void setupShellMenu() {
-		Menu bar = new Menu(this.shellHolder.get(), SWT.BAR);
+		Menu bar = new Menu(this.rootShellHolder.get(), SWT.BAR);
 		MenuItem appItem = new MenuItem(bar, SWT.CASCADE);
 		Menu app = new Menu(appItem);
 		MenuItem appQuit = new MenuItem(app, SWT.PUSH);
 
-		this.shellHolder.get().setMenuBar(bar);
+		this.rootShellHolder.get().setMenuBar(bar);
 		appItem.setText(TITLE_MENU_APP);
 		appItem.setMenu(app);
 		appQuit.setText(TITLE_MENU_APP_QUIT);
@@ -78,7 +78,7 @@ class SWTApp implements ApplicationMain {
 	}
 
 	void onAppQuit() {
-		this.shellHolder.get().close();
+		this.rootShellHolder.get().close();
 	}
 
 }
