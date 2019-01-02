@@ -18,7 +18,6 @@ env:
 addons:
   apt:
     packages:
-      - metacity
       - fluxbox
   sonarcloud:
     organization: "hdecarne-github"
