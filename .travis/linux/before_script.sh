@@ -2,4 +2,5 @@
 
 sh -e /etc/init.d/xvfb start
 sleep 10 # give xvfb some time to start
-fluxbox -display :99 &
+fluxbox &
+sleep 20 # give fluxbox some time to start
