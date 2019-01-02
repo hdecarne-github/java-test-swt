@@ -45,7 +45,6 @@ final class Timing {
 		this.stepCount = 0;
 	}
 
-	@SuppressWarnings("squid:S2925")
 	public void step(String timeoutMessage) throws InterruptedException {
 		if (this.stepCount >= STEP_COUNT_LIMIT) {
 			Assertions.fail(timeoutMessage);

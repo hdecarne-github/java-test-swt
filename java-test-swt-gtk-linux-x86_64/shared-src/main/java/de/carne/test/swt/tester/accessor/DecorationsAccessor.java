@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Decorations;
  *
  * @param <T> the actual type providing access to.
  */
-public class DecorationsAccessor<T extends Decorations> extends Accessor<T> {
+public class DecorationsAccessor<T extends Decorations> extends CompositeAccessor<T> {
 
 	/**
 	 * Constructs a new {@linkplain DecorationsAccessor} instance.
