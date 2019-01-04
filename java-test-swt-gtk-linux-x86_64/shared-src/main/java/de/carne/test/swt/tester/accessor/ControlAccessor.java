@@ -42,9 +42,8 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	 *
 	 * @param type the control type to match.
 	 * @return the created {@linkplain Predicate}.
-	 * @param <S> the control type to match.
 	 */
-	public static <S extends Control> Predicate<S> matchClass(Class<S> type) {
+	public static Predicate<Control> matchClass(Class<? extends Control> type) {
 		return control -> type.isAssignableFrom(control.getClass());
 	}
 
