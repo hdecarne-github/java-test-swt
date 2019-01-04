@@ -114,15 +114,19 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 
 					if (acceptedDataType != null) {
 						event.currentDataType = acceptedDataType;
-						if (event.detail == DND.DROP_DEFAULT) {
-							if ((event.operations & DND.DROP_COPY) == DND.DROP_COPY) {
-								event.detail = DND.DROP_COPY;
-							} else if ((event.operations & DND.DROP_LINK) == DND.DROP_LINK) {
-								event.detail = DND.DROP_LINK;
-							}
-						}
+						updateDropTargetEventDetail(event);
 					} else {
 						event.detail = DND.DROP_NONE;
+					}
+				}
+			}
+
+			private void updateDropTargetEventDetail(DropTargetEvent event) {
+				if (event.detail == DND.DROP_DEFAULT) {
+					if ((event.operations & DND.DROP_COPY) == DND.DROP_COPY) {
+						event.detail = DND.DROP_COPY;
+					} else if ((event.operations & DND.DROP_LINK) == DND.DROP_LINK) {
+						event.detail = DND.DROP_LINK;
 					}
 				}
 			}
