@@ -78,11 +78,11 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace("-", ".")
 
 	dependencies {
-		api(group: "de.carne.common", name: "java-default", version: "8.7.0")
+		api(group: "de.carne.common", name: "java-default", version: "8.8.0-SNAPSHOT")
 		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: "3.109.0") {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
-		testImplementation(group: "de.carne.common", name: "java-test-swt${platformSuffix}", version: "2.2.0-SNAPSHOT")
+		testImplementation(group: "de.carne.common", name: "java-test-swt${platformSuffix}", version: project.version)
 	}
 	
 	jar {
@@ -116,6 +116,9 @@ subprojects {
 	
 	task sourceJar(type: Jar) {
 		from sourceSets.main.allJava
+		from (sourceSets.test.allJava) {
+			include "de/carne/swt/test/app/**"
+		}
 		classifier "sources"
 	}
 	
@@ -124,12 +127,20 @@ subprojects {
 		classifier = "javadoc"
 	}
 	
+	task testAppJar(type: Jar) {
+		from (sourceSets.test.output) {
+			include "de/carne/swt/test/app/**"
+		}
+		classifier = "testApp"
+	}
+	
 	publishing {
 		publications {
 			Bintray(MavenPublication) {
 				from components.java
 				artifact sourceJar
 				artifact javadocJar
+				artifact testAppJar
 				pom {
 					name = project.name
 					description = projectDescription

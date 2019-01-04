@@ -14,23 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.test;
-
-import org.junit.jupiter.api.Test;
-
-import de.carne.swt.UserApplication;
-import de.carne.swt.test.app.TestAppTest;
-import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+package de.carne.swt.test.app;
 
 /**
- * Test {@linkplain UserApplication} class.
+ * Test application texts.
  */
-@DisableIfThreadNotSWTCapable
-class UserApplicationTest extends TestAppTest {
+@SuppressWarnings("javadoc")
+public final class TestApp {
 
-	@Test
-	void testTestUserApplication() {
-		executeTestScript();
-	}
+	// Root shell
+	public static final String ROOT_TEXT = TestApp.class.getSimpleName();
+
+	// Root shell menu
+	public static final String ROOT_MENU_SHELL = "Shell";
+	public static final String ROOT_MENU_SHELL_CLOSE = "Close";
 
 }

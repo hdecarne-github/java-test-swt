@@ -14,23 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.test;
+package de.carne.swt.test.app;
 
-import org.junit.jupiter.api.Test;
-
-import de.carne.swt.UserApplication;
-import de.carne.swt.test.app.TestAppTest;
-import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.tester.SWTTest;
 
 /**
- * Test {@linkplain UserApplication} class.
+ * Base class providing the actual {@linkplain TestApp} tests for execution within multiple projects.
  */
-@DisableIfThreadNotSWTCapable
-class UserApplicationTest extends TestAppTest {
+@SuppressWarnings("squid:S2187")
+public class TestAppTest extends SWTTest {
 
-	@Test
-	void testTestUserApplication() {
-		executeTestScript();
+	protected void executeTestScript() {
+		Script script = script(new TestAppMain());
+
+		script.add(this::doClose);
+		script.execute();
+	}
+
+	private void doClose() {
+		accessShell().accessMenuBar().accessItem(TestApp.ROOT_MENU_SHELL_CLOSE).select();
 	}
 
 }

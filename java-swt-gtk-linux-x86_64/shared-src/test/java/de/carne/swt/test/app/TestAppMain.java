@@ -14,52 +14,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.test;
+package de.carne.swt.test.app;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
-import de.carne.boot.Exceptions;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.cmdline.CmdLineProcessor;
 
 /**
- * Test application which runs the test user interface.
+ * Test application main class.
  */
-public class TestUserApplicationMain extends UserApplication implements ApplicationMain {
+public class TestAppMain extends UserApplication implements ApplicationMain {
 
 	@Override
-	public String name() {
-		return getClass().getName();
-	}
-
-	@Override
-	public int run(@NonNull String[] args) {
-		int status;
+	public int run(String[] args) {
+		int status = -1;
 
 		try {
 			status = run(new CmdLineProcessor(name(), args));
-		} catch (ResourceException e) {
-			Assertions.fail(Exceptions.toString(e));
-			status = -1;
+		} catch (Exception e) {
+			Assertions.fail("Uncaught exception: " + e.getClass().getName(), e);
 		}
 		return status;
 	}
 
 	@Override
 	protected Display setupDisplay() throws ResourceException {
-		Display.setAppName(getClass().getTypeName());
+		Display.setAppName(name());
 		return new Display();
 	}
 
 	@Override
 	protected ShellUserInterface setupUserInterface(Display display) throws ResourceException {
-		return new TestUserInterface(new Shell(display));
+		return new TestAppUserInterface(new Shell(display));
 	}
 
 }
