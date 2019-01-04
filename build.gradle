@@ -69,6 +69,8 @@ subprojects {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
 		api(group: "de.carne.common", name: "java-test", version: "1.0.0")
+		testImplementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version)
+		testImplementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version, classifier: "testApp")
 	}
 	
 	jar {

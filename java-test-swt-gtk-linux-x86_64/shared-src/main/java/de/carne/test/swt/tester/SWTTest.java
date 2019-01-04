@@ -156,6 +156,17 @@ public abstract class SWTTest {
 	}
 
 	/**
+	 * Traces the calling function in the test run's debug log.
+	 */
+	protected void traceAction() {
+		if (LOG.isDebugLoggable()) {
+			StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+
+			LOG.debug("Executing {0}", stes[2]);
+		}
+	}
+
+	/**
 	 * Gets the SWT {@linkplain Display}.
 	 * <p>
 	 * A test failure is signaled in case no SWT {@linkplain Display} exists. The latter is the case if the current
