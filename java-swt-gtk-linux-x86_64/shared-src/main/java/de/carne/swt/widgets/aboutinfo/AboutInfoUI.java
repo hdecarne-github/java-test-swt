@@ -198,6 +198,7 @@ class AboutInfoUI extends ShellUserInterface {
 
 		closeButton.withText(AboutInfoI18N.i18nButtonClose());
 		closeButton.onSelected(() -> root().close());
+		root().setDefaultButton(closeButton.get());
 		RowLayoutBuilder.layout().fill(true).apply(buttons);
 		RowLayoutBuilder.data().apply(closeButton);
 	}
