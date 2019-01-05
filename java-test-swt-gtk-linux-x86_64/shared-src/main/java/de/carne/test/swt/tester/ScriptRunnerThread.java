@@ -58,10 +58,6 @@ final class ScriptRunnerThread extends Thread {
 
 	@Override
 	public void run() {
-		Assertions.assertTimeoutPreemptively(this.timeout, this::run0);
-	}
-
-	private void run0() {
 		LOG.info("{0} started", Thread.currentThread().getName());
 
 		try {
@@ -77,12 +73,7 @@ final class ScriptRunnerThread extends Thread {
 			List<String> remainingShellTexts;
 
 			try {
-				int actionId = 1;
-
-				for (ScriptAction action : this.actions) {
-					runAction(display, action, actionId);
-					actionId++;
-				}
+				Assertions.assertTimeoutPreemptively(this.timeout, () -> runActions(display));
 
 				LOG.debug("All actions processed; cleaning up...");
 			} finally {
@@ -96,6 +87,16 @@ final class ScriptRunnerThread extends Thread {
 		} catch (AssertionError e) {
 			this.assertionStatus.set(e);
 		}
+	}
+
+	private void runActions(Display display) throws InterruptedException {
+		int actionId = 1;
+
+		for (ScriptAction action : this.actions) {
+			runAction(display, action, actionId);
+			actionId++;
+		}
+
 	}
 
 	private void runAction(Display display, ScriptAction action, int actionId) throws InterruptedException {
