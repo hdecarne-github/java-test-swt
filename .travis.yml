@@ -37,6 +37,7 @@ notifications:
   email: false 
   slack:
     secure: "MMZDbYQvZbKitwh8FBEcTturfubJKhnKLJUMc0YHOtCEVGPkfNpMk5hgTVr5IUzkPxywQBxrxx/C78t08UTIvzp7kqc1nfJ19wHbXrz/v759kC7FW8nAIcLBFPoCH/U3pJCRJhdpICjF+b8G9EFgrBuJTvoFa0wL1qPaDfxyj9SbVHcgl7PY6zCx1I1kXm66vaVU+eHZpF3Q3BY9FuLv6pBWQ1CVuWr/m4hHE7uHbtD8j4nXkteGVFv72MPwwxoXSuxzDyGkdbQE4dvOe0h7aqatci6dKMUq3GSSBOS0uhLQ3r1UWOqrk6+YLAqno41wE0i9xNvE9dq8MVwsdcE9Y0bjvO1dBmNJDEVFoIq7fDxC/ltIp2AZt0KdoLb4xN8ss51Rj6Jsl1gbXYRLEIZZ6aOx+DAnz0HXL6bcdNLReNXEY7DosG5juXMiObGcmI5mzEKwCGCMhghiEXFlme2KaN3FeCd7nq5hWnp+aZh7651aPebdu1B1QMEmeFOEmffR6SAp8fmMBn+8YX3wwJrBR+YLCW8oJ1AP4ufY+fuZXzVt+hPCcNbwPx+oZGSbcl5onF2ExH1LAOCM4TWjmoEQ8f1VxEZp14tsFRN0Wc0ViD/XrD3ffWaQtOJEjOPD+T8uqUC3eNUsH4/pjkc+9b0lolB4Yh2UrpcIvj/o7H8WoIM="
+    on_success: change
       
 # See https://docs.travis-ci.com/user/languages/java/#caching
 before_cache:
