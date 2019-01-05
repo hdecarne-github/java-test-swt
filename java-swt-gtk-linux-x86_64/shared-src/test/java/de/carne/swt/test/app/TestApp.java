@@ -29,4 +29,8 @@ public final class TestApp {
 	public static final String ROOT_MENU_SHELL = "Shell";
 	public static final String ROOT_MENU_SHELL_CLOSE = "Close";
 
+	// Widget menus
+	public static final String ROOT_MENU_WIDGETS = "Widgets";
+	public static final String ROOT_MENU_WIDGETS_ABOUTINFO = "Aboutinfo...";
+
 }

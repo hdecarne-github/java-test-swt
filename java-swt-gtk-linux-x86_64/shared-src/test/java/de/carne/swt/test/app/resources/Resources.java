@@ -29,10 +29,12 @@ import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.graphics.ResourceTracker;
 
 /**
- * Test application's image resources.
+ * Test application's resources.
  */
 @SuppressWarnings("javadoc")
-public final class Images {
+public final class Resources {
+
+	public static final String ABOUT_TEXT = "about.txt";
 
 	public static final String APP_ICON16 = "app_icon16.png";
 	public static final String APP_ICON32 = "app_icon32.png";
@@ -42,7 +44,7 @@ public final class Images {
 	public static final Iterable<String> APP_ICON = Arrays.asList(APP_ICON16, APP_ICON32, APP_ICON48, APP_ICON128);
 
 	public static Image getImage(Device device, String name) throws ResourceException {
-		URL imageUrl = Images.class.getResource(name);
+		URL imageUrl = Resources.class.getResource(name);
 
 		if (imageUrl == null) {
 			throw new ResourceException("Cannot find image: " + name);
@@ -55,7 +57,7 @@ public final class Images {
 		List<Image> images = new ArrayList<>();
 
 		for (String name : names) {
-			URL imageUrl = Images.class.getResource(name);
+			URL imageUrl = Resources.class.getResource(name);
 
 			if (imageUrl == null) {
 				throw new ResourceException("Cannot find image: " + name);

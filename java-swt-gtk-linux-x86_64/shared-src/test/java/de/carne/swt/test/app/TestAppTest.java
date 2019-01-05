@@ -17,6 +17,8 @@
 package de.carne.swt.test.app;
 
 import de.carne.test.swt.tester.SWTTest;
+import de.carne.test.swt.tester.accessor.ButtonAccessor;
+import de.carne.test.swt.tester.accessor.ItemAccessor;
 
 /**
  * Base class providing the actual {@linkplain TestApp} tests for execution within multiple projects.
@@ -27,12 +29,25 @@ public class TestAppTest extends SWTTest {
 	protected void executeTestScript() {
 		Script script = script(new TestAppMain());
 
+		script.add(this::doOpenAboutinfo, true);
+		script.add(this::doCloseAboutinfo);
 		script.add(this::doClose);
 		script.execute();
 	}
 
+	private void doOpenAboutinfo() {
+		traceAction();
+		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO)).select();
+	}
+
+	private void doCloseAboutinfo() {
+		traceAction();
+		accessShell("About <undefined>").accessButton(ButtonAccessor.matchText("Close")).select();
+	}
+
 	private void doClose() {
-		accessShell().accessMenuBar().accessItem(TestApp.ROOT_MENU_SHELL_CLOSE).select();
+		traceAction();
+		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_SHELL_CLOSE)).select();
 	}
 
 }

@@ -1,0 +1,3 @@
+About TestApp
+This application is used for testing.
+See License for further info.

@@ -56,6 +56,9 @@ import de.carne.util.Strings;
 
 class AboutInfoUI extends ShellUserInterface {
 
+	private static final int MAX_WIDTH = 600;
+	private static final int MAX_HEIGHT = 240;
+
 	private final ResourceTracker resources;
 	private final @Nullable URL logoUrl;
 	private final List<URL> copyrightUrls;
@@ -107,7 +110,7 @@ class AboutInfoUI extends ShellUserInterface {
 
 		TabFolder infosTab = infos.get();
 		Point infoSize = infosTab.getItem(0).getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Point infosSize = infosTab.computeSize(infoSize.x, infoSize.y);
+		Point infosSize = infosTab.computeSize(Math.min(infoSize.x, MAX_WIDTH), Math.min(infoSize.y, MAX_HEIGHT));
 
 		GridLayoutBuilder.layout(2).apply(rootBuilder);
 		GridLayoutBuilder.data().span(1, 3).apply(logo);

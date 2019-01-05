@@ -16,14 +16,19 @@
  */
 package de.carne.swt.test.app;
 
+import java.net.URL;
+import java.util.Objects;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ResourceException;
-import de.carne.swt.test.app.resources.Images;
+import de.carne.swt.test.app.resources.Resources;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
+import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
 
 /**
  * Test application root shell user interface.
@@ -44,7 +49,8 @@ public class TestAppUserInterface extends ShellUserInterface {
 		Shell shell = root();
 		ShellBuilder shellBuilder = new ShellBuilder(shell);
 
-		shellBuilder.withText(TestApp.ROOT_TEXT).withImages(Images.getImages(shell.getDisplay(), Images.APP_ICON));
+		shellBuilder.withText(TestApp.ROOT_TEXT)
+				.withImages(Resources.getImages(shell.getDisplay(), Resources.APP_ICON));
 		buildMenuBar();
 		shell.layout();
 		shell.open();
@@ -57,10 +63,27 @@ public class TestAppUserInterface extends ShellUserInterface {
 		menuBarBuilder.beginMenu();
 		menuBarBuilder.addItem(SWT.PUSH).withText(TestApp.ROOT_MENU_SHELL_CLOSE).onSelected(this::onShellClose);
 		menuBarBuilder.endMenu();
+		menuBarBuilder.addItem(SWT.CASCADE).withText(TestApp.ROOT_MENU_WIDGETS);
+		menuBarBuilder.beginMenu();
+		menuBarBuilder.addItem(SWT.PUSH).withText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO).onSelected(this::onAbout);
+		menuBarBuilder.endMenu();
 	}
 
 	private void onShellClose() {
 		root().close();
+	}
+
+	private void onAbout() {
+		AboutInfoDialog about = new AboutInfoDialog(root());
+
+		try {
+			URL logoUrl = Objects.requireNonNull(Resources.class.getResource(Resources.APP_ICON48));
+			URL copyrightUrl = Objects.requireNonNull(Resources.class.getResource(Resources.ABOUT_TEXT));
+
+			about.withLogo(logoUrl).withCopyright(copyrightUrl).open();
+		} catch (Exception e) {
+			Assertions.fail(e);
+		}
 	}
 
 }
