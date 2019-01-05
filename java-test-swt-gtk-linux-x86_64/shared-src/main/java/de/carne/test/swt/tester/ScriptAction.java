@@ -14,31 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.tester.accessor;
+package de.carne.test.swt.tester;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.MenuItem;
+class ScriptAction implements Runnable {
 
-/**
- * Accessor class for {@linkplain MenuItem} objects.
- */
-public class MenuItemAccessor extends ItemAccessor<MenuItem> {
+	private final Runnable runnable;
+	private final boolean asyncFlag;
 
-	/**
-	 * Constructs a new {@linkplain MenuItemAccessor} instance.
-	 *
-	 * @param menuItem the {@linkplain MenuItem} object to access.
-	 */
-	public MenuItemAccessor(MenuItem menuItem) {
-		super(menuItem);
+	ScriptAction(Runnable runnable, boolean asyncFlag) {
+		this.runnable = runnable;
+		this.asyncFlag = asyncFlag;
 	}
 
-	/**
-	 * Generate a selection event to the {@linkplain MenuItem}.
-	 */
-	public void select() {
-		get().notifyListeners(SWT.Selection, new Event());
+	public boolean isAsync() {
+		return this.asyncFlag;
+	}
+
+	@Override
+	public void run() {
+		this.runnable.run();
 	}
 
 }

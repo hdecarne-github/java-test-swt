@@ -18,6 +18,7 @@ package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -96,16 +97,16 @@ public class MenuAccessor extends Accessor<Menu> {
 	}
 
 	/**
-	 * Convenience function which gets a specific {@linkplain MenuItem} identified by it's text.
+	 * Convenience function which gets a specific {@linkplain MenuItem}.
 	 * <p>
-	 * A test failure is signaled if either none or more than one {@linkplain MenuItem} with the given text exists.
+	 * A test failure is signaled if either none or more than one matching {@linkplain MenuItem} exists.
 	 * </p>
 	 *
-	 * @param text the text of the {@linkplain MenuItem} to get.
+	 * @param predicate the match criteria to use.
 	 * @return the found {@linkplain MenuItem}.
 	 */
-	public MenuItemAccessor accessItem(String text) {
-		return Accessor.accessUnique(items().filter(ItemAccessor.matchText(text)), MenuItemAccessor::new);
+	public MenuItemAccessor accessMenuItem(Predicate<MenuItem> predicate) {
+		return Accessor.accessUnique(items().filter(predicate), MenuItemAccessor::new);
 	}
 
 }

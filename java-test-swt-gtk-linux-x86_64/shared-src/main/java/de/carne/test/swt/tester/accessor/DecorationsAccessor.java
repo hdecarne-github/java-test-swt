@@ -22,18 +22,18 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.widgets.Decorations;
 
 /**
- * Accessor class for {@linkplain Decorations} based widgets.
+ * Accessor class for {@linkplain Decorations} objects.
  *
- * @param <T> the actual type providing access to.
+ * @param <O> the actual object type to access.
  */
-public class DecorationsAccessor<T extends Decorations> extends CompositeAccessor<T> {
+public class DecorationsAccessor<O extends Decorations> extends CompositeAccessor<O> {
 
 	/**
 	 * Constructs a new {@linkplain DecorationsAccessor} instance.
 	 *
-	 * @param decorations the widget to access.
+	 * @param decorations the {@linkplain Decorations} instance to access.
 	 */
-	protected DecorationsAccessor(T decorations) {
+	protected DecorationsAccessor(O decorations) {
 		super(decorations);
 	}
 

@@ -28,9 +28,9 @@ import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 
 /**
- * Base class for all kinds of accessor objects.
+ * Base class for all kinds of accessor classes.
  *
- * @param <O> the actual type providing access to.
+ * @param <O> the actual object type to access.
  */
 public class Accessor<O> implements Supplier<O> {
 
@@ -67,7 +67,7 @@ public class Accessor<O> implements Supplier<O> {
 	}
 
 	/**
-	 * Accesses the unique object from an one-element {@linkplain Stream}.
+	 * Accesses a unique object from an one-element {@linkplain Stream}.
 	 * <p>
 	 * If the submitted {@linkplain Stream} contains 0 or more than 1 element a test failure is signaled.
 	 * </p>

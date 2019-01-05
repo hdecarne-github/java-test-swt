@@ -16,6 +16,9 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.function.Predicate;
+
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -33,12 +36,25 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	}
 
 	/**
-	 * Gets this {@linkplain Shell}'s menu bar accessor.
+	 * Gets this {@linkplain Shell}'s menu bar.
 	 *
-	 * @return this {@linkplain Shell}'s menu bar accessor.
+	 * @return this {@linkplain Shell}'s menu bar.
 	 */
 	public MenuAccessor accessMenuBar() {
 		return new MenuAccessor(Accessor.accessNonNull(get().getMenuBar(), "Menu bar not found"));
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain MenuItem} from this {@linkplain Shell}'s menu bar.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain MenuItem} exists.
+	 * </p>
+	 *
+	 * @param predicate the match criteria to use.
+	 * @return the found {@linkplain MenuItem}.
+	 */
+	public MenuItemAccessor accessMenuItem(Predicate<MenuItem> predicate) {
+		return accessMenuBar().accessMenuItem(predicate);
 	}
 
 }

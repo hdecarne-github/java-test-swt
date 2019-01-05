@@ -42,11 +42,11 @@ final class ScriptRunnerThread extends Thread {
 	private static final Log LOG = new Log();
 
 	private final Thread displayThread;
-	private final Iterable<Runnable> actions;
+	private final Iterable<ScriptAction> actions;
 	private final boolean ignoreRemaining;
 	private final AtomicReference<AssertionError> assertionStatus = new AtomicReference<>();
 
-	ScriptRunnerThread(Iterable<Runnable> actions, boolean ignoreRemaining) {
+	ScriptRunnerThread(Iterable<ScriptAction> actions, boolean ignoreRemaining) {
 		super(ScriptRunnerThread.class.getName());
 		this.displayThread = Thread.currentThread();
 		this.actions = actions;
@@ -72,16 +72,8 @@ final class ScriptRunnerThread extends Thread {
 			try {
 				int actionId = 1;
 
-				for (Runnable action : this.actions) {
-					long start = System.nanoTime();
-
-					runWait(display, action);
-
-					long elapsed = System.nanoTime() - start;
-
-					LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
-
-					Timing.step();
+				for (ScriptAction action : this.actions) {
+					runAction(display, action, actionId);
 					actionId++;
 				}
 
@@ -96,6 +88,26 @@ final class ScriptRunnerThread extends Thread {
 			this.assertionStatus.set(new AssertionFailedError("Uncaught exception: " + e.getClass().getName(), e));
 		} catch (AssertionError e) {
 			this.assertionStatus.set(e);
+		}
+	}
+
+	private void runAction(Display display, ScriptAction action, int actionId) throws InterruptedException {
+		if (action.isAsync()) {
+			runNoWait(display, action);
+
+			Timing.step();
+
+			LOG.debug("Action #{0} triggered", actionId);
+		} else {
+			long start = System.nanoTime();
+
+			runWait(display, action);
+
+			long elapsed = System.nanoTime() - start;
+
+			Timing.step();
+
+			LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
 		}
 	}
 
@@ -158,6 +170,10 @@ final class ScriptRunnerThread extends Thread {
 
 			return shells.length > 0 && shells[0].isVisible();
 		}).booleanValue();
+	}
+
+	private void runNoWait(Display display, Runnable runnable) {
+		display.asyncExec(runnable);
 	}
 
 	private void runWait(Display display, Runnable runnable) {

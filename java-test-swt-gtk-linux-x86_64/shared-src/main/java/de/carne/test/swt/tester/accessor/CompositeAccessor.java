@@ -18,25 +18,27 @@ package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Accessor class for {@linkplain Composite} based widgets.
+ * Accessor class for {@linkplain Composite} objects.
  *
- * @param <T> the actual type providing access to.
+ * @param <O> the actual object type to access.
  */
-public class CompositeAccessor<T extends Composite> extends Accessor<T> {
+public class CompositeAccessor<O extends Composite> extends ControlAccessor<O> {
 
 	/**
 	 * Constructs a new {@linkplain CompositeAccessor} instance.
 	 *
-	 * @param composite the widget to access.
+	 * @param composite the {@linkplain Composite} instance to access.
 	 */
-	protected CompositeAccessor(T composite) {
+	protected CompositeAccessor(O composite) {
 		super(composite);
 	}
 
@@ -91,6 +93,20 @@ public class CompositeAccessor<T extends Composite> extends Accessor<T> {
 			}
 		}
 		return children;
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain Button}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain Button} exists.
+	 * </p>
+	 *
+	 * @param predicate the match criteria to use.
+	 * @return the found {@linkplain Button}.
+	 */
+	public ButtonAccessor accessButton(Predicate<Button> predicate) {
+		return Accessor.accessUnique(children().filter(ControlAccessor.matchClass(Button.class))
+				.map(ControlAccessor.mapClass(Button.class)).filter(predicate), ButtonAccessor::new);
 	}
 
 }

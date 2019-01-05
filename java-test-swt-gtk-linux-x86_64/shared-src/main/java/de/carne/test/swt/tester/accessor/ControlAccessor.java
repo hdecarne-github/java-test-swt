@@ -22,18 +22,18 @@ import java.util.function.Predicate;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Accessor class for {@linkplain Control} based widgets.
+ * Accessor class for {@linkplain Control} objects.
  *
- * @param <T> the actual type providing access to.
+ * @param <O> the actual object type to access.
  */
-public class ControlAccessor<T extends Control> extends Accessor<T> {
+public class ControlAccessor<O extends Control> extends Accessor<O> {
 
 	/**
 	 * Constructs a new {@linkplain ControlAccessor} instance.
 	 *
-	 * @param control the widget to access.
+	 * @param control the {@linkplain Control} instance to access.
 	 */
-	protected ControlAccessor(T control) {
+	protected ControlAccessor(O control) {
 		super(control);
 	}
 

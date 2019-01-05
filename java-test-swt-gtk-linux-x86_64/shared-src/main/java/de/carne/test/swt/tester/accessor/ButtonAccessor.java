@@ -19,22 +19,22 @@ package de.carne.test.swt.tester.accessor;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
 
 /**
- * Accessor class for {@linkplain Item} objects.
- *
- * @param <O> the actual object type to access.
+ * Accessor class for {@linkplain Button} objects.
  */
-public class ItemAccessor<O extends Item> extends Accessor<O> {
+public class ButtonAccessor extends ControlAccessor<Button> {
 
 	/**
-	 * Constructs a new {@linkplain ItemAccessor} instance.
+	 * Constructs a new {@linkplain ButtonAccessor} instance.
 	 *
-	 * @param item the {@linkplain Item} instance to access.
+	 * @param button the {@linkplain Button} instance to access.
 	 */
-	protected ItemAccessor(O item) {
-		super(item);
+	protected ButtonAccessor(Button button) {
+		super(button);
 	}
 
 	/**
@@ -42,10 +42,9 @@ public class ItemAccessor<O extends Item> extends Accessor<O> {
 	 *
 	 * @param text the text to match.
 	 * @return the created {@linkplain Predicate}.
-	 * @param <S> the actual widget type.
 	 */
-	public static <S extends Item> Predicate<S> matchText(String text) {
-		return decorations -> text.equals(decorations.getText());
+	public static Predicate<Button> matchText(String text) {
+		return button -> text.equals(button.getText());
 	}
 
 	/**
@@ -53,10 +52,16 @@ public class ItemAccessor<O extends Item> extends Accessor<O> {
 	 *
 	 * @param textPattern the pattern to match.
 	 * @return the created {@linkplain Predicate}.
-	 * @param <S> the actual widget type.
 	 */
-	public static <S extends Item> Predicate<S> matchText(Pattern textPattern) {
-		return decorations -> textPattern.matcher(decorations.getText()).matches();
+	public static Predicate<Button> matchText(Pattern textPattern) {
+		return button -> textPattern.matcher(button.getText()).matches();
+	}
+
+	/**
+	 * Generate a selection event to the {@linkplain Button}.
+	 */
+	public void select() {
+		get().notifyListeners(SWT.Selection, new Event());
 	}
 
 }

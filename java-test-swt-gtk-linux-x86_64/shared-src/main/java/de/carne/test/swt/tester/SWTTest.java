@@ -70,7 +70,7 @@ public abstract class SWTTest {
 
 		private final ApplicationMain application;
 		private String[] applicationArgs = new String[0];
-		private final List<Runnable> actions = new LinkedList<>();
+		private final List<ScriptAction> actions = new LinkedList<>();
 
 		Script(ApplicationMain application) {
 			this.application = application;
@@ -100,7 +100,22 @@ public abstract class SWTTest {
 		 * @return the updated script.
 		 */
 		public Script add(Runnable action) {
-			this.actions.add(action);
+			this.actions.add(new ScriptAction(action, false));
+			return this;
+		}
+
+		/**
+		 * Adds an action to be executed during the test.
+		 * <p>
+		 * The action will be executed on the UI thread.
+		 * </p>
+		 *
+		 * @param action the action to add.
+		 * @param async whether to execute the action asynchronously ({@code true}) or not ({@code false}).
+		 * @return the updated script.
+		 */
+		public Script add(Runnable action, boolean async) {
+			this.actions.add(new ScriptAction(action, async));
 			return this;
 		}
 
@@ -128,7 +143,7 @@ public abstract class SWTTest {
 
 	}
 
-	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<Runnable> actions,
+	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<ScriptAction> actions,
 			boolean ignoreRemaining) {
 		try {
 			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining);
