@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.tester;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -133,20 +134,36 @@ public abstract class SWTTest {
 
 		/**
 		 * Execute all script actions.
+		 * <p>
+		 * Invoking this function is equivalent to invoking
+		 * {@code execute(false, Duration.ofMillis(Timing.TEST_TIMEOUT))}.
+		 * </p>
 		 *
 		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
 		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
 		 */
 		public void execute(boolean ignoreRemaining) {
-			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining);
+			execute(ignoreRemaining, Duration.ofMillis(Timing.TEST_TIMEOUT));
+		}
+
+		/**
+		 * Execute all script actions.
+		 *
+		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
+		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 * @param timeout timeout (in ms) after which the script execution will be stopped and the test considered
+		 * failed.
+		 */
+		public void execute(boolean ignoreRemaining, Duration timeout) {
+			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining, timeout);
 		}
 
 	}
 
 	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<ScriptAction> actions,
-			boolean ignoreRemaining) {
+			boolean ignoreRemaining, Duration timeout) {
 		try {
-			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining);
+			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining, timeout);
 
 			scriptRunnerThread.setDaemon(true);
 			scriptRunnerThread.start();

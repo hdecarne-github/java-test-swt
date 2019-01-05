@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.tester;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,17 +45,23 @@ final class ScriptRunnerThread extends Thread {
 	private final Thread displayThread;
 	private final Iterable<ScriptAction> actions;
 	private final boolean ignoreRemaining;
+	private final Duration timeout;
 	private final AtomicReference<AssertionError> assertionStatus = new AtomicReference<>();
 
-	ScriptRunnerThread(Iterable<ScriptAction> actions, boolean ignoreRemaining) {
+	ScriptRunnerThread(Iterable<ScriptAction> actions, boolean ignoreRemaining, Duration timeout) {
 		super(ScriptRunnerThread.class.getName());
 		this.displayThread = Thread.currentThread();
 		this.actions = actions;
 		this.ignoreRemaining = ignoreRemaining;
+		this.timeout = timeout;
 	}
 
 	@Override
 	public void run() {
+		Assertions.assertTimeoutPreemptively(this.timeout, this::run0);
+	}
+
+	private void run0() {
 		LOG.info("{0} started", Thread.currentThread().getName());
 
 		try {

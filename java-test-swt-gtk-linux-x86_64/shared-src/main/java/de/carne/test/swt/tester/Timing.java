@@ -25,6 +25,10 @@ import de.carne.util.SystemProperties;
  */
 final class Timing {
 
+	private static final String PROPERTY_TEST_TIMEOUT = Timing.class.getPackage().getName() + ".TEST_TIMEOUT";
+
+	public static final int TEST_TIMEOUT = SystemProperties.intValue(PROPERTY_TEST_TIMEOUT, 5 * 60 * 1000);
+
 	private static final String PROPERTY_STEP_TIMEOUT = Timing.class.getPackage().getName() + ".STEP_TIMEOUT";
 
 	public static final int STEP_TIMEOUT = SystemProperties.intValue(PROPERTY_STEP_TIMEOUT, 250);
