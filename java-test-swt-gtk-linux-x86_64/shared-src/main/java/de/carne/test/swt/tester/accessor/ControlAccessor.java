@@ -55,7 +55,7 @@ public class ControlAccessor<O extends Control> extends Accessor<O> {
 	 * @param <S> the control type to map to.
 	 */
 	public static <S extends Control> Function<Control, S> mapClass(Class<S> type) {
-		return control -> type.cast(control);
+		return type::cast;
 	}
 
 }
