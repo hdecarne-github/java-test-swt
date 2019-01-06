@@ -20,27 +20,33 @@ import java.net.URL;
 import java.util.Objects;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.layout.FillLayoutBuilder;
 import de.carne.swt.test.app.resources.Resources;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
+import de.carne.util.Late;
 
 /**
  * Test application root shell user interface.
  */
-public class TestAppUserInterface extends ShellUserInterface {
+public class TestAppUI extends ShellUserInterface {
+
+	private final Late<List> messageListHolder = new Late<>();
 
 	/**
-	 * Constructs a new {@linkplain TestAppUserInterface} instance.
+	 * Constructs a new {@linkplain TestAppUI} instance.
 	 *
 	 * @param shell the user interface {@linkplain Shell}.
 	 */
-	protected TestAppUserInterface(Shell shell) {
+	protected TestAppUI(Shell shell) {
 		super(shell);
 	}
 
@@ -52,11 +58,13 @@ public class TestAppUserInterface extends ShellUserInterface {
 		shellBuilder.withText(TestApp.ROOT_TEXT)
 				.withImages(Resources.getImages(shell.getDisplay(), Resources.APP_ICON));
 		buildMenuBar();
+		this.messageListHolder.set(shellBuilder.addControlChild(List.class, SWT.SINGLE | SWT.BORDER).get());
+		FillLayoutBuilder.layout().apply(shell);
 		shell.layout();
 		shell.open();
 	}
 
-	private void buildMenuBar() {
+	private Menu buildMenuBar() {
 		MenuBuilder menuBarBuilder = MenuBuilder.menuBar(root());
 
 		menuBarBuilder.addItem(SWT.CASCADE).withText(TestApp.ROOT_MENU_SHELL);
@@ -67,6 +75,7 @@ public class TestAppUserInterface extends ShellUserInterface {
 		menuBarBuilder.beginMenu();
 		menuBarBuilder.addItem(SWT.PUSH).withText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO).onSelected(this::onAbout);
 		menuBarBuilder.endMenu();
+		return menuBarBuilder.get();
 	}
 
 	private void onShellClose() {

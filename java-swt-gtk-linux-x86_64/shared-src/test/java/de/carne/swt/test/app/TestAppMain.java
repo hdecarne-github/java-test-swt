@@ -51,7 +51,7 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 
 	@Override
 	protected ShellUserInterface setupUserInterface(Display display) throws ResourceException {
-		return new TestAppUserInterface(new Shell(display));
+		return new TestAppUI(new Shell(display));
 	}
 
 }

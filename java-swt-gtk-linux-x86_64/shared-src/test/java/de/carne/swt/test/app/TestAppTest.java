@@ -35,17 +35,17 @@ public class TestAppTest extends SWTTest {
 		script.execute();
 	}
 
-	private void doOpenAboutinfo() {
+	protected void doOpenAboutinfo() {
 		traceAction();
 		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO)).select();
 	}
 
-	private void doCloseAboutinfo() {
+	protected void doCloseAboutinfo() {
 		traceAction();
 		accessShell("About <undefined>").accessButton(ButtonAccessor.matchText("Close")).select();
 	}
 
-	private void doClose() {
+	protected void doClose() {
 		traceAction();
 		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_SHELL_CLOSE)).select();
 	}
