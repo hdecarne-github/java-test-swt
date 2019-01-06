@@ -132,7 +132,7 @@ final class ScriptRunnerThread extends Thread {
 		List<String> remainingShellTexts = new ArrayList<>();
 		boolean screenGrabbed = false;
 
-		if (PlatformHelper.inNativeDialog()) {
+		if (PlatformHelper.inNativeDialog(display)) {
 			LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
 					"Closing native dialog");
 
@@ -140,7 +140,7 @@ final class ScriptRunnerThread extends Thread {
 				grabScreen();
 				screenGrabbed = true;
 			}
-			PlatformHelper.closeNativeDialogs();
+			PlatformHelper.closeNativeDialogs(display);
 			remainingShellTexts.add("<native dialog>");
 		}
 		if (!display.isDisposed()) {
@@ -241,7 +241,7 @@ final class ScriptRunnerThread extends Thread {
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
-			checkNativeDialog();
+			checkNativeDialog(display);
 			try {
 				display.syncExec(runnable);
 			} catch (RuntimeException e) {
@@ -261,7 +261,7 @@ final class ScriptRunnerThread extends Thread {
 		if (Thread.currentThread().equals(display.getThread())) {
 			resultHolder.set(supplier.get());
 		} else {
-			checkNativeDialog();
+			checkNativeDialog(display);
 			try {
 				display.syncExec(() -> resultHolder.set(supplier.get()));
 			} catch (RuntimeException e) {
@@ -276,8 +276,8 @@ final class ScriptRunnerThread extends Thread {
 		return resultHolder.get();
 	}
 
-	private void checkNativeDialog() {
-		if (PlatformHelper.inNativeDialog()) {
+	private void checkNativeDialog(Display display) {
+		if (PlatformHelper.inNativeDialog(display)) {
 			Assertions.fail("Native dialog detected");
 		}
 	}

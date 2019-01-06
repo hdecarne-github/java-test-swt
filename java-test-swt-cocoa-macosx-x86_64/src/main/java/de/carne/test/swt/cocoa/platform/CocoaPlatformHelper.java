@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSThread;
 import org.eclipse.swt.internal.cocoa.OS;
+import org.eclipse.swt.widgets.Display;
 
 import de.carne.test.swt.platform.PlatformHelper;
 
@@ -37,7 +38,7 @@ public class CocoaPlatformHelper extends PlatformHelper {
 	}
 
 	@Override
-	protected boolean internalInNativeDialog() {
+	protected boolean internalInNativeDialog(Display display) {
 		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
 		long modalWindowId = applicationModalWindowId(application);
 
@@ -45,7 +46,7 @@ public class CocoaPlatformHelper extends PlatformHelper {
 	}
 
 	@Override
-	protected boolean internalCloseNativeDialogs() {
+	protected boolean internalCloseNativeDialogs(Display display) {
 		boolean inNativeDialog = false;
 		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
 		long modalWindowId = applicationModalWindowId(application);

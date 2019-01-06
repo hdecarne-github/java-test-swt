@@ -17,6 +17,7 @@
 package de.carne.test.swt.platform;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
@@ -72,11 +73,11 @@ public abstract class PlatformHelper {
 	 *
 	 * @return {@code true} if a native platform dialog is currently open.
 	 */
-	public static boolean inNativeDialog() {
-		return INSTANCE_HOLDER.get().internalInNativeDialog();
+	public static boolean inNativeDialog(Display display) {
+		return INSTANCE_HOLDER.get().internalInNativeDialog(display);
 	}
 
-	protected boolean internalInNativeDialog() {
+	protected boolean internalInNativeDialog(Display display) {
 		return false;
 	}
 
@@ -85,11 +86,11 @@ public abstract class PlatformHelper {
 	 *
 	 * @return {@code true} if a native platform dialog has been closed.
 	 */
-	public static boolean closeNativeDialogs() {
-		return INSTANCE_HOLDER.get().internalCloseNativeDialogs();
+	public static boolean closeNativeDialogs(Display display) {
+		return INSTANCE_HOLDER.get().internalCloseNativeDialogs(display);
 	}
 
-	protected boolean internalCloseNativeDialogs() {
+	protected boolean internalCloseNativeDialogs(Display display) {
 		return false;
 	}
 

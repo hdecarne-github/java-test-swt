@@ -16,6 +16,12 @@
  */
 package de.carne.test.swt.win32.platform;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.eclipse.swt.internal.win32.OS;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import de.carne.test.swt.platform.PlatformHelper;
 
 /**
@@ -23,6 +29,39 @@ import de.carne.test.swt.platform.PlatformHelper;
  */
 public class Win32PlatformHelper extends PlatformHelper {
 
-	// Nothing to do here
+	@Override
+	protected boolean internalInNativeDialog(Display display) {
+		AtomicBoolean resultHolder = new AtomicBoolean();
+
+		if (Thread.currentThread().equals(display.getThread())) {
+			Shell activeShell = display.getActiveShell();
+
+			resultHolder.set(activeShell == null || activeShell.handle != OS.GetActiveWindow());
+		} else {
+			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+		}
+		return resultHolder.get();
+	}
+
+	@Override
+	protected boolean internalCloseNativeDialogs(Display display) {
+		AtomicBoolean resultHolder = new AtomicBoolean();
+
+		if (Thread.currentThread().equals(display.getThread())) {
+			Shell activeShell = display.getActiveShell();
+			long activeHwnd = OS.GetActiveWindow();
+
+			if (activeShell == null || activeShell.handle != activeHwnd) {
+				OS.DestroyWindow(activeHwnd);
+				if (activeShell != null) {
+					OS.UpdateWindow(activeShell.handle);
+				}
+				resultHolder.set(true);
+			}
+		} else {
+			display.syncExec(() -> resultHolder.set(internalCloseNativeDialogs(display)));
+		}
+		return resultHolder.get();
+	}
 
 }
