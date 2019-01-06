@@ -38,6 +38,11 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 		try {
 			status = run(new CmdLineProcessor(name(), args));
 		} catch (Exception e) {
+			Throwable cause = e.getCause();
+
+			if (cause instanceof AssertionError) {
+				throw (AssertionError) cause;
+			}
 			Assertions.fail("Uncaught exception: " + e.getClass().getName(), e);
 		}
 		return status;
