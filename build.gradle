@@ -127,11 +127,11 @@ subprojects {
 		classifier = "javadoc"
 	}
 	
-	task testAppJar(type: Jar) {
+	task testJar(type: Jar) {
 		from (sourceSets.test.output) {
 			include "de/carne/swt/test/app/**"
 		}
-		classifier = "testApp"
+		classifier = "test"
 	}
 	
 	publishing {
@@ -140,7 +140,7 @@ subprojects {
 				from components.java
 				artifact sourceJar
 				artifact javadocJar
-				artifact testAppJar
+				artifact testJar
 				pom {
 					name = project.name
 					description = projectDescription
