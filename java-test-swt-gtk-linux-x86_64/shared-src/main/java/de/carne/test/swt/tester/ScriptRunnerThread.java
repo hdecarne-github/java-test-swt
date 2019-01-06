@@ -16,14 +16,17 @@
  */
 package de.carne.test.swt.tester;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -42,6 +45,9 @@ final class ScriptRunnerThread extends Thread {
 
 	private static final Log LOG = new Log();
 
+	private static final String ENV_SCREENSHOT_CMD = ScriptRunnerThread.class.getPackage().getName()
+			+ ".SCREENSHOT_CMD";
+
 	private final Thread displayThread;
 	private final Iterable<ScriptAction> actions;
 	private final boolean ignoreRemaining;
@@ -54,6 +60,10 @@ final class ScriptRunnerThread extends Thread {
 		this.actions = actions;
 		this.ignoreRemaining = ignoreRemaining;
 		this.timeout = timeout;
+	}
+
+	public Optional<AssertionError> assertionStatus() {
+		return Optional.ofNullable(this.assertionStatus.get());
 	}
 
 	@Override
@@ -77,7 +87,7 @@ final class ScriptRunnerThread extends Thread {
 
 				LOG.debug("All actions processed; cleaning up...");
 			} finally {
-				remainingShellTexts = disposeRemaining(display);
+				remainingShellTexts = disposeRemaining(display, !this.ignoreRemaining);
 			}
 			if (!this.ignoreRemaining && !remainingShellTexts.isEmpty()) {
 				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellTexts, ", "));
@@ -96,7 +106,6 @@ final class ScriptRunnerThread extends Thread {
 			runAction(display, action, actionId);
 			actionId++;
 		}
-
 	}
 
 	private void runAction(Display display, ScriptAction action, int actionId) throws InterruptedException {
@@ -119,25 +128,36 @@ final class ScriptRunnerThread extends Thread {
 		}
 	}
 
-	private List<String> disposeRemaining(Display display) {
+	private List<String> disposeRemaining(Display display, boolean grabScreen) {
 		List<String> remainingShellTexts = new ArrayList<>();
+		boolean screenGrabbed = false;
 
-		if (PlatformHelper.closeNativeDialogs()) {
+		if (PlatformHelper.inNativeDialog()) {
 			LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
 					"Closing native dialog");
 
+			if (grabScreen) {
+				grabScreen();
+				screenGrabbed = true;
+			}
+			PlatformHelper.closeNativeDialogs();
 			remainingShellTexts.add("<native dialog>");
 		}
 		if (!display.isDisposed()) {
-			runWait(display, () -> disposeRemaining0(remainingShellTexts, display));
+			boolean grabScreen0 = grabScreen && !screenGrabbed;
+
+			runWait(display, () -> disposeRemaining0(remainingShellTexts, display, grabScreen0));
 		}
 		return remainingShellTexts;
 	}
 
-	private List<String> disposeRemaining0(List<String> remainingShellTexts, Display display) {
+	private List<String> disposeRemaining0(List<String> remainingShellTexts, Display display, boolean grabScreen) {
 		if (!display.isDisposed()) {
 			Shell[] shells = display.getShells();
 
+			if (grabScreen && shells.length > 0) {
+				grabScreen();
+			}
 			for (Shell shell : shells) {
 				if (!shell.isDisposed()) {
 					String shellText = shell.getText();
@@ -155,8 +175,32 @@ final class ScriptRunnerThread extends Thread {
 		return remainingShellTexts;
 	}
 
-	public Optional<AssertionError> assertionStatus() {
-		return Optional.ofNullable(this.assertionStatus.get());
+	private void grabScreen() {
+		String screenshotCmd = System.getenv(ENV_SCREENSHOT_CMD);
+
+		if (screenshotCmd != null) {
+			LOG.info("Invoking screenshot command ''{0}''...", screenshotCmd);
+
+			try {
+				Process screenshotProcess = Runtime.getRuntime().exec(screenshotCmd);
+				boolean screenshotProcessExited = screenshotProcess.waitFor(Timing.STEP_TIMEOUT, TimeUnit.MILLISECONDS);
+
+				if (screenshotProcessExited) {
+					int screenshotProcessStatus = screenshotProcess.exitValue();
+
+					LOG.log((screenshotProcessStatus != 0 ? Level.WARNING : Level.INFO), null,
+							"Screenshot command ''{0}'' finished with status {1}", screenshotCmd,
+							screenshotProcessStatus);
+				} else {
+					LOG.warning("Screenshot command ''{0}'' not finished after {1} ms", screenshotCmd,
+							Timing.STEP_TIMEOUT);
+				}
+			} catch (IOException | InterruptedException e) {
+				LOG.warning(e, "Screenshot command ''{0}'' failed with I/O error", screenshotCmd);
+			}
+		} else {
+			LOG.info("Environment variable {0} not set; ignoring screenshot request", ENV_SCREENSHOT_CMD);
+		}
 	}
 
 	private Display getDisplay() {
