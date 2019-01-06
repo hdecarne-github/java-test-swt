@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.carne.boot.Exceptions;
 import de.carne.swt.graphics.ResourceException;
+import de.carne.swt.util.SyncErrorHandler;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.Late;
 import de.carne.util.cmdline.CmdLineException;
@@ -113,7 +114,9 @@ public abstract class UserApplication {
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
-			display.syncExec(runnable);
+			try (SyncErrorHandler<Runnable> checkedRunnable = new SyncErrorHandler<>(display, runnable)) {
+				display.syncExec(checkedRunnable.get());
+			}
 		}
 	}
 
@@ -134,7 +137,9 @@ public abstract class UserApplication {
 		} else {
 			final AtomicReference<T> resultHolder = new AtomicReference<>();
 
-			display.syncExec(() -> resultHolder.set(supplier.get()));
+			try (SyncErrorHandler<Supplier<T>> checkedSupplier = new SyncErrorHandler<>(display, supplier)) {
+				display.syncExec(() -> resultHolder.set(checkedSupplier.get().get()));
+			}
 			result = resultHolder.get();
 		}
 		return result;
