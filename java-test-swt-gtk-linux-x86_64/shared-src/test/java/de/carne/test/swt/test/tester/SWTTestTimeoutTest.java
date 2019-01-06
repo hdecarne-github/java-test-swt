@@ -49,6 +49,8 @@ class SWTTestTimeoutTest extends SWTTest {
 	}
 
 	private void openMessageBox() {
+		traceAction();
+
 		MessageBox messageBox = new MessageBox(accessShell().get(), SWT.ICON_CANCEL | SWT.CANCEL);
 
 		messageBox.setText(getClass().getSimpleName());
