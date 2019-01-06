@@ -16,7 +16,11 @@
  */
 package de.carne.test.swt.cocoa.platform;
 
+import java.util.Objects;
+
+import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSThread;
+import org.eclipse.swt.internal.cocoa.OS;
 
 import de.carne.test.swt.platform.PlatformHelper;
 
@@ -25,9 +29,36 @@ import de.carne.test.swt.platform.PlatformHelper;
  */
 public class CocoaPlatformHelper extends PlatformHelper {
 
+	private static final long CUSTOM_SEL_modalWindow = OS.sel_registerName("modalWindow");
+
 	@Override
 	protected boolean internalIsCurrentThreadSWTCapable() {
 		return NSThread.isMainThread();
+	}
+
+	@Override
+	protected boolean internalInNativeDialog() {
+		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
+		long modalWindowId = applicationModalWindowId(application);
+
+		return modalWindowId != 0;
+	}
+
+	@Override
+	protected boolean internalCloseNativeDialogs() {
+		boolean inNativeDialog = false;
+		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
+		long modalWindowId = applicationModalWindowId(application);
+
+		if (modalWindowId != 0) {
+			application.stopModal();
+			inNativeDialog = true;
+		}
+		return inNativeDialog;
+	}
+
+	private long applicationModalWindowId(NSApplication application) {
+		return OS.objc_msgSend(application.id, CUSTOM_SEL_modalWindow);
 	}
 
 }

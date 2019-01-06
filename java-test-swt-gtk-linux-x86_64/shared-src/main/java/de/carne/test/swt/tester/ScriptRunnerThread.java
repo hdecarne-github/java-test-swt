@@ -18,7 +18,6 @@ package de.carne.test.swt.tester;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +32,7 @@ import org.opentest4j.AssertionFailedError;
 
 import de.carne.boot.logging.Log;
 import de.carne.boot.logging.LogLevel;
+import de.carne.test.swt.platform.PlatformHelper;
 import de.carne.util.Strings;
 
 /**
@@ -120,12 +120,21 @@ final class ScriptRunnerThread extends Thread {
 	}
 
 	private List<String> disposeRemaining(Display display) {
-		return (display.isDisposed() ? Collections.emptyList() : runWait(display, () -> disposeRemaining0(display)));
-	}
-
-	private List<String> disposeRemaining0(Display display) {
 		List<String> remainingShellTexts = new ArrayList<>();
 
+		if (PlatformHelper.closeNativeDialogs()) {
+			LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
+					"Closing native dialog");
+
+			remainingShellTexts.add("<native dialog>");
+		}
+		if (!display.isDisposed()) {
+			runWait(display, () -> disposeRemaining0(remainingShellTexts, display));
+		}
+		return remainingShellTexts;
+	}
+
+	private List<String> disposeRemaining0(List<String> remainingShellTexts, Display display) {
 		if (!display.isDisposed()) {
 			Shell[] shells = display.getShells();
 
@@ -188,6 +197,7 @@ final class ScriptRunnerThread extends Thread {
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
+			checkNativeDialog();
 			try {
 				display.syncExec(runnable);
 			} catch (RuntimeException e) {
@@ -207,6 +217,7 @@ final class ScriptRunnerThread extends Thread {
 		if (Thread.currentThread().equals(display.getThread())) {
 			resultHolder.set(supplier.get());
 		} else {
+			checkNativeDialog();
 			try {
 				display.syncExec(() -> resultHolder.set(supplier.get()));
 			} catch (RuntimeException e) {
@@ -219,6 +230,12 @@ final class ScriptRunnerThread extends Thread {
 			}
 		}
 		return resultHolder.get();
+	}
+
+	private void checkNativeDialog() {
+		if (PlatformHelper.inNativeDialog()) {
+			Assertions.fail("Native dialog detected");
+		}
 	}
 
 }
