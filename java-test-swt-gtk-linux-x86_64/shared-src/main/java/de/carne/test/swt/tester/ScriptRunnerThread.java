@@ -35,6 +35,7 @@ import org.opentest4j.AssertionFailedError;
 
 import de.carne.boot.logging.Log;
 import de.carne.boot.logging.LogLevel;
+import de.carne.swt.util.SyncErrorHandler;
 import de.carne.test.swt.platform.PlatformHelper;
 import de.carne.util.Strings;
 
@@ -189,8 +190,7 @@ final class ScriptRunnerThread extends Thread {
 					int screenshotProcessStatus = screenshotProcess.exitValue();
 
 					LOG.log((screenshotProcessStatus != 0 ? Level.WARNING : Level.INFO), null,
-							"Screenshot command ''{0}'' finished with status {1}", screenshotCmd,
-							screenshotProcessStatus);
+							"Screenshot command ''{0}'' finished (status {1})", screenshotCmd, screenshotProcessStatus);
 				} else {
 					LOG.warning("Screenshot command ''{0}'' not finished after {1} ms", screenshotCmd,
 							Timing.STEP_TIMEOUT);
@@ -242,9 +242,9 @@ final class ScriptRunnerThread extends Thread {
 			runnable.run();
 		} else {
 			checkNativeDialog(display);
-			try {
-				display.syncExec(runnable);
-			} catch (RuntimeException e) {
+			try (SyncErrorHandler<Runnable> checkedRunnable = new SyncErrorHandler<>(display, runnable)) {
+				display.syncExec(checkedRunnable.get());
+			} catch (RuntimeException | Error e) {
 				Throwable cause = e.getCause();
 
 				if (cause instanceof AssertionError) {
@@ -262,9 +262,9 @@ final class ScriptRunnerThread extends Thread {
 			resultHolder.set(supplier.get());
 		} else {
 			checkNativeDialog(display);
-			try {
-				display.syncExec(() -> resultHolder.set(supplier.get()));
-			} catch (RuntimeException e) {
+			try (SyncErrorHandler<Supplier<T>> checkedSupplier = new SyncErrorHandler<>(display, supplier)) {
+				display.syncExec(() -> resultHolder.set(checkedSupplier.get().get()));
+			} catch (RuntimeException | Error e) {
 				Throwable cause = e.getCause();
 
 				if (cause instanceof AssertionError) {
