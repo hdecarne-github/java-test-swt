@@ -42,7 +42,8 @@ subprojects {
 		maven { url "https://oss.jfrog.org/libs-release/" }
 	}
 	
-	def sharedSrcDir = "../java-swt-gtk-linux-x86_64/shared-src"
+	def automaticModuleName = (project.name.startsWith("java-swt") ? "java-swt" : "java-test-swt")
+	def sharedSrcDir = "../${automaticModuleName}-gtk-linux-x86_64/shared-src"
 
 	sourceSets {
 		main {
@@ -73,8 +74,8 @@ subprojects {
 			lineSeparator = "\n"
 		}
 	}
-	
-	def platformSuffix = project.name.substring(rootProject.name.length())
+
+	def platformSuffix = project.name.substring(automaticModuleName.length())
 	def swtPlatformSuffix = platformSuffix.replace("-", ".")
 
 	dependencies {
@@ -82,7 +83,6 @@ subprojects {
 		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: "3.109.0") {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
-		testImplementation(group: "de.carne.common", name: "java-test-swt${platformSuffix}", version: project.version)
 	}
 	
 	jar {
@@ -116,9 +116,6 @@ subprojects {
 	
 	task sourceJar(type: Jar) {
 		from sourceSets.main.allJava
-		from (sourceSets.test.allJava) {
-			include "de/carne/swt/test/app/**"
-		}
 		classifier "sources"
 	}
 	
@@ -127,20 +124,12 @@ subprojects {
 		classifier = "javadoc"
 	}
 	
-	task testappJar(type: Jar) {
-		from (sourceSets.test.output) {
-			include "de/carne/swt/test/app/**"
-		}
-		classifier = "testapp"
-	}
-	
 	publishing {
 		publications {
 			Bintray(MavenPublication) {
 				from components.java
 				artifact sourceJar
 				artifact javadocJar
-				artifact testappJar
 				pom {
 					name = project.name
 					description = projectDescription

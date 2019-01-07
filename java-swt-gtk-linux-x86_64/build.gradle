@@ -1,3 +1,7 @@
+dependencies {
+	testImplementation project(":java-test-swt-gtk-linux-x86_64")
+}
+
 test {
 	enabled = project.name.endsWith(javatools.platform.swtToolkit)
 }

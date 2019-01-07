@@ -1,0 +1,11 @@
+dependencies {
+	api(group: "de.carne.common", name: "java-test", version: "1.0.0")
+	api(group: "org.jmockit", name: "jmockit", version: "1.44")
+}
+
+test {
+	enabled = project.name.endsWith(javatools.platform.swtToolkit)
+	jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+}
+
+project.tasks["sonarqube"].enabled = test.enabled

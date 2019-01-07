@@ -1,3 +1,7 @@
+dependencies {
+	testImplementation project(":java-test-swt-cocoa-macosx-x86_64")
+}
+
 test {
 	enabled = project.name.endsWith(javatools.platform.swtToolkit)
 }
