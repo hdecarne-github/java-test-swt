@@ -16,6 +16,13 @@
  */
 package de.carne.test.swt.gtk.platform;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.eclipse.swt.internal.gtk.GDK;
+import org.eclipse.swt.internal.gtk.OS;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import de.carne.test.swt.platform.PlatformHelper;
 
 /**
@@ -23,6 +30,56 @@ import de.carne.test.swt.platform.PlatformHelper;
  */
 public class GtkPlatformHelper extends PlatformHelper {
 
-	// Nothing to do here
+	@Override
+	protected boolean internalInNativeDialog(Display display) {
+		AtomicBoolean resultHolder = new AtomicBoolean();
+
+		if (Thread.currentThread().equals(display.getThread())) {
+			Shell activeShell = display.getActiveShell();
+			long activeWindow = getActiveWindow();
+
+			resultHolder.set(activeShell == null || activeShell.handle != activeWindow);
+			OS.g_object_unref(activeWindow);
+		} else {
+			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+		}
+		return resultHolder.get();
+	}
+
+	@Override
+	protected boolean internalCloseNativeDialogs(Display display) {
+		AtomicBoolean resultHolder = new AtomicBoolean();
+
+		if (Thread.currentThread().equals(display.getThread())) {
+			Shell activeShell = display.getActiveShell();
+			long activeWindow = getActiveWindow();
+
+			if (activeShell == null || activeShell.handle != activeWindow) {
+				GDK.gdk_window_destroy(activeWindow);
+				OS.g_object_unref(activeWindow);
+				resultHolder.set(true);
+			}
+		} else {
+			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+		}
+		return resultHolder.get();
+	}
+
+	private long getActiveWindow() {
+		long activeWindow = 0;
+		long windowStack = GDK.gdk_screen_get_window_stack(GDK.gdk_screen_get_default());
+
+		if (windowStack != 0) {
+			long window = OS.g_list_last(windowStack);
+
+			while (window != 0) {
+				OS.g_object_unref(activeWindow);
+				activeWindow = window;
+				window = OS.g_list_previous(window);
+			}
+		}
+		OS.g_list_free(windowStack);
+		return activeWindow;
+	}
 
 }
