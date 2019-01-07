@@ -69,8 +69,9 @@ subprojects {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
 		api(group: "de.carne.common", name: "java-test", version: "1.0.0")
-		testImplementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version)
-		testImplementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version, classifier: "test")
+		api(group: "org.jmockit", name: "jmockit", version: "1.44")
+		implementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version)
+		testImplementation(group: "de.carne.common", name: "java-swt${platformSuffix}", version: project.version, classifier: "testapp")
 	}
 	
 	jar {
@@ -87,6 +88,7 @@ subprojects {
 			events "failed"
 			exceptionFormat "full"
 		}
+		jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
 	}
 
 	jacoco {
