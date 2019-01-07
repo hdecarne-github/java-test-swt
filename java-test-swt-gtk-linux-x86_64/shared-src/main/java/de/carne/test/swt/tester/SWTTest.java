@@ -50,6 +50,7 @@ public abstract class SWTTest {
 
 	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
 	private final Late<FileDialogMock> fileDialogMock = new Late<>();
+	private final Late<PrintDialogMock> printDialogMock = new Late<>();
 
 	/**
 	 * Constructs a new {@code SWTTest} instance.
@@ -292,6 +293,18 @@ public abstract class SWTTest {
 	 */
 	protected FileDialogMock mockFileDialog() {
 		return this.fileDialogMock.get();
+	}
+
+	/**
+	 * Gets the test's {@linkplain PrintDialogMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain PrintDialogMock}.
+	 */
+	protected PrintDialogMock mockPrintDialog() {
+		return this.printDialogMock.get();
 	}
 
 }
