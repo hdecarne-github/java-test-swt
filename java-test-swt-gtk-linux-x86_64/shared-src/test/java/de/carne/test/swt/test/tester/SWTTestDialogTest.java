@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.swt.test.app.TestAppMain;
-import de.carne.swt.test.app.TestAppTest;
+import de.carne.test.swt.app.TestAppMain;
+import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTest;
 import mockit.Mock;

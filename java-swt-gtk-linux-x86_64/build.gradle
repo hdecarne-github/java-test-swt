@@ -1,9 +1,17 @@
+def testProjectName = project.name.replace("java-swt", "java-test-swt")
+
+sourceSets {
+	test {
+		java {
+			srcDir "../${testProjectName}/src/main/java"
+			srcDir "../java-test-swt-gtk-linux-x86_64/shared-src/main/java"
+		}
+		resources {
+			srcDir"../${testProjectName}/src/main/resources"
+		}
+	}
+}
+
 dependencies {
-	testImplementation project(":java-test-swt-gtk-linux-x86_64")
+	testImplementation(group: "de.carne.common", name: "java-test", version: "1.0.0")
 }
-
-test {
-	enabled = project.name.endsWith(javatools.platform.swtToolkit)
-}
-
-project.tasks["sonarqube"].enabled = test.enabled

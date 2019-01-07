@@ -19,7 +19,7 @@ package de.carne.swt.test;
 import org.junit.jupiter.api.Test;
 
 import de.carne.swt.UserApplication;
-import de.carne.swt.test.app.TestAppTest;
+import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 
 /**
