@@ -35,7 +35,6 @@ import org.opentest4j.AssertionFailedError;
 
 import de.carne.boot.logging.Log;
 import de.carne.boot.logging.LogLevel;
-import de.carne.swt.util.SyncErrorHandler;
 import de.carne.test.swt.platform.PlatformHelper;
 import de.carne.util.Strings;
 
@@ -74,11 +73,11 @@ final class ScriptRunnerThread extends Thread {
 		try {
 			waitTrigger(this::displayAvailableTrigger);
 
-			LOG.debug("Display available on display thread");
+			LOG.debug("Display is available on display thread; waiting for initial Shell...");
 
 			waitTrigger(this::initialShellVisibleTrigger);
 
-			LOG.debug("Initial Shell is visible; starting actions...");
+			LOG.debug("Initial Shell is visible; running actions...");
 
 			Display display = getDisplay();
 			List<String> remainingShellTexts;
@@ -242,8 +241,8 @@ final class ScriptRunnerThread extends Thread {
 			runnable.run();
 		} else {
 			checkNativeDialog(display);
-			try (SyncErrorHandler<Runnable> checkedRunnable = new SyncErrorHandler<>(display, runnable)) {
-				display.syncExec(checkedRunnable.get());
+			try {
+				display.syncExec(runnable);
 			} catch (RuntimeException | Error e) {
 				Throwable cause = e.getCause();
 
@@ -262,8 +261,8 @@ final class ScriptRunnerThread extends Thread {
 			resultHolder.set(supplier.get());
 		} else {
 			checkNativeDialog(display);
-			try (SyncErrorHandler<Supplier<T>> checkedSupplier = new SyncErrorHandler<>(display, supplier)) {
-				display.syncExec(() -> resultHolder.set(checkedSupplier.get().get()));
+			try {
+				display.syncExec(() -> resultHolder.set(supplier.get()));
 			} catch (RuntimeException | Error e) {
 				Throwable cause = e.getCause();
 
