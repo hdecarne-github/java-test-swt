@@ -17,6 +17,7 @@
 package de.carne.test.swt.test.tester;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
@@ -27,6 +28,7 @@ import de.carne.test.swt.tester.SWTTest;
  * Test {@linkplain SWTTest} class - Test failure.
  */
 @DisableIfThreadNotSWTCapable
+@Disabled
 class SWTTestFailureTest extends SWTTest {
 
 	@Test
