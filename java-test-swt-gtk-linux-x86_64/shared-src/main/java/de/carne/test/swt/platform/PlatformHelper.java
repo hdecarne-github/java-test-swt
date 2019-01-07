@@ -71,26 +71,28 @@ public abstract class PlatformHelper {
 	/**
 	 * Checks whether a native platform dialog is currently open.
 	 *
+	 * @param display the {@linkplain Display} to use for checking.
 	 * @return {@code true} if a native platform dialog is currently open.
 	 */
 	public static boolean inNativeDialog(Display display) {
 		return INSTANCE_HOLDER.get().internalInNativeDialog(display);
 	}
 
-	protected boolean internalInNativeDialog(Display display) {
+	protected boolean internalInNativeDialog(@SuppressWarnings("unused") Display display) {
 		return false;
 	}
 
 	/**
 	 * Makes sure that any open native platform dialog is closed.
 	 *
+	 * @param display the {@linkplain Display} to use for checking.
 	 * @return {@code true} if a native platform dialog has been closed.
 	 */
 	public static boolean closeNativeDialogs(Display display) {
 		return INSTANCE_HOLDER.get().internalCloseNativeDialogs(display);
 	}
 
-	protected boolean internalCloseNativeDialogs(Display display) {
+	protected boolean internalCloseNativeDialogs(@SuppressWarnings("unused") Display display) {
 		return false;
 	}
 

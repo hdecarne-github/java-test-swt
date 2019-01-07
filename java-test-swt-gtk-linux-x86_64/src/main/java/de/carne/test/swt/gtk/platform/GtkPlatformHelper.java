@@ -76,9 +76,11 @@ public class GtkPlatformHelper extends PlatformHelper {
 		long windowStack = GDK.gdk_screen_get_window_stack(GDK.gdk_screen_get_default());
 
 		if (windowStack != 0) {
-			long window = OS.g_list_last(windowStack);
+			long item = OS.g_list_last(windowStack);
 
-			while (window != 0) {
+			while (item != 0) {
+				long window = OS.g_list_data(item);
+
 				if (GTK.gtk_window_is_active(window)) {
 					activeWindow = window;
 				} else {
