@@ -23,18 +23,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.tester.SWTTest;
 
 /**
- * Test {@linkplain SWTTest} class.
+ * Test {@linkplain SWTTest} class - Test timeout due to unexpected message box.
  */
 @DisableIfThreadNotSWTCapable
 @Disabled
 class SWTTestTimeoutTest extends SWTTest {
 
 	private static int TIMEOUT = 10000;
+
+	SWTTestTimeoutTest() {
+		super(false);
+	}
 
 	@BeforeAll
 	static void setTestTimeout() {

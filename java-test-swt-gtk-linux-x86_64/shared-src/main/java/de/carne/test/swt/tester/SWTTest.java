@@ -31,6 +31,7 @@ import de.carne.boot.logging.Log;
 import de.carne.test.swt.tester.accessor.Accessor;
 import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
+import de.carne.util.Late;
 import de.carne.util.Strings;
 
 /**
@@ -45,6 +46,26 @@ import de.carne.util.Strings;
 public abstract class SWTTest {
 
 	private static final Log LOG = new Log();
+
+	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
+
+	/**
+	 * Constructs a new {@code SWTTest} instance.
+	 */
+	protected SWTTest() {
+		this(true);
+	}
+
+	/**
+	 * Constructs a new {@code SWTTest} instance.
+	 *
+	 * @param mockDialogs whether to mock native {@linkplain Dialog} instance ({@code true}) or not ({@code false}).
+	 */
+	protected SWTTest(boolean mockDialogs) {
+		if (mockDialogs) {
+			this.messageBoxMock.set(new MessageBoxMock());
+		}
+	}
 
 	/**
 	 * Creates a {@linkplain Script} instance to be executed after the necessary actions have been added.
@@ -244,6 +265,10 @@ public abstract class SWTTest {
 	 */
 	protected ShellAccessor accessShell(String text) {
 		return Accessor.accessUnique(shells().filter(DecorationsAccessor.matchText(text)), ShellAccessor::new);
+	}
+
+	protected MessageBoxMock mockMessageBox() {
+		return this.messageBoxMock.get();
 	}
 
 }

@@ -19,12 +19,12 @@ package de.carne.test.swt.test.tester;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.tester.SWTTest;
 
 /**
- * Test {@linkplain SWTTest} class.
+ * Test {@linkplain SWTTest} class - Test failure.
  */
 @DisableIfThreadNotSWTCapable
 class SWTTestFailureTest extends SWTTest {
@@ -32,12 +32,13 @@ class SWTTestFailureTest extends SWTTest {
 	@Test
 	public void testFailure() {
 		Assertions.assertThrows(AssertionError.class, () -> {
-			script(new TestAppMain()).add(this::checkFailure).execute();
+			script(new TestAppMain()).add(this::doFailure).execute();
 		});
 	}
 
-	private void checkFailure() {
+	private void doFailure() {
 		traceAction();
+
 		accessShell("unknown").get().close();
 	}
 

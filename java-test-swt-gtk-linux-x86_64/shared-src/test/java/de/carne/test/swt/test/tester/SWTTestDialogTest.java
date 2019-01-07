@@ -17,53 +17,33 @@
 package de.carne.test.swt.test.tester;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.app.TestAppTest;
-import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTest;
-import mockit.Mock;
-import mockit.MockUp;
 
 /**
- * Test {@linkplain SWTTest} class.
+ * Test {@linkplain SWTTest} class - Native dialog mocks.
  */
 @DisableIfThreadNotSWTCapable
 class SWTTestDialogTest extends TestAppTest {
 
 	@Test
 	void testStartStop() {
-		new MockUp<MessageBox>() {
-
-			@Mock
-			public int open() {
-				return SWT.CANCEL;
-			}
-
-		};
-
-		new MockUp<FileDialog>() {
-
-			@Mock
-			public String open() {
-				return "/dev/nul";
-			}
-
-		};
-
 		Script script = script(new TestAppMain());
 
 		script.add(this::doOpenMessageBox);
-		script.add(this::doOpenFile);
 		script.add(this::doClose).execute();
 	}
 
 	private void doOpenMessageBox() {
 		traceAction();
+
+		mockMessageBox().result(SWT.NO);
 
 		MessageBox messageBox = new MessageBox(accessShell().get(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 
@@ -72,15 +52,7 @@ class SWTTestDialogTest extends TestAppTest {
 
 		int messageBoxResult = messageBox.open();
 
-		Assertions.assertEquals(SWT.CANCEL, messageBoxResult);
-	}
-
-	private void doOpenFile() {
-		traceAction();
-
-		FileDialog fileDialog = new FileDialog(accessShell().get(), SWT.OPEN);
-
-		String file = fileDialog.open();
+		Assertions.assertEquals(SWT.NO, messageBoxResult);
 	}
 
 }
