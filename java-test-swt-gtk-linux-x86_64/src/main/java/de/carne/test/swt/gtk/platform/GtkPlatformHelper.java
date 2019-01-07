@@ -19,6 +19,7 @@ package de.carne.test.swt.gtk.platform;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.internal.gtk.GDK;
+import org.eclipse.swt.internal.gtk.GTK;
 import org.eclipse.swt.internal.gtk.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -35,11 +36,14 @@ public class GtkPlatformHelper extends PlatformHelper {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
 		if (Thread.currentThread().equals(display.getThread())) {
-			Shell activeShell = display.getActiveShell();
 			long activeWindow = getActiveWindow();
 
-			resultHolder.set(activeShell == null || activeShell.handle != activeWindow);
-			OS.g_object_unref(activeWindow);
+			if (activeWindow != 0) {
+				Shell activeShell = display.getActiveShell();
+
+				resultHolder.set(activeShell == null || activeShell.handle != activeWindow);
+				OS.g_object_unref(activeWindow);
+			}
 		} else {
 			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 		}
@@ -51,13 +55,15 @@ public class GtkPlatformHelper extends PlatformHelper {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
 		if (Thread.currentThread().equals(display.getThread())) {
-			Shell activeShell = display.getActiveShell();
 			long activeWindow = getActiveWindow();
 
-			if (activeShell == null || activeShell.handle != activeWindow) {
-				GDK.gdk_window_destroy(activeWindow);
-				OS.g_object_unref(activeWindow);
-				resultHolder.set(true);
+			if (activeWindow != 0) {
+				Shell activeShell = display.getActiveShell();
+				if (activeShell == null || activeShell.handle != activeWindow) {
+					resultHolder.set(true);
+					GDK.gdk_window_destroy(activeWindow);
+					OS.g_object_unref(activeWindow);
+				}
 			}
 		} else {
 			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
@@ -73,8 +79,11 @@ public class GtkPlatformHelper extends PlatformHelper {
 			long window = OS.g_list_last(windowStack);
 
 			while (window != 0) {
-				OS.g_object_unref(activeWindow);
-				activeWindow = window;
+				if (GTK.gtk_window_is_active(window)) {
+					activeWindow = window;
+				} else {
+					OS.g_object_unref(window);
+				}
 				window = OS.g_list_previous(window);
 			}
 		}
