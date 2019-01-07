@@ -37,6 +37,7 @@ class SWTTestFailureTest extends SWTTest {
 	}
 
 	private void checkFailure() {
+		traceAction();
 		accessShell("unknown").get().close();
 	}
 
