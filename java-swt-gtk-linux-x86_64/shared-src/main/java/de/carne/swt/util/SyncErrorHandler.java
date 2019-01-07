@@ -17,55 +17,51 @@
 package de.carne.swt.util;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 
+import de.carne.util.Late;
+
 /**
- * Utility class used to forward exceptions from the UI thread to the actual {@linkplain Display#syncExec(Runnable)}
- * caller.
- *
- * @param <T> the actual type of the guarded object.
+ * Utility class used to forward exceptions caused by synchronous the UI thread calls to the actual
+ * {@linkplain Display#syncExec(Runnable)} caller.
  */
-public final class SyncErrorHandler<T> implements AutoCloseable, Supplier<T> {
+public final class SyncErrorHandler implements AutoCloseable {
 
 	private final Display display;
-	private final T object;
-	private final Consumer<RuntimeException> savedRuntimeExceptionHandler;
-	private final Consumer<Error> savedErrorHandler;
+	private final Late<Consumer<RuntimeException>> savedRuntimeExceptionHandler = new Late<>();
+	private final Late<Consumer<Error>> savedErrorHandler = new Late<>();
 	private @Nullable RuntimeException runtimeException = null;
 	private @Nullable Error error = null;
 
 	/**
 	 * Constructs a new {@code SyncErrorHandler} instance.
 	 *
-	 * @param display the {@linkplain Display} assigned to the UI thread.
-	 * @param object the object to guard.
+	 * @param display the {@linkplain Display} assigned to the targeted UI thread.
 	 */
-	public SyncErrorHandler(Display display, T object) {
+	public SyncErrorHandler(Display display) {
 		this.display = display;
-		this.object = object;
-		this.savedRuntimeExceptionHandler = display.getRuntimeExceptionHandler();
-		this.savedErrorHandler = display.getErrorHandler();
-		this.display.setRuntimeExceptionHandler(this::handleRuntimeException);
-		this.display.setErrorHandler(this::handleError);
+		initErrorHandler();
 	}
 
-	@Override
-	public T get() {
-		return this.object;
-	}
-
-	@Override
-	public void close() {
-		this.display.setRuntimeExceptionHandler(this.savedRuntimeExceptionHandler);
-		this.display.setErrorHandler(this.savedErrorHandler);
-		if (this.runtimeException != null) {
-			throw this.runtimeException;
+	private void initErrorHandler() {
+		if (Thread.currentThread().equals(this.display.getThread())) {
+			this.savedRuntimeExceptionHandler.set(this.display.getRuntimeExceptionHandler());
+			this.savedErrorHandler.set(this.display.getErrorHandler());
+			this.display.setRuntimeExceptionHandler(this::handleRuntimeException);
+			this.display.setErrorHandler(this::handleError);
+		} else {
+			this.display.syncExec(this::initErrorHandler);
 		}
-		if (this.error != null) {
-			throw this.error;
+	}
+
+	private void restoreErrorHandler() {
+		if (Thread.currentThread().equals(this.display.getThread())) {
+			this.display.setRuntimeExceptionHandler(this.savedRuntimeExceptionHandler.get());
+			this.display.setErrorHandler(this.savedErrorHandler.get());
+		} else {
+			this.display.syncExec(this::restoreErrorHandler);
 		}
 	}
 
@@ -75,6 +71,17 @@ public final class SyncErrorHandler<T> implements AutoCloseable, Supplier<T> {
 
 	private void handleError(Error exception) {
 		this.error = exception;
+	}
+
+	@Override
+	public void close() {
+		restoreErrorHandler();
+		if (this.runtimeException != null) {
+			throw this.runtimeException;
+		}
+		if (this.error != null) {
+			throw this.error;
+		}
 	}
 
 }
