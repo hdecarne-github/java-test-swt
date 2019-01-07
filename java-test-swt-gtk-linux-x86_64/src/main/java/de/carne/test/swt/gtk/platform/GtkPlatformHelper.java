@@ -32,6 +32,11 @@ import de.carne.test.swt.platform.PlatformHelper;
 public class GtkPlatformHelper extends PlatformHelper {
 
 	@Override
+	protected boolean internalIsCurrentThreadSWTCapable() {
+		return false;
+	}
+
+	@Override
 	protected boolean internalInNativeDialog(Display display) {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
