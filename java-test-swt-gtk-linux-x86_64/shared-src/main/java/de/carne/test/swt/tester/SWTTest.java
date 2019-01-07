@@ -48,6 +48,7 @@ public abstract class SWTTest {
 	private static final Log LOG = new Log();
 
 	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
+	private final Late<FileDialogMock> fileDialogMock = new Late<>();
 
 	/**
 	 * Constructs a new {@code SWTTest} instance.
@@ -64,6 +65,7 @@ public abstract class SWTTest {
 	protected SWTTest(boolean mockDialogs) {
 		if (mockDialogs) {
 			this.messageBoxMock.set(new MessageBoxMock());
+			this.fileDialogMock.set(new FileDialogMock());
 		}
 	}
 
@@ -267,8 +269,28 @@ public abstract class SWTTest {
 		return Accessor.accessUnique(shells().filter(DecorationsAccessor.matchText(text)), ShellAccessor::new);
 	}
 
+	/**
+	 * Gets the test's {@linkplain MessageBoxMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain MessageBoxMock}.
+	 */
 	protected MessageBoxMock mockMessageBox() {
 		return this.messageBoxMock.get();
+	}
+
+	/**
+	 * Gets the test's {@linkplain FileDialogMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain FileDialogMock}.
+	 */
+	protected FileDialogMock mockFileDialog() {
+		return this.fileDialogMock.get();
 	}
 
 }

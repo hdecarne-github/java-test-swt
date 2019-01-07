@@ -17,6 +17,7 @@
 package de.carne.test.swt.test.tester;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,7 @@ class SWTTestDialogTest extends TestAppTest {
 		Script script = script(new TestAppMain());
 
 		script.add(this::doOpenMessageBox);
+		script.add(this::doFileDialog);
 		script.add(this::doClose).execute();
 	}
 
@@ -50,9 +52,21 @@ class SWTTestDialogTest extends TestAppTest {
 		messageBox.setText(getClass().getSimpleName());
 		messageBox.setMessage("Guess the answer for this test?");
 
-		int messageBoxResult = messageBox.open();
+		Assertions.assertEquals(SWT.NO, messageBox.open());
+		Assertions.assertEquals(SWT.CANCEL, messageBox.open());
+	}
 
-		Assertions.assertEquals(SWT.NO, messageBoxResult);
+	private void doFileDialog() {
+		traceAction();
+
+		String testFileName = getClass().getSimpleName() + ".java";
+
+		mockFileDialog().result(testFileName);
+
+		FileDialog fileDialog = new FileDialog(accessShell().get(), SWT.OPEN);
+
+		Assertions.assertEquals(testFileName, fileDialog.open());
+		Assertions.assertNull(fileDialog.open());
 	}
 
 }
