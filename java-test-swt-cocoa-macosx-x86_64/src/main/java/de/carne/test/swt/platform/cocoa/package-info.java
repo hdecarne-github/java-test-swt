@@ -15,6 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 @NonNullByDefault
-package de.carne.test.swt.gtk.platform;
+package de.carne.test.swt.platform.cocoa;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

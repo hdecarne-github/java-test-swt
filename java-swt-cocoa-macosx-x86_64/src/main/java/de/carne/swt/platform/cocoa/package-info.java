@@ -14,23 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.swt.gtk.platform;
+@NonNullByDefault
+package de.carne.swt.platform.cocoa;
 
-import de.carne.swt.platform.PlatformIntegration;
-
-/**
- * GTK platform integration.
- */
-public class GtkPlatformIntegration extends PlatformIntegration {
-
-	@Override
-	protected boolean internalIsButtonOrderLeftToRight() {
-		return false;
-	}
-
-	@Override
-	protected boolean internalIsGtk() {
-		return true;
-	}
-
-}
+import org.eclipse.jdt.annotation.NonNullByDefault;

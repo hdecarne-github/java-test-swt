@@ -23,7 +23,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
-import de.carne.swt.UserApplication;
 import de.carne.util.Lazy;
 
 /**
@@ -39,11 +38,9 @@ public abstract class PlatformIntegration {
 
 		try {
 			String platform = SWT.getPlatform();
-			String basePackageName = UserApplication.class.getPackage().getName();
-			String baseClassName = PlatformIntegration.class.getSimpleName();
-			String platformName = PlatformIntegration.class.getName()
-					.replace(basePackageName, basePackageName + "." + platform).replace(baseClassName,
-							platform.substring(0, 1).toUpperCase() + platform.substring(1) + baseClassName);
+			String platformName = PlatformIntegration.class.getPackage().getName() + "." + platform + "."
+					+ platform.substring(0, 1).toUpperCase() + platform.substring(1)
+					+ PlatformIntegration.class.getSimpleName();
 
 			instance = Class.forName(platformName).asSubclass(PlatformIntegration.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {

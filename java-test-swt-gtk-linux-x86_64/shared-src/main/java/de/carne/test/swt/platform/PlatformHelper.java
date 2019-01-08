@@ -20,7 +20,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
-import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.util.Lazy;
 
 /**
@@ -35,11 +34,9 @@ public abstract class PlatformHelper {
 
 		try {
 			String platform = SWT.getPlatform();
-			String basePackageName = DisableIfThreadNotSWTCapable.class.getPackage().getName();
-			String baseClassName = PlatformHelper.class.getSimpleName();
-			String platformName = PlatformHelper.class.getName()
-					.replace(basePackageName, basePackageName + "." + platform).replace(baseClassName,
-							platform.substring(0, 1).toUpperCase() + platform.substring(1) + baseClassName);
+			String platformName = PlatformHelper.class.getPackage().getName() + "." + platform + "."
+					+ platform.substring(0, 1).toUpperCase() + platform.substring(1)
+					+ PlatformHelper.class.getSimpleName();
 
 			instance = Class.forName(platformName).asSubclass(PlatformHelper.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {

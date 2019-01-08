@@ -15,6 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 @NonNullByDefault
-package de.carne.swt.gtk.platform;
+package de.carne.swt.platform.win32;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
