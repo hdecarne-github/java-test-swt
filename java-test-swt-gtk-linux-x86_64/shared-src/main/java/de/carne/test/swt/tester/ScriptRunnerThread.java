@@ -194,8 +194,11 @@ final class ScriptRunnerThread extends Thread {
 					LOG.warning("Screenshot command ''{0}'' not finished after {1} ms", screenshotCmd,
 							Timing.STEP_TIMEOUT);
 				}
-			} catch (IOException | InterruptedException e) {
+			} catch (IOException e) {
 				LOG.warning(e, "Screenshot command ''{0}'' failed with I/O error", screenshotCmd);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				LOG.warning(e, "Screenshot command ''{0}'' interupted", screenshotCmd);
 			}
 		} else {
 			LOG.info("Environment variable {0} not set; ignoring screenshot request", ENV_SCREENSHOT_CMD);
