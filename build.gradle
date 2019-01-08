@@ -97,6 +97,7 @@ subprojects {
 		manifest {
 			attributes "Automatic-Module-Name": automaticModuleName
 		}
+		exclude("/META-INF/de.carne.boot.Application")
 	}
 
 	test {
