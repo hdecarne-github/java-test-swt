@@ -51,7 +51,7 @@ public class CoolBarAccessor extends ControlAccessor<CoolBar> {
 	 * @param optionalCoolBar the optional {@linkplain CoolBar} object to wrap.
 	 * @return the wrapped optional {@linkplain CoolBar} object.
 	 */
-	public static CoolBarAccessor wrap(Optional<CoolBar> optionalCoolBar) {
+	public static CoolBarAccessor wrapCoolBar(Optional<CoolBar> optionalCoolBar) {
 		return new CoolBarAccessor(optionalCoolBar);
 	}
 

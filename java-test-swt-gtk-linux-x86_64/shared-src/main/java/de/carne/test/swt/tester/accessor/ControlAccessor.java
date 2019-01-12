@@ -58,6 +58,16 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	}
 
 	/**
+	 * Wraps a {@linkplain Control} object for further accessor based processing.
+	 *
+	 * @param optionalControl the optional {@linkplain Control} object to wrap.
+	 * @return the wrapped optional {@linkplain Control} object.
+	 */
+	public static <C extends Control> ControlAccessor<C> wrapControl(Optional<C> optionalControl) {
+		return new ControlAccessor<>(optionalControl);
+	}
+
+	/**
 	 * Creates a {@linkplain Predicate} for control type matching.
 	 *
 	 * @param type the control type to match.

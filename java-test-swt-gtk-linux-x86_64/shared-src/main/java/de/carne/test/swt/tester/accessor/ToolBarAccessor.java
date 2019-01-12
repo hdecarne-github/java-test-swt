@@ -51,7 +51,7 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	 * @param optionalToolBar the optional {@linkplain ToolBar} object to wrap.
 	 * @return the wrapped optional {@linkplain ToolBar} object.
 	 */
-	public static ToolBarAccessor wrap(Optional<ToolBar> optionalToolBar) {
+	public static ToolBarAccessor wrapToolBar(Optional<ToolBar> optionalToolBar) {
 		return new ToolBarAccessor(optionalToolBar);
 	}
 
