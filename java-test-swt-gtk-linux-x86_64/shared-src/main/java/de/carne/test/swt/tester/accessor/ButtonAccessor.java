@@ -16,9 +16,11 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
@@ -33,8 +35,17 @@ public class ButtonAccessor extends ControlAccessor<Button> {
 	 *
 	 * @param button the {@linkplain Button} instance to access.
 	 */
-	protected ButtonAccessor(Button button) {
+	public ButtonAccessor(@Nullable Button button) {
 		super(button);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ButtonAccessor} instance.
+	 *
+	 * @param buttonHolder the optional {@linkplain Button} instance to access.
+	 */
+	public ButtonAccessor(Optional<Button> buttonHolder) {
+		super(buttonHolder);
 	}
 
 	/**

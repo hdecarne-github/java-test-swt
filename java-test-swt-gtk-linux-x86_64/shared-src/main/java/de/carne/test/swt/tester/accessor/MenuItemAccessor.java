@@ -16,6 +16,9 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
@@ -30,8 +33,17 @@ public class MenuItemAccessor extends ItemAccessor<MenuItem> {
 	 *
 	 * @param menuItem the {@linkplain MenuItem} object to access.
 	 */
-	public MenuItemAccessor(MenuItem menuItem) {
+	public MenuItemAccessor(@Nullable MenuItem menuItem) {
 		super(menuItem);
+	}
+
+	/**
+	 * Constructs a new {@linkplain MenuItemAccessor} instance.
+	 *
+	 * @param optionalMenuItem the optional {@linkplain MenuItem} object to access.
+	 */
+	public MenuItemAccessor(Optional<MenuItem> optionalMenuItem) {
+		super(optionalMenuItem);
 	}
 
 	/**

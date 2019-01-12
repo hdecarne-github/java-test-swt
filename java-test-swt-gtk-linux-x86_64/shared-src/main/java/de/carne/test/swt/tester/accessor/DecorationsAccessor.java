@@ -16,25 +16,45 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Decorations;
 
 /**
  * Accessor class for {@linkplain Decorations} objects.
  *
- * @param <O> the actual object type to access.
+ * @param <T> the actual object type to access.
  */
-public class DecorationsAccessor<O extends Decorations> extends CompositeAccessor<O> {
+public class DecorationsAccessor<T extends Decorations> extends CompositeAccessor<T> {
 
 	/**
 	 * Constructs a new {@linkplain DecorationsAccessor} instance.
 	 *
 	 * @param decorations the {@linkplain Decorations} instance to access.
 	 */
-	protected DecorationsAccessor(O decorations) {
+	public DecorationsAccessor(@Nullable T decorations) {
 		super(decorations);
+	}
+
+	/**
+	 * Constructs a new {@linkplain DecorationsAccessor} instance.
+	 *
+	 * @param accessorHolder the optional {@linkplain Decorations} instance to access.
+	 */
+	public DecorationsAccessor(Optional<T> accessorHolder) {
+		super(accessorHolder);
+	}
+
+	/**
+	 * Constructs a new {@linkplain DecorationsAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Decorations} instance to access.
+	 */
+	public DecorationsAccessor(DecorationsAccessor<T> accessor) {
+		super(accessor);
 	}
 
 	/**

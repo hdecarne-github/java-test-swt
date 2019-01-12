@@ -16,8 +16,10 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
@@ -31,8 +33,17 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	 *
 	 * @param shell the {@linkplain Shell} object to access.
 	 */
-	public ShellAccessor(Shell shell) {
+	public ShellAccessor(@Nullable Shell shell) {
 		super(shell);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ShellAccessor} instance.
+	 *
+	 * @param shellHolder the optional {@linkplain Shell} object to access.
+	 */
+	public ShellAccessor(Optional<Shell> shellHolder) {
+		super(shellHolder);
 	}
 
 	/**
@@ -41,7 +52,10 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	 * @return this {@linkplain Shell}'s menu bar.
 	 */
 	public MenuAccessor accessMenuBar() {
-		return new MenuAccessor(Accessor.accessNonNull(get().getMenuBar(), "Menu bar not found"));
+		Optional<? extends Shell> optionalShell = getOptional();
+
+		return new MenuAccessor(
+				Optional.ofNullable(optionalShell.isPresent() ? optionalShell.get().getMenuBar() : null));
 	}
 
 	/**

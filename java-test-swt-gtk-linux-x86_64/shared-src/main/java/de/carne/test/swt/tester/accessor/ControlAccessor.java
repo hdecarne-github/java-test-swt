@@ -16,25 +16,45 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Control;
 
 /**
  * Accessor class for {@linkplain Control} objects.
  *
- * @param <O> the actual object type to access.
+ * @param <T> the actual object type to access.
  */
-public class ControlAccessor<O extends Control> extends Accessor<O> {
+public class ControlAccessor<T extends Control> extends Accessor<T> {
 
 	/**
 	 * Constructs a new {@linkplain ControlAccessor} instance.
 	 *
 	 * @param control the {@linkplain Control} instance to access.
 	 */
-	protected ControlAccessor(O control) {
+	public ControlAccessor(@Nullable T control) {
 		super(control);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ControlAccessor} instance.
+	 *
+	 * @param controlHolder the optional {@linkplain Control} instance to access.
+	 */
+	public ControlAccessor(Optional<T> controlHolder) {
+		super(controlHolder);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ControlAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Control} instance to access.
+	 */
+	public ControlAccessor(ControlAccessor<T> accessor) {
+		super(accessor);
 	}
 
 	/**

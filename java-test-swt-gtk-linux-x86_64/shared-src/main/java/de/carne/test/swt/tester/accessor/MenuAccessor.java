@@ -18,12 +18,16 @@ package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+
+import de.carne.util.stream.Unique;
 
 /**
  * Accessor class for {@linkplain Menu} objects.
@@ -35,8 +39,17 @@ public class MenuAccessor extends Accessor<Menu> {
 	 *
 	 * @param menu the {@linkplain Menu} object to access.
 	 */
-	public MenuAccessor(Menu menu) {
+	public MenuAccessor(@Nullable Menu menu) {
 		super(menu);
+	}
+
+	/**
+	 * Constructs a new {@linkplain MenuAccessor} instance.
+	 *
+	 * @param optionalMenu the optional {@linkplain Menu} object to access.
+	 */
+	public MenuAccessor(Optional<Menu> optionalMenu) {
+		super(optionalMenu);
 	}
 
 	/**
@@ -106,7 +119,7 @@ public class MenuAccessor extends Accessor<Menu> {
 	 * @return the found {@linkplain MenuItem}.
 	 */
 	public MenuItemAccessor accessMenuItem(Predicate<MenuItem> predicate) {
-		return Accessor.accessUnique(items().filter(predicate), MenuItemAccessor::new);
+		return new MenuItemAccessor(items().filter(predicate).collect(Unique.getOptional()));
 	}
 
 }

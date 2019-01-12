@@ -16,25 +16,45 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Item;
 
 /**
  * Accessor class for {@linkplain Item} objects.
  *
- * @param <O> the actual object type to access.
+ * @param <T> the actual object type to access.
  */
-public class ItemAccessor<O extends Item> extends Accessor<O> {
+public class ItemAccessor<T extends Item> extends Accessor<T> {
 
 	/**
 	 * Constructs a new {@linkplain ItemAccessor} instance.
 	 *
 	 * @param item the {@linkplain Item} instance to access.
 	 */
-	protected ItemAccessor(O item) {
+	public ItemAccessor(@Nullable T item) {
 		super(item);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ItemAccessor} instance.
+	 *
+	 * @param optionalItem the optional {@linkplain Item} instance to access.
+	 */
+	public ItemAccessor(Optional<T> optionalItem) {
+		super(optionalItem);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ItemAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Item} instance to access.
+	 */
+	public ItemAccessor(ItemAccessor<T> accessor) {
+		super(accessor);
 	}
 
 	/**

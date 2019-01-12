@@ -18,28 +18,50 @@ package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import de.carne.util.stream.Unique;
+
 /**
  * Accessor class for {@linkplain Composite} objects.
  *
- * @param <O> the actual object type to access.
+ * @param <T> the actual object type to access.
  */
-public class CompositeAccessor<O extends Composite> extends ControlAccessor<O> {
+public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 
 	/**
 	 * Constructs a new {@linkplain CompositeAccessor} instance.
 	 *
 	 * @param composite the {@linkplain Composite} instance to access.
 	 */
-	protected CompositeAccessor(O composite) {
+	public CompositeAccessor(@Nullable T composite) {
 		super(composite);
+	}
+
+	/**
+	 * Constructs a new {@linkplain CompositeAccessor} instance.
+	 *
+	 * @param compositeHolder the optional {@linkplain Composite} instance to access.
+	 */
+	public CompositeAccessor(Optional<T> compositeHolder) {
+		super(compositeHolder);
+	}
+
+	/**
+	 * Constructs a new {@linkplain CompositeAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Composite} instance to access.
+	 */
+	public CompositeAccessor(CompositeAccessor<T> accessor) {
+		super(accessor);
 	}
 
 	/**
@@ -105,8 +127,8 @@ public class CompositeAccessor<O extends Composite> extends ControlAccessor<O> {
 	 * @return the found {@linkplain Button}.
 	 */
 	public ButtonAccessor accessButton(Predicate<Button> predicate) {
-		return Accessor.accessUnique(children().filter(ControlAccessor.matchClass(Button.class))
-				.map(ControlAccessor.mapClass(Button.class)).filter(predicate), ButtonAccessor::new);
+		return new ButtonAccessor(children().filter(ControlAccessor.matchClass(Button.class))
+				.map(ControlAccessor.mapClass(Button.class)).filter(predicate).collect(Unique.getOptional()));
 	}
 
 }

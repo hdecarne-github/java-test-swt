@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.eclipse.swt.widgets.Dialog;
@@ -34,6 +35,7 @@ import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
 import de.carne.util.Late;
 import de.carne.util.Strings;
+import de.carne.util.stream.Unique;
 
 /**
  * Base class for SWT application tests.
@@ -234,7 +236,7 @@ public abstract class SWTTest {
 	 * @return the SWT {@linkplain Display}.
 	 */
 	protected Display display() {
-		return Accessor.accessNonNull(Display.findDisplay(Thread.currentThread()), "No Display found");
+		return Accessor.get(Display.findDisplay(Thread.currentThread()));
 	}
 
 	/**
@@ -255,7 +257,7 @@ public abstract class SWTTest {
 	 * @return the application's unique {@linkplain Shell}.
 	 */
 	protected ShellAccessor accessShell() {
-		return Accessor.accessUnique(shells(), ShellAccessor::new);
+		return new ShellAccessor(shells().collect(Unique.get()));
 	}
 
 	/**
@@ -268,7 +270,20 @@ public abstract class SWTTest {
 	 * @return the found {@linkplain Shell}.
 	 */
 	protected ShellAccessor accessShell(String text) {
-		return Accessor.accessUnique(shells().filter(DecorationsAccessor.matchText(text)), ShellAccessor::new);
+		return new ShellAccessor(shells().filter(DecorationsAccessor.matchText(text)).collect(Unique.get()));
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain Shell} identified by it's text.
+	 * <p>
+	 * A test failure is signaled if either none or more than one {@linkplain Shell} with the given text exists.
+	 * </p>
+	 *
+	 * @param textPattern the text pattern of the {@linkplain Shell} to get.
+	 * @return the found {@linkplain Shell}.
+	 */
+	protected ShellAccessor accessShell(Pattern textPattern) {
+		return new ShellAccessor(shells().filter(DecorationsAccessor.matchText(textPattern)).collect(Unique.get()));
 	}
 
 	/**

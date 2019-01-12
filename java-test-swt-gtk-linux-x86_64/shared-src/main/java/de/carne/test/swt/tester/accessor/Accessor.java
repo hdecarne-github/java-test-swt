@@ -16,79 +16,81 @@
  */
 package de.carne.test.swt.tester.accessor;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 
 /**
  * Base class for all kinds of accessor classes.
  *
- * @param <O> the actual object type to access.
+ * @param <T> the actual object type to access.
  */
-public class Accessor<O> implements Supplier<O> {
+public class Accessor<T> implements Supplier<T> {
 
-	private final O object;
+	private final Optional<? extends T> objectHolder;
 
 	/**
 	 * Constructs a new {@linkplain Accessor} instance.
 	 *
 	 * @param object the object to access.
 	 */
-	protected Accessor(O object) {
-		this.object = object;
+	public Accessor(@Nullable T object) {
+		this.objectHolder = Optional.ofNullable(object);
 	}
 
+	/**
+	 * Constructs a new {@linkplain Accessor} instance.
+	 *
+	 * @param objectHolder to the optional object to access.
+	 */
+	public Accessor(Optional<? extends T> objectHolder) {
+		this.objectHolder = objectHolder;
+	}
+
+	/**
+	 * Constructs a new {@linkplain Accessor} instance.
+	 *
+	 * @param accessor accessor to the object to access.
+	 */
+	public Accessor(Accessor<? extends T> accessor) {
+		this(accessor.objectHolder);
+	}
+
+	/**
+	 * Gets the object instance wrapped by this accessor.
+	 * <p>
+	 * A test failure is signaled if the accessor is empty.
+	 * </p>
+	 *
+	 * @return the object instance wrapped by this accessor.
+	 */
 	@Override
-	public O get() {
-		return this.object;
+	public T get() {
+		return this.objectHolder.orElseThrow(() -> new AssertionFailedError("No such object"));
 	}
 
 	/**
-	 * Accesses an object and makes sure it is not {@code null}.
-	 * <p>
-	 * If the submitted object is {@code null} a test failure is signaled.
-	 * </p>
+	 * Gets the optional object instance wrapped by this accessor.
 	 *
-	 * @param object the object to access.
-	 * @param message the message to use to signal a test failure.
-	 * @return the checked object.
-	 * @param <T> the actual object type.
+	 * @return the optional object instance wrapped by this accessor.
 	 */
-	public static <T> @NonNull T accessNonNull(@Nullable T object, String message) {
-		Assertions.assertNotNull(object, message);
-		return Objects.requireNonNull(object);
+	public Optional<? extends T> getOptional() {
+		return this.objectHolder;
 	}
 
 	/**
-	 * Accesses a unique object from an one-element {@linkplain Stream}.
+	 * Convenience function to access an object instance directly.
 	 * <p>
-	 * If the submitted {@linkplain Stream} contains 0 or more than 1 element a test failure is signaled.
+	 * A test failure is signaled if the given object is {@code null}.
 	 * </p>
 	 *
-	 * @param stream the {@linkplain Stream} to retrieve the object from.
-	 * @param mapper the {@linkplain Function} to use for the result type mapping.
-	 * @return the unique stream element.
-	 * @param <T> the actual stream element type.
-	 * @param <R> the actual return type the stream element is mapped to.
+	 * @param object the object instance to access (may be {@code null}).
+	 * @return the object instance.
 	 */
-	public static <T, R> R accessUnique(Stream<T> stream, Function<T, R> mapper) {
-		return Accessor.assertPresent(stream.reduce(Accessor::assertUnique).map(mapper), "Object not found");
-	}
-
-	private static <T> T assertUnique(T o1, T o2) {
-		Assertions.fail("Object not unique (o1: " + o1 + "; o2: " + o2 + ")");
-		return o1;
-	}
-
-	private static <T> T assertPresent(Optional<T> optional, String message) {
-		return optional.orElseThrow(() -> new AssertionFailedError(message));
+	public static <T> T get(@Nullable T object) {
+		return new Accessor<>(object).get();
 	}
 
 }
