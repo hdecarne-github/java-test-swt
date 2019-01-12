@@ -16,12 +16,13 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolItem;
-import org.eclipse.swt.widgets.Event;
 
 /**
  * Accessor class for {@linkplain CoolItem} objects.
@@ -47,10 +48,28 @@ public class CoolItemAccessor extends ItemAccessor<CoolItem> {
 	}
 
 	/**
-	 * Generate a selection event to the {@linkplain CoolItem}.
+	 * Gets the {@linkplain CoolItem}'s {@linkplain Control}.
+	 * <p>
+	 * A test failure is signaled if the requested {@linkplain Control} does not exist.
+	 * </p>
+	 *
+	 * @param wrap the function to use to wrap the found control.
+	 * @param controlClass the type of requested control.
+	 * @return the found {@linkplain Control}.
 	 */
-	public void select() {
-		get().notifyListeners(SWT.Selection, new Event());
+	public <C extends Control, A extends Accessor<C>> A accessControl(Function<Optional<C>, A> wrap,
+			Class<C> controlClass) {
+		Optional<? extends CoolItem> optionalCoolItem = getOptional();
+		@Nullable C control = null;
+
+		if (optionalCoolItem.isPresent()) {
+			Control coolItemControl = optionalCoolItem.get().getControl();
+
+			if (coolItemControl != null && controlClass.isAssignableFrom(coolItemControl.getClass())) {
+				control = controlClass.cast(coolItemControl);
+			}
+		}
+		return Objects.requireNonNull(wrap.apply(Optional.ofNullable(control)));
 	}
 
 }
