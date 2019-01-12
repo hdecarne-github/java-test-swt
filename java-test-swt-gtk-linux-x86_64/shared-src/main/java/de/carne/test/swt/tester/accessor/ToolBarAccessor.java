@@ -46,6 +46,16 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	}
 
 	/**
+	 * Wraps a {@linkplain ToolBar} object for further accessor based processing.
+	 *
+	 * @param optionalToolBar the optional {@linkplain ToolBar} object to wrap.
+	 * @return the wrapped optional {@linkplain ToolBar} object.
+	 */
+	public static ToolBarAccessor wrap(Optional<ToolBar> optionalToolBar) {
+		return new ToolBarAccessor(optionalToolBar);
+	}
+
+	/**
 	 * Convenience function which gets a specific {@linkplain ToolItem} from this {@linkplain ToolBar}.
 	 * <p>
 	 * A test failure is signaled if the {@linkplain ToolItem} does not exist.
@@ -61,7 +71,7 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	}
 
 	private @Nullable ToolItem getToolItem(ToolBar toolBar, int itemIndex) {
-		return (itemIndex < toolBar.getItemCount() ? toolBar.getItem(itemIndex) : null);
+		return (0 <= itemIndex && itemIndex < toolBar.getItemCount() ? toolBar.getItem(itemIndex) : null);
 	}
 
 }

@@ -73,7 +73,10 @@ public class MenuAccessor extends Accessor<Menu> {
 	 * @return all {@linkplain MenuItem}s of this {@linkplain Menu}.
 	 */
 	public Stream<MenuItem> items(int maxDepth, boolean depthsFirst) {
-		return collectItems(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream();
+		Optional<? extends Menu> optionalMenu = getOptional();
+
+		return (optionalMenu.isPresent() ? collectItems(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream()
+				: Stream.empty());
 	}
 
 	private List<MenuItem> collectItems(List<MenuItem> items, Menu menu, int depth, int maxDepth, boolean depthsFirst) {

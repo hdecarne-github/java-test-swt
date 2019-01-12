@@ -18,7 +18,9 @@ package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -88,7 +90,11 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * @return all child {@linkplain Control}s of this {@linkplain Composite}.
 	 */
 	public Stream<Control> children(int maxDepth, boolean depthsFirst) {
-		return collectChildren(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream();
+		Optional<? extends Composite> optionalComposite = getOptional();
+
+		return (optionalComposite.isPresent()
+				? collectChildren(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream()
+				: Stream.empty());
 	}
 
 	private List<Control> collectChildren(List<Control> children, Composite composite, int depth, int maxDepth,
@@ -127,8 +133,55 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * @return the found {@linkplain Button}.
 	 */
 	public ButtonAccessor accessButton(Predicate<Button> predicate) {
-		return new ButtonAccessor(children().filter(ControlAccessor.matchClass(Button.class))
-				.map(ControlAccessor.mapClass(Button.class)).filter(predicate).collect(Unique.getOptional()));
+		return accessChild(ButtonAccessor::new, Button.class, predicate);
+	}
+
+	/**
+	 * Convenience function which gets a specific child {@linkplain Control}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain Control} exists.
+	 * </p>
+	 *
+	 * @param wrap the function to use to wrap the found control.
+	 * @param childClass the type of requested control.
+	 * @param predicate the match criteria to use.
+	 * @return the found {@linkplain Control}.
+	 */
+	public <C extends Control, A extends Accessor<C>> A accessChild(Function<Optional<C>, A> wrap, Class<C> childClass,
+			Predicate<C> predicate) {
+		return Objects.requireNonNull(wrap.apply(children().filter(ControlAccessor.matchClass(childClass))
+				.map(ControlAccessor.mapClass(childClass)).filter(predicate).collect(Unique.getOptional())));
+
+	}
+
+	/**
+	 * Convenience function which gets a specific child {@linkplain Control}.
+	 * <p>
+	 * A test failure is signaled if the requested {@linkplain Control} does not exist.
+	 * </p>
+	 *
+	 * @param wrap the function to use to wrap the found control.
+	 * @param childClass the type of requested control.
+	 * @param childIndex the child index to access.
+	 * @return the found {@linkplain Control}.
+	 */
+	public <C extends Control, A extends Accessor<C>> A accessChild(Function<Optional<C>, A> wrap, Class<C> childClass,
+			int childIndex) {
+		Optional<? extends Composite> optionalComposite = getOptional();
+		@Nullable C child = null;
+
+		if (optionalComposite.isPresent()) {
+			Control[] children = optionalComposite.get().getChildren();
+
+			if (0 <= childIndex && childIndex < children.length) {
+				Control childControl = children[childIndex];
+
+				if (childClass.isAssignableFrom(childControl.getClass())) {
+					child = childClass.cast(childControl);
+				}
+			}
+		}
+		return Objects.requireNonNull(wrap.apply(Optional.ofNullable(child)));
 	}
 
 }
