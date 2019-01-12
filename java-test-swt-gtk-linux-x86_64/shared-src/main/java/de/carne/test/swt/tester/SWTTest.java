@@ -20,6 +20,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -30,6 +32,9 @@ import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
 import de.carne.boot.logging.Log;
+import de.carne.test.swt.tester.ScriptAction.AsyncDoScriptAction;
+import de.carne.test.swt.tester.ScriptAction.DoScriptAction;
+import de.carne.test.swt.tester.ScriptAction.WaitScriptAction;
 import de.carne.test.swt.tester.accessor.Accessor;
 import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
@@ -124,11 +129,11 @@ public abstract class SWTTest {
 		 * The action will be executed on the UI thread.
 		 * </p>
 		 *
-		 * @param action the action to add.
+		 * @param doAction the action to add.
 		 * @return the updated script.
 		 */
-		public Script add(Runnable action) {
-			this.actions.add(new ScriptAction(action, false));
+		public Script add(Runnable doAction) {
+			add(doAction, false);
 			return this;
 		}
 
@@ -138,13 +143,61 @@ public abstract class SWTTest {
 		 * The action will be executed on the UI thread.
 		 * </p>
 		 *
-		 * @param action the action to add.
+		 * @param doAction the action to add.
 		 * @param async whether to execute the action asynchronously ({@code true}) or not ({@code false}).
 		 * @return the updated script.
 		 */
-		public Script add(Runnable action, boolean async) {
-			this.actions.add(new ScriptAction(action, async));
+		public Script add(Runnable doAction, boolean async) {
+			String actionName = nextActionName();
+
+			this.actions.add(
+					async ? new AsyncDoScriptAction(actionName, doAction) : new DoScriptAction(actionName, doAction));
 			return this;
+		}
+
+		/**
+		 * Adds supply/consume action to be consumed during the test.
+		 * <p>
+		 * During test execution the supply action is invoked until the result is not empty. The supplied result is
+		 * afterwards submitted to the consumer. A test failure is signaled if the default timeout is reached while
+		 * polling the supply action for a non-empty result.
+		 * </p>
+		 *
+		 * @param <T> the supplied and consumed object type.
+		 * @param supplyAction the supply action to invoke.
+		 * @param consumeAction the consume action to invoke with the supply action result.
+		 * @return the updated script.
+		 * @see #add(Supplier, Consumer, long)
+		 */
+		public <T, A extends Accessor<T>> Script add(Supplier<A> supplyAction, Consumer<A> consumeAction) {
+			add(supplyAction, consumeAction, Timing.STEP_COUNT_LIMIT * Timing.STEP_TIMEOUT);
+			return this;
+		}
+
+		/**
+		 * Adds supply/consume action to be consumed during the test.
+		 * <p>
+		 * During test execution the supply action is invoked until the result is not empty. The supplied result is
+		 * afterwards submitted to the consumer. A test failure is signaled if the given timeout is reached while
+		 * polling the supply action for a non-empty result.
+		 * </p>
+		 *
+		 * @param <T> the supplied and consumed object type.
+		 * @param supplyAction the supply action to invoke.
+		 * @param consumeAction the consume action to invoke with the supply action result.
+		 * @param timeoutMillis the timeout in milliseconds for polling the supply action.
+		 * @return the updated script.
+		 */
+		public <T, A extends Accessor<T>> Script add(Supplier<A> supplyAction, Consumer<A> consumeAction,
+				long timeoutMillis) {
+			String actionName = nextActionName();
+
+			this.actions.add(new WaitScriptAction<>(actionName, supplyAction, consumeAction, timeoutMillis));
+			return this;
+		}
+
+		private String nextActionName() {
+			return "Action #" + (this.actions.size() + 1);
 		}
 
 		/**

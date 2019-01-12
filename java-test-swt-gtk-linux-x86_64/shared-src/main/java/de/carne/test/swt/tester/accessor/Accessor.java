@@ -86,6 +86,7 @@ public class Accessor<T> implements Supplier<T> {
 	 * A test failure is signaled if the given object is {@code null}.
 	 * </p>
 	 *
+	 * @param <T> the object type to access.
 	 * @param object the object instance to access (may be {@code null}).
 	 * @return the object instance.
 	 */

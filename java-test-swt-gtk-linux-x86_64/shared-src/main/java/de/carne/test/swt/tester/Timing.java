@@ -27,34 +27,48 @@ final class Timing {
 
 	private static final String PROPERTY_TEST_TIMEOUT = Timing.class.getPackage().getName() + ".TEST_TIMEOUT";
 
-	public static final int TEST_TIMEOUT = SystemProperties.intValue(PROPERTY_TEST_TIMEOUT, 5 * 60 * 1000);
+	public static final long TEST_TIMEOUT = SystemProperties.longValue(PROPERTY_TEST_TIMEOUT, 5 * 60 * 1000);
 
 	private static final String PROPERTY_STEP_TIMEOUT = Timing.class.getPackage().getName() + ".STEP_TIMEOUT";
 
-	public static final int STEP_TIMEOUT = SystemProperties.intValue(PROPERTY_STEP_TIMEOUT, 250);
+	public static final long STEP_TIMEOUT = SystemProperties.longValue(PROPERTY_STEP_TIMEOUT, 250);
 
 	private static final String PROPERTY_STEP_COUNT_LIMIT = Timing.class.getPackage().getName() + ".STEP_COUNT_LIMIT";
 
 	public static final int STEP_COUNT_LIMIT = SystemProperties.intValue(PROPERTY_STEP_COUNT_LIMIT, 20);
 
-	private Synchronizer synchronizer;
+	private int stepCountLimit;
+	private final Synchronizer synchronizer;
 	private int stepCount;
 
 	public Timing() {
-		this(Thread::sleep);
+		this(STEP_COUNT_LIMIT, Thread::sleep);
+	}
+
+	public Timing(int stepCountLimit) {
+		this(stepCountLimit, Thread::sleep);
 	}
 
 	public Timing(Synchronizer synchronizer) {
+		this(STEP_COUNT_LIMIT, synchronizer);
+	}
+
+	public Timing(int stepCountLimit, Synchronizer synchronizer) {
+		this.stepCountLimit = stepCountLimit;
 		this.synchronizer = synchronizer;
 		this.stepCount = 0;
 	}
 
 	public void step(String timeoutMessage) throws InterruptedException {
-		if (this.stepCount >= STEP_COUNT_LIMIT) {
+		if (this.stepCount >= this.stepCountLimit) {
 			Assertions.fail(timeoutMessage);
 		}
 		this.synchronizer.sync(STEP_TIMEOUT);
 		this.stepCount++;
+	}
+
+	public static int stepCountLimit(long timoutMillis) {
+		return (int) Math.floorDiv(timoutMillis + Timing.STEP_TIMEOUT - 1, Timing.STEP_TIMEOUT);
 	}
 
 	@SuppressWarnings("squid:S2925")

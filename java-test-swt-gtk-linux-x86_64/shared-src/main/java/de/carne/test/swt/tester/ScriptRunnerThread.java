@@ -100,31 +100,10 @@ final class ScriptRunnerThread extends Thread {
 	}
 
 	private void runActions(Display display) throws InterruptedException {
-		int actionId = 1;
+		ScriptRunner scriptRunner = scriptRunner(display);
 
 		for (ScriptAction action : this.actions) {
-			runAction(display, action, actionId);
-			actionId++;
-		}
-	}
-
-	private void runAction(Display display, ScriptAction action, int actionId) throws InterruptedException {
-		if (action.isAsync()) {
-			runNoWait(display, action);
-
-			Timing.step();
-
-			LOG.debug("Action #{0} triggered", actionId);
-		} else {
-			long start = System.nanoTime();
-
-			runWait(display, action);
-
-			long elapsed = System.nanoTime() - start;
-
-			Timing.step();
-
-			LOG.debug("Action #{0} executed (took {1} ms)", actionId, elapsed / 1000000);
+			action.run(scriptRunner);
 		}
 	}
 
@@ -235,11 +214,32 @@ final class ScriptRunnerThread extends Thread {
 		}).booleanValue();
 	}
 
-	private void runNoWait(Display display, Runnable runnable) {
+	private ScriptRunner scriptRunner(Display display) {
+		return new ScriptRunner() {
+
+			@Override
+			public void runNoWait(Runnable runnable) {
+				ScriptRunnerThread.this.runNoWait(display, runnable);
+			}
+
+			@Override
+			public void runWait(Runnable runnable) {
+				ScriptRunnerThread.this.runWait(display, runnable);
+			}
+
+			@Override
+			public <T> T runWait(Supplier<T> supplier) {
+				return ScriptRunnerThread.this.runWait(display, supplier);
+			}
+
+		};
+	}
+
+	void runNoWait(Display display, Runnable runnable) {
 		display.asyncExec(runnable);
 	}
 
-	private void runWait(Display display, Runnable runnable) {
+	void runWait(Display display, Runnable runnable) {
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
@@ -257,7 +257,7 @@ final class ScriptRunnerThread extends Thread {
 		}
 	}
 
-	private <T> T runWait(Display display, Supplier<T> supplier) {
+	<T> T runWait(Display display, Supplier<T> supplier) {
 		final AtomicReference<T> resultHolder = new AtomicReference<>();
 
 		if (Thread.currentThread().equals(display.getThread())) {

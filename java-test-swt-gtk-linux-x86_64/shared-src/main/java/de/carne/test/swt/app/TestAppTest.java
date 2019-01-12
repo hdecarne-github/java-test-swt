@@ -30,7 +30,7 @@ public class TestAppTest extends SWTTest {
 		Script script = script(new TestAppMain());
 
 		script.add(this::doOpenAboutinfo, true);
-		script.add(this::doCloseAboutinfo);
+		script.add(this::waitAboutInfoOpened, this::doCloseAboutinfo);
 		script.add(this::doClose);
 		script.execute();
 	}
@@ -40,9 +40,14 @@ public class TestAppTest extends SWTTest {
 		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO)).select();
 	}
 
-	protected void doCloseAboutinfo() {
+	protected ButtonAccessor waitAboutInfoOpened() {
 		traceAction();
-		accessShell("About <undefined>").accessButton(ButtonAccessor.matchText("Close")).select();
+		return accessShell("About <undefined>").accessButton(ButtonAccessor.matchText("Close"));
+	}
+
+	protected void doCloseAboutinfo(ButtonAccessor buttonAccessor) {
+		traceAction();
+		buttonAccessor.select();
 	}
 
 	protected void doClose() {
