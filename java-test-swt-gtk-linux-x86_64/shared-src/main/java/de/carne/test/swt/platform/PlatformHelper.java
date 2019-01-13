@@ -62,7 +62,7 @@ public abstract class PlatformHelper {
 	}
 
 	protected boolean internalIsCurrentThreadSWTCapable() {
-		return true;
+		return false;
 	}
 
 	/**

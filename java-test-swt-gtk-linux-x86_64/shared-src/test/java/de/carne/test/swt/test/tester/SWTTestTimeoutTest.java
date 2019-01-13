@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
@@ -30,6 +31,7 @@ import de.carne.test.swt.tester.SWTTest;
  * Test {@linkplain SWTTest} class - Test timeout due to unexpected message box.
  */
 @DisableIfThreadNotSWTCapable
+@Disabled
 class SWTTestTimeoutTest extends SWTTest {
 
 	private static int TIMEOUT = 10000;

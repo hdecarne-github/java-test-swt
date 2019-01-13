@@ -18,9 +18,6 @@ package de.carne.test.swt.platform.gtk;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.swt.internal.gtk.GDK;
-import org.eclipse.swt.internal.gtk.GTK;
-import org.eclipse.swt.internal.gtk.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -33,24 +30,23 @@ public class GtkPlatformHelper extends PlatformHelper {
 
 	@Override
 	protected boolean internalIsCurrentThreadSWTCapable() {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean internalInNativeDialog(Display display) {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
-		if (Thread.currentThread().equals(display.getThread())) {
-			long activeWindow = getActiveWindow();
-
-			if (activeWindow != 0) {
+		if (!display.isDisposed()) {
+			if (Thread.currentThread().equals(display.getThread())) {
 				Shell activeShell = display.getActiveShell();
 
-				resultHolder.set(activeShell == null || activeShell.handle != activeWindow);
-				OS.g_object_unref(activeWindow);
+				if (activeShell != null) {
+					resultHolder.set(activeShell.isEnabled());
+				}
+			} else {
+				display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 			}
-		} else {
-			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 		}
 		return resultHolder.get();
 	}
@@ -59,43 +55,18 @@ public class GtkPlatformHelper extends PlatformHelper {
 	protected boolean internalCloseNativeDialogs(Display display) {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
-		if (Thread.currentThread().equals(display.getThread())) {
-			long activeWindow = getActiveWindow();
-
-			if (activeWindow != 0) {
+		if (!display.isDisposed()) {
+			if (Thread.currentThread().equals(display.getThread())) {
 				Shell activeShell = display.getActiveShell();
-				if (activeShell == null || activeShell.handle != activeWindow) {
+
+				if (activeShell != null && !activeShell.isEnabled()) {
 					resultHolder.set(true);
-					GDK.gdk_window_destroy(activeWindow);
-					OS.g_object_unref(activeWindow);
 				}
+			} else {
+				display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 			}
-		} else {
-			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 		}
 		return resultHolder.get();
-	}
-
-	private long getActiveWindow() {
-		long activeWindow = 0;
-		long windowStack = GDK.gdk_screen_get_window_stack(GDK.gdk_screen_get_default());
-
-		if (windowStack != 0) {
-			long item = OS.g_list_last(windowStack);
-
-			while (item != 0) {
-				long window = OS.g_list_data(item);
-
-				if (GTK.gtk_window_is_active(window)) {
-					activeWindow = window;
-				} else {
-					OS.g_object_unref(window);
-				}
-				window = OS.g_list_previous(window);
-			}
-		}
-		OS.g_list_free(windowStack);
-		return activeWindow;
 	}
 
 }
