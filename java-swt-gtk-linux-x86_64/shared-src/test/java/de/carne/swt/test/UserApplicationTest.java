@@ -19,8 +19,8 @@ package de.carne.swt.test;
 import org.junit.jupiter.api.Test;
 
 import de.carne.swt.UserApplication;
-import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
+import de.carne.test.swt.app.TestAppTest;
 
 /**
  * Test {@linkplain UserApplication} class.
@@ -30,7 +30,7 @@ class UserApplicationTest extends TestAppTest {
 
 	@Test
 	void testTestUserApplication() {
-		executeTestScript();
+		executeTestScript(getClass().getSimpleName());
 	}
 
 }

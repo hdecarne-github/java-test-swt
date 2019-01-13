@@ -118,7 +118,7 @@ public abstract class SWTTest {
 		 * @param args the command line arguments to use.
 		 * @return the updated script.
 		 */
-		public Script args(String[] args) {
+		public Script args(String... args) {
 			this.applicationArgs = args;
 			return this;
 		}
@@ -222,7 +222,7 @@ public abstract class SWTTest {
 		 * </p>
 		 *
 		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
-		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 *        dispose them ({@code true}) or to signal a test failure ({@code false}).
 		 */
 		public void execute(boolean ignoreRemaining) {
 			execute(ignoreRemaining, Duration.ofMillis(Timing.TEST_TIMEOUT));
@@ -232,9 +232,9 @@ public abstract class SWTTest {
 		 * Execute all script actions.
 		 *
 		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
-		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 *        dispose them ({@code true}) or to signal a test failure ({@code false}).
 		 * @param timeout timeout (in ms) after which the script execution will be stopped and the test considered
-		 * failed.
+		 *        failed.
 		 */
 		public void execute(boolean ignoreRemaining, Duration timeout) {
 			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining, timeout);

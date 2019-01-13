@@ -75,7 +75,7 @@ final class ScriptRunnerThread extends Thread {
 
 			LOG.debug("Display is available on display thread; waiting for initial Shell...");
 
-			waitTrigger(this::initialShellActiveTrigger);
+			waitTrigger(this::initialShellVisibleTrigger);
 
 			LOG.debug("Initial Shell is visible; running actions...");
 
@@ -215,11 +215,13 @@ final class ScriptRunnerThread extends Thread {
 		return Display.findDisplay(this.displayThread) != null;
 	}
 
-	private boolean initialShellActiveTrigger() {
+	private boolean initialShellVisibleTrigger() {
 		Display display = Display.findDisplay(this.displayThread);
 
 		return display != null && !display.isDisposed() && runWait(display, () -> {
-			return !display.isDisposed() && display.getActiveShell() != null;
+			Shell[] shells = (!display.isDisposed() ? display.getShells() : null);
+
+			return shells != null && shells[0].isVisible();
 		}).booleanValue();
 	}
 

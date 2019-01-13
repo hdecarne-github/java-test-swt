@@ -36,7 +36,11 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 		int status = -1;
 
 		try {
-			status = run(new CmdLineProcessor(name(), args));
+			CmdLineProcessor cmdLine = new CmdLineProcessor(name(), args);
+
+			cmdLine.onUnknownArg(CmdLineProcessor::ignore);
+			cmdLine.onUnnamedOption(CmdLineProcessor::ignore);
+			status = run(cmdLine);
 		} catch (Exception e) {
 			Throwable cause = e.getCause();
 
@@ -56,7 +60,7 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 
 	@Override
 	protected ShellUserInterface setupUserInterface(Display display) throws ResourceException {
-		return new TestAppUI(new Shell(display));
+		return new TestAppUI(new Shell(display), getCmdLine().toString());
 	}
 
 }

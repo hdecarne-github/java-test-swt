@@ -82,6 +82,15 @@ public abstract class UserApplication {
 	protected abstract ShellUserInterface setupUserInterface(Display display) throws ResourceException;
 
 	/**
+	 * Gets the application's {@linkplain CmdLineProcessor}.
+	 * 
+	 * @return the application's {@linkplain CmdLineProcessor}.
+	 */
+	protected CmdLineProcessor getCmdLine() {
+		return this.cmdLineHolder.get();
+	}
+
+	/**
 	 * Get the application's {@linkplain Display}.
 	 *
 	 * @return The application's {@linkplain Display}.

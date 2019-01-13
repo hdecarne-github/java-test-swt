@@ -35,7 +35,7 @@ class SWTTestDialogTest extends TestAppTest {
 
 	@Test
 	void testStartStop() {
-		Script script = script(new TestAppMain());
+		Script script = script(new TestAppMain()).args(getClass().getSimpleName());
 
 		script.add(this::doOpenMessageBox);
 		script.add(this::doFileDialog);

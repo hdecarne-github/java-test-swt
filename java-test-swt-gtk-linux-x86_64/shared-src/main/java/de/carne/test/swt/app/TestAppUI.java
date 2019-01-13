@@ -27,11 +27,11 @@ import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.layout.FillLayoutBuilder;
-import de.carne.test.swt.app.resources.Resources;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
+import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
 
 /**
@@ -39,15 +39,18 @@ import de.carne.util.Late;
  */
 public class TestAppUI extends ShellUserInterface {
 
+	private final String title;
 	private final Late<List> messageListHolder = new Late<>();
 
 	/**
 	 * Constructs a new {@linkplain TestAppUI} instance.
 	 *
 	 * @param shell the user interface {@linkplain Shell}.
+	 * @param title the title to set.
 	 */
-	protected TestAppUI(Shell shell) {
+	protected TestAppUI(Shell shell, String title) {
 		super(shell);
+		this.title = title;
 	}
 
 	@Override
@@ -55,8 +58,7 @@ public class TestAppUI extends ShellUserInterface {
 		Shell shell = root();
 		ShellBuilder shellBuilder = new ShellBuilder(shell);
 
-		shellBuilder.withText(TestApp.ROOT_TEXT)
-				.withImages(Resources.getImages(shell.getDisplay(), Resources.APP_ICON));
+		shellBuilder.withText(this.title).withImages(Resources.getImages(shell.getDisplay(), Resources.APP_ICON));
 		buildMenuBar();
 		this.messageListHolder.set(shellBuilder.addControlChild(List.class, SWT.SINGLE | SWT.BORDER).get());
 		FillLayoutBuilder.layout().apply(shell);

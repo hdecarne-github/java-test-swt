@@ -22,12 +22,15 @@ import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import de.carne.boot.logging.Log;
 import de.carne.test.swt.platform.PlatformHelper;
 
 /**
  * Win32 platform helper.
  */
 public class Win32PlatformHelper extends PlatformHelper {
+
+	private static final Log LOG = new Log();
 
 	@Override
 	protected boolean internalIsCurrentThreadSWTCapable() {
@@ -56,6 +59,8 @@ public class Win32PlatformHelper extends PlatformHelper {
 			long nativeDialog = findNativeDialog(display);
 
 			if (nativeDialog != 0) {
+				LOG.debug("Destroying native dialog result: 0x{0}", Long.toHexString(nativeDialog));
+
 				OS.DestroyWindow(nativeDialog);
 				resultHolder.set(true);
 			}
@@ -78,6 +83,9 @@ public class Win32PlatformHelper extends PlatformHelper {
 				}
 			}
 		}
+
+		LOG.debug("Find native dialog result: 0x{0}", Long.toHexString(activeWindow));
+
 		return activeWindow;
 	}
 

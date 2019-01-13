@@ -31,11 +31,11 @@ final class Timing {
 
 	private static final String PROPERTY_STEP_TIMEOUT = Timing.class.getPackage().getName() + ".STEP_TIMEOUT";
 
-	public static final long STEP_TIMEOUT = SystemProperties.longValue(PROPERTY_STEP_TIMEOUT, 250);
+	public static final long STEP_TIMEOUT = SystemProperties.longValue(PROPERTY_STEP_TIMEOUT, 500);
 
 	private static final String PROPERTY_STEP_COUNT_LIMIT = Timing.class.getPackage().getName() + ".STEP_COUNT_LIMIT";
 
-	public static final int STEP_COUNT_LIMIT = SystemProperties.intValue(PROPERTY_STEP_COUNT_LIMIT, 20);
+	public static final int STEP_COUNT_LIMIT = SystemProperties.intValue(PROPERTY_STEP_COUNT_LIMIT, 10);
 
 	private int stepCountLimit;
 	private final Synchronizer synchronizer;

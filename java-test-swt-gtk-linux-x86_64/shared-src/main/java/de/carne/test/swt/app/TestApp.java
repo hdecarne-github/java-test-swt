@@ -16,6 +16,8 @@
  */
 package de.carne.test.swt.app;
 
+import java.util.regex.Pattern;
+
 /**
  * Test application texts.
  */
@@ -23,7 +25,7 @@ package de.carne.test.swt.app;
 public final class TestApp {
 
 	// Root shell
-	public static final String ROOT_TEXT = TestApp.class.getSimpleName();
+	public static final Pattern ROOT_TEXT_PATTERN = Pattern.compile(TestApp.class.getSimpleName() + ".*");
 
 	// Root shell menu
 	public static final String ROOT_MENU_SHELL = "Shell";

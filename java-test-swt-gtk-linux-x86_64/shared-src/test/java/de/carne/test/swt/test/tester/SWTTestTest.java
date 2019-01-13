@@ -30,7 +30,7 @@ class SWTTestTest extends TestAppTest {
 
 	@Test
 	void testApplication() {
-		executeTestScript();
+		executeTestScript(getClass().getSimpleName());
 	}
 
 }

@@ -48,7 +48,7 @@ class SWTTestTimeoutTest extends SWTTest {
 	@Test
 	public void testTimeout() {
 		Assertions.assertThrows(AssertionError.class, () -> {
-			script(new TestAppMain()).add(this::openMessageBox).execute();
+			script(new TestAppMain()).args(getClass().getSimpleName()).add(this::openMessageBox).execute();
 		});
 	}
 

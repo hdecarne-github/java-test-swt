@@ -32,7 +32,7 @@ class SWTTestFailureTest extends SWTTest {
 	@Test
 	public void testFailure() {
 		Assertions.assertThrows(AssertionError.class, () -> {
-			script(new TestAppMain()).add(this::doFailure).execute();
+			script(new TestAppMain()).args(getClass().getSimpleName()).add(this::doFailure).execute();
 		});
 	}
 

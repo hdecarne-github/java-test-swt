@@ -26,8 +26,8 @@ import de.carne.test.swt.tester.accessor.ItemAccessor;
 @SuppressWarnings("squid:S2187")
 public class TestAppTest extends SWTTest {
 
-	protected void executeTestScript() {
-		Script script = script(new TestAppMain());
+	protected void executeTestScript(String testName) {
+		Script script = script(new TestAppMain()).args(testName);
 
 		script.add(this::doOpenAboutinfo, true);
 		script.add(this::waitAboutInfoOpened, this::doCloseAboutinfo);

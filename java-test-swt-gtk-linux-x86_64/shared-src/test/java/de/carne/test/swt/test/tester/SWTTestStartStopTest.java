@@ -30,7 +30,7 @@ class SWTTestStartStopTest extends SWTTest {
 
 	@Test
 	void testStartStop() {
-		script(new TestAppMain()).execute(true);
+		script(new TestAppMain()).args(getClass().getSimpleName()).execute(true);
 	}
 
 }
