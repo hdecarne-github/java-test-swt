@@ -21,12 +21,15 @@ import org.eclipse.swt.internal.cocoa.NSThread;
 import org.eclipse.swt.internal.cocoa.OS;
 import org.eclipse.swt.widgets.Display;
 
+import de.carne.boot.logging.Log;
 import de.carne.test.swt.platform.PlatformHelper;
 
 /**
  * Cocoa platform helper.
  */
 public class CocoaPlatformHelper extends PlatformHelper {
+
+	private static final Log LOG = new Log();
 
 	private static final long CUSTOM_SEL_modalWindow = OS.sel_registerName("modalWindow");
 
@@ -39,7 +42,7 @@ public class CocoaPlatformHelper extends PlatformHelper {
 	protected boolean internalInNativeDialog(Display display) {
 		NSApplication application = NSApplication.sharedApplication();
 
-		return application != null && applicationModalWindowId(application) != 0;
+		return application != null && findModalWindow(application) != 0;
 	}
 
 	@Override
@@ -48,9 +51,11 @@ public class CocoaPlatformHelper extends PlatformHelper {
 		NSApplication application = NSApplication.sharedApplication();
 
 		if (application != null) {
-			long modalWindowId = applicationModalWindowId(application);
+			long modalWindowId = findModalWindow(application);
 
 			if (modalWindowId != 0) {
+				LOG.debug("Stopping modal loop...");
+
 				application.stopModal();
 				inNativeDialog = true;
 			}
@@ -58,8 +63,12 @@ public class CocoaPlatformHelper extends PlatformHelper {
 		return inNativeDialog;
 	}
 
-	private long applicationModalWindowId(NSApplication application) {
-		return OS.objc_msgSend(application.id, CUSTOM_SEL_modalWindow);
+	private long findModalWindow(NSApplication application) {
+		long modalWindowId = OS.objc_msgSend(application.id, CUSTOM_SEL_modalWindow);
+
+		LOG.debug("Find modal window result: 0x{0}", Long.toHexString(modalWindowId));
+
+		return modalWindowId;
 	}
 
 }

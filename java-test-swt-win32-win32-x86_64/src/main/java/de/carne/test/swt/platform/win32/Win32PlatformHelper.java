@@ -45,7 +45,7 @@ public class Win32PlatformHelper extends PlatformHelper {
 			if (Thread.currentThread().equals(display.getThread())) {
 				resultHolder.set(findNativeDialog(display) != 0);
 			} else {
-				display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+				display.syncExec(() -> resultHolder.set(internalInNativeDialog(display)));
 			}
 		}
 		return resultHolder.get();
