@@ -92,6 +92,9 @@ final class ScriptRunnerThread extends Thread {
 			if (!this.ignoreRemaining && !remainingShellTexts.isEmpty()) {
 				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellTexts, ", "));
 			}
+		} catch (InterruptedException e) {
+			this.assertionStatus.set(new AssertionFailedError("Thread interrupted", e));
+			Thread.currentThread().interrupt();
 		} catch (Exception e) {
 			this.assertionStatus.set(new AssertionFailedError("Uncaught exception: " + e.getClass().getName(), e));
 		} catch (AssertionError e) {
@@ -107,7 +110,7 @@ final class ScriptRunnerThread extends Thread {
 		}
 	}
 
-	private List<String> disposeRemaining(Display display, boolean grabScreen) {
+	private List<String> disposeRemaining(Display display, boolean grabScreen) throws InterruptedException {
 		List<String> remainingShellTexts = new ArrayList<>();
 		boolean screenGrabbed = false;
 
@@ -121,6 +124,12 @@ final class ScriptRunnerThread extends Thread {
 			}
 			PlatformHelper.closeNativeDialogs(display);
 			remainingShellTexts.add("<native dialog>");
+
+			Timing closing = new Timing();
+
+			while (PlatformHelper.inNativeDialog(display)) {
+				closing.step("");
+			}
 		}
 		if (!display.isDisposed()) {
 			boolean grabScreen0 = grabScreen && !screenGrabbed;
