@@ -164,6 +164,7 @@ public abstract class SWTTest {
 		 * </p>
 		 *
 		 * @param <T> the supplied and consumed object type.
+		 * @param <A> the corresponding accessor type.
 		 * @param supplyAction the supply action to invoke.
 		 * @param consumeAction the consume action to invoke with the supply action result.
 		 * @return the updated script.
@@ -183,6 +184,7 @@ public abstract class SWTTest {
 		 * </p>
 		 *
 		 * @param <T> the supplied and consumed object type.
+		 * @param <A> the corresponding accessor type.
 		 * @param supplyAction the supply action to invoke.
 		 * @param consumeAction the consume action to invoke with the supply action result.
 		 * @param timeoutMillis the timeout in milliseconds for polling the supply action.

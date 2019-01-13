@@ -142,13 +142,15 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * A test failure is signaled if either none or more than one matching {@linkplain Control} exists.
 	 * </p>
 	 *
+	 * @param <C> the actual control type to access.
+	 * @param <A> the actual control accessor type.
 	 * @param wrap the function to use to wrap the found control.
 	 * @param childClass the type of requested control.
 	 * @param predicate the match criteria to use.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> A accessChild(Function<Optional<C>, A> wrap, Class<C> childClass,
-			Predicate<C> predicate) {
+	public <C extends Control, A extends Accessor<C>> @NonNull A accessChild(Function<Optional<C>, A> wrap,
+			Class<C> childClass, Predicate<C> predicate) {
 		return Objects.requireNonNull(wrap.apply(children().filter(ControlAccessor.matchClass(childClass))
 				.map(ControlAccessor.mapClass(childClass)).filter(predicate).collect(Unique.getOptional())));
 
@@ -167,8 +169,8 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * @param childIndex the child index to access.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> A accessChild(Function<Optional<C>, A> wrap, Class<C> childClass,
-			int childIndex) {
+	public <C extends Control, A extends Accessor<C>> @NonNull A accessChild(Function<Optional<C>, A> wrap,
+			Class<C> childClass, int childIndex) {
 		Optional<? extends Composite> optionalComposite = getOptional();
 		@Nullable C child = null;
 

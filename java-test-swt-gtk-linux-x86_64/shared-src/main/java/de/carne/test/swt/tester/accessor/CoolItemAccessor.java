@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolItem;
@@ -53,11 +54,13 @@ public class CoolItemAccessor extends ItemAccessor<CoolItem> {
 	 * A test failure is signaled if the requested {@linkplain Control} does not exist.
 	 * </p>
 	 *
+	 * @param <C> the actual control type to access.
+	 * @param <A> the actual control accessor type.
 	 * @param wrap the function to use to wrap the found control.
 	 * @param controlClass the type of requested control.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> A accessControl(Function<Optional<C>, A> wrap,
+	public <C extends Control, A extends Accessor<C>> @NonNull A accessControl(Function<Optional<C>, A> wrap,
 			Class<C> controlClass) {
 		Optional<? extends CoolItem> optionalCoolItem = getOptional();
 		@Nullable C control = null;
