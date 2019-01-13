@@ -160,6 +160,8 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * A test failure is signaled if the requested {@linkplain Control} does not exist.
 	 * </p>
 	 *
+	 * @param <C> the actual control type to access.
+	 * @param <A> the actual control accessor type.
 	 * @param wrap the function to use to wrap the found control.
 	 * @param childClass the type of requested control.
 	 * @param childIndex the child index to access.

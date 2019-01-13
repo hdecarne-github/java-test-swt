@@ -60,6 +60,7 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	/**
 	 * Wraps a {@linkplain Control} object for further accessor based processing.
 	 *
+	 * @param <C> the actual control type to wrap.
 	 * @param optionalControl the optional {@linkplain Control} object to wrap.
 	 * @return the wrapped optional {@linkplain Control} object.
 	 */
