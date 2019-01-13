@@ -33,7 +33,7 @@ public final class MessageBoxMock {
 
 	private static final Log LOG = new Log();
 
-	private static Map<Integer, String> SWT_SYMBOLS = new HashMap<>();
+	private static final Map<Integer, String> SWT_SYMBOLS = new HashMap<>();
 
 	static {
 		SWT_SYMBOLS.put(SWT.OK, "SWT.OK");

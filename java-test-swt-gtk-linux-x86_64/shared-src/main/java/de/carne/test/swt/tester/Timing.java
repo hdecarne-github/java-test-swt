@@ -27,7 +27,7 @@ final class Timing {
 
 	private static final String PROPERTY_TEST_TIMEOUT = Timing.class.getPackage().getName() + ".TEST_TIMEOUT";
 
-	public static final long TEST_TIMEOUT = SystemProperties.longValue(PROPERTY_TEST_TIMEOUT, 5 * 60 * 1000);
+	public static final long TEST_TIMEOUT = SystemProperties.longValue(PROPERTY_TEST_TIMEOUT, 5 * 60 * 1000l);
 
 	private static final String PROPERTY_STEP_TIMEOUT = Timing.class.getPackage().getName() + ".STEP_TIMEOUT";
 

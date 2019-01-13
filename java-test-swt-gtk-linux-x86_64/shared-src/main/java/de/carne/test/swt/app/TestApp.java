@@ -24,6 +24,10 @@ import java.util.regex.Pattern;
 @SuppressWarnings("javadoc")
 public final class TestApp {
 
+	private TestApp() {
+		// prevent instantiation
+	}
+
 	// Root shell
 	public static final Pattern ROOT_TEXT_PATTERN = Pattern.compile(TestApp.class.getSimpleName() + ".*");
 

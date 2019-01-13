@@ -34,6 +34,10 @@ import de.carne.swt.graphics.ResourceTracker;
 @SuppressWarnings("javadoc")
 public final class Resources {
 
+	private Resources() {
+		// prevent instantiation
+	}
+
 	public static final String ABOUT_TEXT = "about.txt";
 
 	public static final String APP_ICON16 = "app_icon16.png";

@@ -28,6 +28,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
@@ -257,7 +258,7 @@ final class ScriptRunnerThread extends Thread {
 			checkNativeDialog(display);
 			try {
 				display.syncExec(runnable);
-			} catch (RuntimeException | Error e) {
+			} catch (RuntimeException | SWTError e) {
 				Throwable cause = e.getCause();
 
 				if (cause instanceof AssertionError) {

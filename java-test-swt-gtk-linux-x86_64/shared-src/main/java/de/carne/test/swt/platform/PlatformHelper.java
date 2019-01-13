@@ -61,6 +61,12 @@ public abstract class PlatformHelper {
 		return INSTANCE_HOLDER.get().internalIsCurrentThreadSWTCapable();
 	}
 
+	/**
+	 * Checks whether SWT code can be executed by the current thread.
+	 *
+	 * @return {@code true} if the current thread can execute SWT code.
+	 * @see #isCurrentThreadSWTCapable()
+	 */
 	protected boolean internalIsCurrentThreadSWTCapable() {
 		return false;
 	}
@@ -75,7 +81,14 @@ public abstract class PlatformHelper {
 		return INSTANCE_HOLDER.get().internalInNativeDialog(display);
 	}
 
-	protected boolean internalInNativeDialog(@SuppressWarnings("unused") Display display) {
+	/**
+	 * Checks whether a native platform dialog is currently open.
+	 *
+	 * @param display the {@linkplain Display} to use for checking.
+	 * @return {@code true} if a native platform dialog is currently open.
+	 * @see #inNativeDialog(Display)
+	 */
+	protected boolean internalInNativeDialog(Display display) {
 		return false;
 	}
 
@@ -89,7 +102,14 @@ public abstract class PlatformHelper {
 		return INSTANCE_HOLDER.get().internalCloseNativeDialogs(display);
 	}
 
-	protected boolean internalCloseNativeDialogs(@SuppressWarnings("unused") Display display) {
+	/**
+	 * Makes sure that any open native platform dialog is closed.
+	 *
+	 * @param display the {@linkplain Display} to use for checking.
+	 * @return {@code true} if a native platform dialog has been closed.
+	 * @see #closeNativeDialogs(Display)
+	 */
+	protected boolean internalCloseNativeDialogs(Display display) {
 		return false;
 	}
 
