@@ -30,14 +30,17 @@ import de.carne.test.swt.platform.PlatformHelper;
 public class Win32PlatformHelper extends PlatformHelper {
 
 	@Override
+	protected boolean internalIsCurrentThreadSWTCapable() {
+		return true;
+	}
+
+	@Override
 	protected boolean internalInNativeDialog(Display display) {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
 		if (!display.isDisposed()) {
 			if (Thread.currentThread().equals(display.getThread())) {
-				Shell activeShell = display.getActiveShell();
-
-				resultHolder.set(activeShell == null || activeShell.handle != OS.GetActiveWindow());
+				resultHolder.set(findNativeDialog(display) != 0);
 			} else {
 				display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
 			}
@@ -50,20 +53,32 @@ public class Win32PlatformHelper extends PlatformHelper {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
 		if (Thread.currentThread().equals(display.getThread())) {
-			Shell activeShell = display.getActiveShell();
-			long activeHwnd = OS.GetActiveWindow();
+			long nativeDialog = findNativeDialog(display);
 
-			if (activeShell == null || activeShell.handle != activeHwnd) {
-				OS.DestroyWindow(activeHwnd);
+			if (nativeDialog != 0) {
+				OS.DestroyWindow(nativeDialog);
 				resultHolder.set(true);
-			}
-			if (activeShell != null) {
-				OS.UpdateWindow(activeShell.handle);
 			}
 		} else {
 			display.syncExec(() -> resultHolder.set(internalCloseNativeDialogs(display)));
 		}
 		return resultHolder.get();
+	}
+
+	private long findNativeDialog(Display display) {
+		long activeWindow = OS.GetActiveWindow();
+
+		if (activeWindow != 0) {
+			Shell[] shells = display.getShells();
+
+			for (Shell shell : shells) {
+				if (shell.handle == activeWindow) {
+					activeWindow = 0;
+					break;
+				}
+			}
+		}
+		return activeWindow;
 	}
 
 }
