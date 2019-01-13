@@ -23,6 +23,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 
 import de.carne.boot.Exceptions;
+import de.carne.boot.platform.Platform;
 import de.carne.util.Lazy;
 
 /**
@@ -47,6 +48,36 @@ public abstract class PlatformIntegration {
 			throw Exceptions.toRuntime(e);
 		}
 		return instance;
+	}
+
+	/**
+	 * Gets the toolkit name of the currently running platform.
+	 * 
+	 * @return the toolkit name of the currently running platform.
+	 */
+	public static String toolkitName() {
+		StringBuilder toolkitName = new StringBuilder();
+
+		toolkitName.append(SWT.getPlatform());
+		if (Platform.IS_LINUX) {
+			toolkitName.append("-linux");
+		} else if (Platform.IS_MACOS) {
+			toolkitName.append("-macosx");
+		} else if (Platform.IS_WINDOWS) {
+			toolkitName.append("-win32");
+		} else {
+			// Do not fail in case of unknown toolkit
+			toolkitName.append("unknown-unknown");
+		}
+		if ("x86".equals(Platform.SYSTEM_OS_ARCH) || "x86_32".equals(Platform.SYSTEM_OS_ARCH)) {
+			toolkitName.append("-x86");
+		} else if ("x86_64".equals(Platform.SYSTEM_OS_ARCH) || "amd64".equals(Platform.SYSTEM_OS_ARCH)) {
+			toolkitName.append("-x86_64");
+		} else {
+			// Do not fail in case of unknown toolkit
+			toolkitName.append("unknown");
+		}
+		return toolkitName.toString();
 	}
 
 	/**

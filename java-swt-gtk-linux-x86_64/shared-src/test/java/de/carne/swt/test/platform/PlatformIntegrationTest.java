@@ -31,6 +31,7 @@ class PlatformIntegrationTest {
 	void testPlatformIntegration() {
 		String platform = SWT.getPlatform();
 
+		Assertions.assertTrue(PlatformIntegration.toolkitName().startsWith(platform));
 		if ("cocoa".equals(platform)) {
 			Assertions.assertTrue(PlatformIntegration.isCocoa());
 			Assertions.assertFalse(PlatformIntegration.isGtk());
