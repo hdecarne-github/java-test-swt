@@ -16,8 +16,6 @@
  */
 package de.carne.test.swt.platform.cocoa;
 
-import java.util.Objects;
-
 import org.eclipse.swt.internal.cocoa.NSApplication;
 import org.eclipse.swt.internal.cocoa.NSThread;
 import org.eclipse.swt.internal.cocoa.OS;
@@ -39,21 +37,23 @@ public class CocoaPlatformHelper extends PlatformHelper {
 
 	@Override
 	protected boolean internalInNativeDialog(Display display) {
-		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
-		long modalWindowId = applicationModalWindowId(application);
+		NSApplication application = NSApplication.sharedApplication();
 
-		return modalWindowId != 0;
+		return application != null && applicationModalWindowId(application) != 0;
 	}
 
 	@Override
 	protected boolean internalCloseNativeDialogs(Display display) {
 		boolean inNativeDialog = false;
-		NSApplication application = Objects.requireNonNull(NSApplication.sharedApplication());
-		long modalWindowId = applicationModalWindowId(application);
+		NSApplication application = NSApplication.sharedApplication();
 
-		if (modalWindowId != 0) {
-			application.stopModal();
-			inNativeDialog = true;
+		if (application != null) {
+			long modalWindowId = applicationModalWindowId(application);
+
+			if (modalWindowId != 0) {
+				application.stopModal();
+				inNativeDialog = true;
+			}
 		}
 		return inNativeDialog;
 	}
