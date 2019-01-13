@@ -57,7 +57,10 @@ public abstract class SWTTest {
 
 	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
 	private final Late<FileDialogMock> fileDialogMock = new Late<>();
+	private final Late<DirectoryDialogMock> directoryDialogMock = new Late<>();
 	private final Late<PrintDialogMock> printDialogMock = new Late<>();
+	private final Late<ColorDialogMock> colorDialogMock = new Late<>();
+	private final Late<FontDialogMock> fontDialogMock = new Late<>();
 
 	/**
 	 * Constructs a new {@code SWTTest} instance.
@@ -75,6 +78,10 @@ public abstract class SWTTest {
 		if (mockDialogs) {
 			this.messageBoxMock.set(new MessageBoxMock());
 			this.fileDialogMock.set(new FileDialogMock());
+			this.directoryDialogMock.set(new DirectoryDialogMock());
+			this.printDialogMock.set(new PrintDialogMock());
+			this.colorDialogMock.set(new ColorDialogMock());
+			this.fontDialogMock.set(new FontDialogMock());
 		}
 	}
 
@@ -222,7 +229,7 @@ public abstract class SWTTest {
 		 * </p>
 		 *
 		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
-		 *        dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
 		 */
 		public void execute(boolean ignoreRemaining) {
 			execute(ignoreRemaining, Duration.ofMillis(Timing.TEST_TIMEOUT));
@@ -232,9 +239,9 @@ public abstract class SWTTest {
 		 * Execute all script actions.
 		 *
 		 * @param ignoreRemaining whether to ignore any remaining application artifacts after execution and silently
-		 *        dispose them ({@code true}) or to signal a test failure ({@code false}).
+		 * dispose them ({@code true}) or to signal a test failure ({@code false}).
 		 * @param timeout timeout (in ms) after which the script execution will be stopped and the test considered
-		 *        failed.
+		 * failed.
 		 */
 		public void execute(boolean ignoreRemaining, Duration timeout) {
 			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining, timeout);
@@ -366,6 +373,18 @@ public abstract class SWTTest {
 	}
 
 	/**
+	 * Gets the test's {@linkplain DirectoryDialogMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain DirectoryDialogMock}.
+	 */
+	protected DirectoryDialogMock mockDirectoryDialog() {
+		return this.directoryDialogMock.get();
+	}
+
+	/**
 	 * Gets the test's {@linkplain PrintDialogMock}.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
@@ -375,6 +394,30 @@ public abstract class SWTTest {
 	 */
 	protected PrintDialogMock mockPrintDialog() {
 		return this.printDialogMock.get();
+	}
+
+	/**
+	 * Gets the test's {@linkplain ColorDialogMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain ColorDialogMock}.
+	 */
+	protected ColorDialogMock mockColorDialog() {
+		return this.colorDialogMock.get();
+	}
+
+	/**
+	 * Gets the test's {@linkplain FontDialogMock}.
+	 * <p>
+	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
+	 * </p>
+	 *
+	 * @return the test's {@linkplain FontDialogMock}.
+	 */
+	protected FontDialogMock mockFontDialog() {
+		return this.fontDialogMock.get();
 	}
 
 }

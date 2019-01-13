@@ -16,9 +16,20 @@
  */
 package de.carne.test.swt.test.tester;
 
+import java.nio.file.Paths;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,6 +50,10 @@ class SWTTestDialogTest extends TestAppTest {
 
 		script.add(this::doOpenMessageBox);
 		script.add(this::doFileDialog);
+		script.add(this::doDirectoryDialog);
+		script.add(this::doPrintDialog);
+		script.add(this::doColorDialog);
+		script.add(this::doFontDialog);
 		script.add(this::doClose).execute();
 	}
 
@@ -67,6 +82,66 @@ class SWTTestDialogTest extends TestAppTest {
 
 		Assertions.assertEquals(testFileName, fileDialog.open());
 		Assertions.assertNull(fileDialog.open());
+	}
+
+	private void doDirectoryDialog() {
+		traceAction();
+
+		String testDirectoryName = Paths.get(".").toAbsolutePath().toString();
+
+		mockDirectoryDialog().result(testDirectoryName);
+
+		DirectoryDialog directoryDialog = new DirectoryDialog(accessShell().get(), SWT.OPEN);
+
+		Assertions.assertEquals(testDirectoryName, directoryDialog.open());
+		Assertions.assertNull(directoryDialog.open());
+	}
+
+	private void doPrintDialog() {
+		traceAction();
+
+		PrinterData testPrinterData = new PrinterData("generic", "dummy");
+
+		mockPrintDialog().result(testPrinterData);
+
+		PrintDialog printDialog = new PrintDialog(accessShell().get());
+		PrinterData printDialogResult = printDialog.open();
+
+		Assertions.assertNotNull(printDialogResult);
+		Assertions.assertEquals(testPrinterData.driver, printDialogResult.driver);
+		Assertions.assertEquals(testPrinterData.name, printDialogResult.name);
+		Assertions.assertNull(printDialog.open());
+	}
+
+	private void doColorDialog() {
+		traceAction();
+
+		RGB testRGB = new RGB(1, 2, 3);
+
+		mockColorDialog().result(testRGB);
+
+		ColorDialog colorDialog = new ColorDialog(accessShell().get());
+		RGB colorDialogResult = colorDialog.open();
+
+		Assertions.assertEquals(testRGB, colorDialogResult);
+		Assertions.assertNull(colorDialog.open());
+	}
+
+	private void doFontDialog() {
+		traceAction();
+
+		Shell shell = accessShell().get();
+		Display display = shell.getDisplay();
+		FontData testFontData = display.getSystemFont().getFontData()[0];
+
+		mockFontDialog().result(testFontData);
+
+		FontDialog fontDialog = new FontDialog(shell);
+		FontData fontDialogResult = fontDialog.open();
+
+		Assertions.assertNotNull(fontDialogResult);
+		Assertions.assertEquals(testFontData.name, fontDialogResult.name);
+		Assertions.assertNull(fontDialog.open());
 	}
 
 }
