@@ -33,12 +33,14 @@ public class Win32PlatformHelper extends PlatformHelper {
 	protected boolean internalInNativeDialog(Display display) {
 		AtomicBoolean resultHolder = new AtomicBoolean();
 
-		if (Thread.currentThread().equals(display.getThread())) {
-			Shell activeShell = display.getActiveShell();
+		if (!display.isDisposed()) {
+			if (Thread.currentThread().equals(display.getThread())) {
+				Shell activeShell = display.getActiveShell();
 
-			resultHolder.set(activeShell == null || activeShell.handle != OS.GetActiveWindow());
-		} else {
-			display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+				resultHolder.set(activeShell == null || activeShell.handle != OS.GetActiveWindow());
+			} else {
+				display.syncExec(() -> resultHolder.set(inNativeDialog(display)));
+			}
 		}
 		return resultHolder.get();
 	}
@@ -53,10 +55,10 @@ public class Win32PlatformHelper extends PlatformHelper {
 
 			if (activeShell == null || activeShell.handle != activeHwnd) {
 				OS.DestroyWindow(activeHwnd);
-				if (activeShell != null) {
-					OS.UpdateWindow(activeShell.handle);
-				}
 				resultHolder.set(true);
+			}
+			if (activeShell != null) {
+				OS.UpdateWindow(activeShell.handle);
 			}
 		} else {
 			display.syncExec(() -> resultHolder.set(internalCloseNativeDialogs(display)));

@@ -118,16 +118,16 @@ final class ScriptRunnerThread extends Thread {
 			LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
 					"Closing native dialog");
 
+			remainingShellTexts.add("<native dialog>");
+
 			if (grabScreen) {
 				grabScreen();
 				screenGrabbed = true;
 			}
-			PlatformHelper.closeNativeDialogs(display);
-			remainingShellTexts.add("<native dialog>");
 
 			Timing closing = new Timing();
 
-			while (PlatformHelper.inNativeDialog(display)) {
+			while (PlatformHelper.closeNativeDialogs(display)) {
 				closing.step("");
 			}
 		}
