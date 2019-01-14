@@ -107,6 +107,7 @@ final class ScriptRunnerThread extends Thread {
 		ScriptRunner scriptRunner = scriptRunner(display);
 
 		for (ScriptAction action : this.actions) {
+			Timing.step();
 			action.run(scriptRunner);
 		}
 	}

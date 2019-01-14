@@ -20,16 +20,23 @@ import java.net.URL;
 import java.util.Objects;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.swt.graphics.ResourceException;
-import de.carne.swt.layout.FillLayoutBuilder;
+import de.carne.swt.layout.GridLayoutBuilder;
+import de.carne.swt.widgets.CoolBarBuilder;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
+import de.carne.swt.widgets.ToolBarBuilder;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
@@ -59,9 +66,15 @@ public class TestAppUI extends ShellUserInterface {
 		ShellBuilder shellBuilder = new ShellBuilder(shell);
 
 		shellBuilder.withText(this.title).withImages(Resources.getImages(shell.getDisplay(), Resources.APP_ICON));
+		shellBuilder.onShellActivated(this::onShellActivated);
 		buildMenuBar();
-		this.messageListHolder.set(shellBuilder.addControlChild(List.class, SWT.SINGLE | SWT.BORDER).get());
-		FillLayoutBuilder.layout().apply(shell);
+		CoolBar commandBar = buildCommandBar();
+		List messageList = this.messageListHolder.set(
+				shellBuilder.addControlChild(List.class, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).get());
+
+		GridLayoutBuilder.data(GridData.FILL_HORIZONTAL).apply(commandBar);
+		GridLayoutBuilder.data(GridData.FILL_BOTH).apply(messageList);
+		GridLayoutBuilder.layout().apply(shell);
 		shell.layout();
 		shell.open();
 	}
@@ -80,6 +93,24 @@ public class TestAppUI extends ShellUserInterface {
 		return menuBarBuilder.get();
 	}
 
+	private CoolBar buildCommandBar() throws ResourceException {
+		Shell root = root();
+		Display display = root.getDisplay();
+		CoolBarBuilder commandBarBuilder = CoolBarBuilder.horizontal(root, SWT.FLAT);
+		ToolBarBuilder commandsBuilder = ToolBarBuilder.horizontal(commandBarBuilder, SWT.FLAT);
+
+		commandsBuilder.addItem(SWT.PUSH);
+		commandsBuilder.withImage(Resources.getImage(display, Resources.APP_ICON16));
+		commandsBuilder.onSelected(this::onSelected);
+		commandsBuilder.addItem(SWT.SEPARATOR);
+		commandsBuilder.addItem(SWT.PUSH);
+		commandsBuilder.withImage(Resources.getImage(display, Resources.APP_ICON16));
+		commandsBuilder.onSelected(this::onSelected);
+		commandBarBuilder.addItem(SWT.NONE).withControl(commandsBuilder);
+		commandBarBuilder.lock(true).pack();
+		return commandBarBuilder.get();
+	}
+
 	private void onShellClose() {
 		root().close();
 	}
@@ -95,6 +126,16 @@ public class TestAppUI extends ShellUserInterface {
 		} catch (Exception e) {
 			Assertions.fail(e);
 		}
+	}
+
+	private void onShellActivated(ShellEvent event) {
+		this.messageListHolder.get().add(event.toString());
+		this.messageListHolder.get().select(this.messageListHolder.get().getItemCount() - 1);
+	}
+
+	private void onSelected(SelectionEvent event) {
+		this.messageListHolder.get().add(event.toString());
+		this.messageListHolder.get().select(this.messageListHolder.get().getItemCount() - 1);
 	}
 
 }

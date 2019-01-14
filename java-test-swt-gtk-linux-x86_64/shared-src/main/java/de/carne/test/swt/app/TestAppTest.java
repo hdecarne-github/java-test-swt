@@ -16,10 +16,20 @@
  */
 package de.carne.test.swt.app;
 
+import java.util.function.Consumer;
+
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.ToolBar;
+import org.junit.jupiter.api.Assertions;
+
 import de.carne.boot.Application;
 import de.carne.test.swt.tester.SWTTest;
 import de.carne.test.swt.tester.accessor.ButtonAccessor;
+import de.carne.test.swt.tester.accessor.ControlAccessor;
+import de.carne.test.swt.tester.accessor.CoolBarAccessor;
 import de.carne.test.swt.tester.accessor.ItemAccessor;
+import de.carne.test.swt.tester.accessor.ToolBarAccessor;
 
 /**
  * Base class providing the actual {@linkplain TestApp} tests for execution within multiple projects.
@@ -30,10 +40,32 @@ public class TestAppTest extends SWTTest {
 	protected void executeTestScript(String testName) {
 		Script script = script(Application::run).args(testName);
 
+		script.add(this::checkShellActivated);
+		script.add(this::doSelectCommand);
 		script.add(this::doOpenAboutinfo, true);
 		script.add(this::waitAboutInfoOpened, this::doCloseAboutinfo);
 		script.add(this::doClose);
 		script.execute();
+	}
+
+	private void checkMessage(Consumer<String> check) {
+		List list = accessShell().accessChild(ControlAccessor::wrapControl, List.class, 1).get();
+		String[] listSelection = list.getSelection();
+
+		Assertions.assertEquals(1, listSelection.length);
+		check.accept(listSelection[0]);
+	}
+
+	protected void checkShellActivated() {
+		traceAction();
+		checkMessage(message -> Assertions.assertTrue(message.startsWith("ShellEvent{")));
+	}
+
+	protected void doSelectCommand() {
+		traceAction();
+		accessShell().accessChild(CoolBarAccessor::wrapCoolBar, CoolBar.class, 0).accessCoolItem(0)
+				.accessControl(ToolBarAccessor::wrapToolBar, ToolBar.class).accessToolItem(2).select();
+		checkMessage(message -> Assertions.assertTrue(message.startsWith("SelectionEvent{")));
 	}
 
 	protected void doOpenAboutinfo() {
