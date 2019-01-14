@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import de.carne.boot.Application;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.tester.SWTTest;
 
 /**
@@ -32,7 +32,7 @@ import de.carne.test.swt.tester.SWTTest;
 @DisableIfThreadNotSWTCapable
 class SWTTestTimeoutTest extends SWTTest {
 
-	private static int TIMEOUT = 10000;
+	private static int TIMEOUT = 5000;
 
 	SWTTestTimeoutTest() {
 		super(false);
@@ -46,7 +46,7 @@ class SWTTestTimeoutTest extends SWTTest {
 	@Test
 	public void testTimeout() {
 		Assertions.assertThrows(AssertionError.class, () -> {
-			script(new TestAppMain()).args(getClass().getSimpleName()).add(this::openMessageBox).execute();
+			script(Application::run).args(getClass().getSimpleName()).add(this::openMessageBox).execute();
 		});
 	}
 

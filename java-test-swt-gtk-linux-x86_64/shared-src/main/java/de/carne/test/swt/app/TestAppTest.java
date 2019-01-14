@@ -16,6 +16,7 @@
  */
 package de.carne.test.swt.app;
 
+import de.carne.boot.Application;
 import de.carne.test.swt.tester.SWTTest;
 import de.carne.test.swt.tester.accessor.ButtonAccessor;
 import de.carne.test.swt.tester.accessor.ItemAccessor;
@@ -27,7 +28,7 @@ import de.carne.test.swt.tester.accessor.ItemAccessor;
 public class TestAppTest extends SWTTest {
 
 	protected void executeTestScript(String testName) {
-		Script script = script(new TestAppMain()).args(testName);
+		Script script = script(Application::run).args(testName);
 
 		script.add(this::doOpenAboutinfo, true);
 		script.add(this::waitAboutInfoOpened, this::doCloseAboutinfo);

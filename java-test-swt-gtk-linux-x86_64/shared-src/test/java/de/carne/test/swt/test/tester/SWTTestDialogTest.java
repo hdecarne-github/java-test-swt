@@ -33,8 +33,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.carne.boot.Application;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.app.TestAppMain;
 import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.tester.SWTTest;
 
@@ -46,7 +46,7 @@ class SWTTestDialogTest extends TestAppTest {
 
 	@Test
 	void testStartStop() {
-		Script script = script(new TestAppMain()).args(getClass().getSimpleName());
+		Script script = script(Application::run).args(getClass().getSimpleName());
 
 		script.add(this::doOpenMessageBox);
 		script.add(this::doFileDialog);
