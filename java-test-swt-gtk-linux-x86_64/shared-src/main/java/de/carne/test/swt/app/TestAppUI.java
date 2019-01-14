@@ -38,6 +38,7 @@ import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.ToolBarBuilder;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
+import de.carne.swt.widgets.heapinfo.HeapInfo;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
 
@@ -106,7 +107,9 @@ public class TestAppUI extends ShellUserInterface {
 		commandsBuilder.addItem(SWT.PUSH);
 		commandsBuilder.withImage(Resources.getImage(display, Resources.APP_ICON16));
 		commandsBuilder.onSelected(this::onSelected);
+		commandsBuilder.addItem(SWT.SEPARATOR);
 		commandBarBuilder.addItem(SWT.NONE).withControl(commandsBuilder);
+		commandBarBuilder.addItem(SWT.NONE).withControl(new HeapInfo(commandBarBuilder.get(), SWT.NONE));
 		commandBarBuilder.lock(true).pack();
 		return commandBarBuilder.get();
 	}

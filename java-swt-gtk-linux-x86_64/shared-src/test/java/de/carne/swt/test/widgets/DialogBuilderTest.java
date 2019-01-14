@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.test.tester;
+package de.carne.swt.test.widgets;
 
 import java.nio.file.Paths;
 
@@ -34,6 +34,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.boot.Application;
+import de.carne.swt.widgets.FileDialogBuilder;
+import de.carne.swt.widgets.MessageBoxBuilder;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.tester.SWTTest;
@@ -42,13 +44,13 @@ import de.carne.test.swt.tester.SWTTest;
  * Test {@linkplain SWTTest} class - Native dialog mocks.
  */
 @DisableIfThreadNotSWTCapable
-class SWTTestDialogTest extends TestAppTest {
+class DialogBuilderTest extends TestAppTest {
 
 	@Test
 	void testStartStop() {
 		Script script = script(Application::run).args(getClass().getSimpleName());
 
-		script.add(this::doOpenMessageBox);
+		script.add(this::doMessageBox);
 		script.add(this::doFileDialog);
 		script.add(this::doDirectoryDialog);
 		script.add(this::doPrintDialog);
@@ -57,16 +59,19 @@ class SWTTestDialogTest extends TestAppTest {
 		script.add(this::doClose).execute();
 	}
 
-	private void doOpenMessageBox() {
+	private void doMessageBox() {
 		traceAction();
 
 		mockMessageBox().result(SWT.NO);
 
-		MessageBox messageBox = new MessageBox(accessShell().get(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+		String mbText = getClass().getSimpleName();
+		String mbMessage = "Guess the answer for this test?";
 
-		messageBox.setText(getClass().getSimpleName());
-		messageBox.setMessage("Guess the answer for this test?");
+		MessageBox messageBox = MessageBoxBuilder.build(accessShell().get(), SWT.ICON_QUESTION | SWT.YES | SWT.NO)
+				.withText(mbText).withMessage(mbMessage).get();
 
+		Assertions.assertEquals(mbText, messageBox.getText());
+		Assertions.assertEquals(mbMessage, messageBox.getMessage());
 		Assertions.assertEquals(SWT.NO, messageBox.open());
 		Assertions.assertEquals(SWT.CANCEL, messageBox.open());
 	}
@@ -78,8 +83,14 @@ class SWTTestDialogTest extends TestAppTest {
 
 		mockFileDialog().result(testFileName);
 
-		FileDialog fileDialog = new FileDialog(accessShell().get(), SWT.OPEN);
+		String fdFileName = getClass().getSimpleName() + ".class";
+		String fdText = "Open file";
 
+		FileDialog fileDialog = FileDialogBuilder.open(accessShell().get()).withFileName(fdFileName).withText(fdText)
+				.get();
+
+		Assertions.assertEquals(fdFileName, fileDialog.getFileName());
+		Assertions.assertEquals(fdText, fileDialog.getText());
 		Assertions.assertEquals(testFileName, fileDialog.open());
 		Assertions.assertNull(fileDialog.open());
 	}
