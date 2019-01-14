@@ -99,7 +99,6 @@ subprojects {
 		}
 		// Exclude TestApp from artifact
 		exclude("/de/carne/test/swt/app/**")
-		exclude("/META-INF/de.carne.boot.Application")
 	}
 
 	test {
