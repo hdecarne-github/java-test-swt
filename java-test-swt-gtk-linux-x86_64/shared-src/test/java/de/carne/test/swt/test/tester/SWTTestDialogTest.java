@@ -108,8 +108,7 @@ class SWTTestDialogTest extends TestAppTest {
 		PrinterData printDialogResult = printDialog.open();
 
 		Assertions.assertNotNull(printDialogResult);
-		Assertions.assertEquals(testPrinterData.driver, printDialogResult.driver);
-		Assertions.assertEquals(testPrinterData.name, printDialogResult.name);
+		Assertions.assertEquals(testPrinterData.toString(), printDialogResult.toString());
 		Assertions.assertNull(printDialog.open());
 	}
 
@@ -140,7 +139,7 @@ class SWTTestDialogTest extends TestAppTest {
 		FontData fontDialogResult = fontDialog.open();
 
 		Assertions.assertNotNull(fontDialogResult);
-		Assertions.assertEquals(testFontData.name, fontDialogResult.name);
+		Assertions.assertEquals(testFontData, fontDialogResult);
 		Assertions.assertNull(fontDialog.open());
 	}
 
