@@ -98,8 +98,8 @@ subprojects {
 			attributes "Automatic-Module-Name": automaticModuleName
 		}
 		// Exclude TestApp from artifact
-		exclude("/META-INF/de.carne.boot.Application")
 		exclude("/de/carne/test/swt/app/**")
+		exclude("/META-INF/de.carne.boot.Application")
 	}
 
 	test {
