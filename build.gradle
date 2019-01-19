@@ -42,8 +42,8 @@ subprojects {
 		maven { url "https://oss.jfrog.org/libs-release/" }
 	}
 	
-	def automaticModuleName = (project.name.startsWith("java-swt") ? "java-swt" : "java-test-swt")
-	def sharedSrcDir = "../${automaticModuleName}-gtk-linux-x86_64/shared-src"
+	def projectBaseName = (project.name.startsWith("java-swt") ? "java-swt" : "java-test-swt")
+	def sharedSrcDir = "../${projectBaseName}-gtk-linux-x86_64/shared-src"
 
 	sourceSets {
 		main {
@@ -75,27 +75,29 @@ subprojects {
 		}
 	}
 
-	def platformSuffix = project.name.substring(automaticModuleName.length())
+	def platformSuffix = project.name.substring(projectBaseName.length())
 	def swtPlatformSuffix = platformSuffix.replace("-", ".")
 
 	dependencies {
-		api(group: "de.carne.common", name: "java-default", version: "8.8.0-SNAPSHOT")
-		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: "3.109.0") {
+		compileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
+		testCompileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
+		api(group: "de.carne.common", name: "java-default", version: project.javaDefaultVersion)
+		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: project.swtVersion) {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
-		if(automaticModuleName.equals("java-swt")) {
-			testImplementation(group: "de.carne.common", name: "java-test", version: "1.0.0")
-			testImplementation(group: "org.jmockit", name: "jmockit", version: "1.44")
+		if(projectBaseName.equals("java-swt")) {
+			testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
+			testImplementation(group: "org.jmockit", name: "jmockit", version: project.jmockitVersion)
 		} else {
-			api(group: "de.carne.common", name: "java-test", version: "1.0.0")
-			api(group: "org.jmockit", name: "jmockit", version: "1.44")
+			api(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
+			api(group: "org.jmockit", name: "jmockit", version: project.jmockitVersion)
 			implementation project(":" + project.name.replace("java-test-swt", "java-swt"))
 		}
 	}
 	
 	jar {
 		manifest {
-			attributes "Automatic-Module-Name": automaticModuleName
+			attributes "Automatic-Module-Name": (projectBaseName.equals("java-swt") ? automaticModuleName : automaticTestModuleName)
 		}
 		// Exclude TestApp from artifact
 		exclude("/de/carne/test/swt/app/**")

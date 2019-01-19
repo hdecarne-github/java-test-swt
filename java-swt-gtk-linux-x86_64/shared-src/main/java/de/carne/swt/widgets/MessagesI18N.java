@@ -27,6 +27,7 @@ public final class MessagesI18N {
 
 	/**
 	 * Format a resource string.
+	 * 
 	 * @param key The resource key.
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -40,14 +41,16 @@ public final class MessagesI18N {
 	/**
 	 * Resource key {@code I18N_MESSAGE_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * An unexpected exception has been encountered.<br>Cause: {0}
+	 * An unexpected exception has been encountered.<br>
+	 * Cause: {0}
 	 */
 	public static final String I18N_MESSAGE_UNEXPECTED_EXCEPTION = "I18N_MESSAGE_UNEXPECTED_EXCEPTION";
 
 	/**
 	 * Resource string {@code I18N_MESSAGE_UNEXPECTED_EXCEPTION}
 	 * <p>
-	 * An unexpected exception has been encountered.<br>Cause: {0}
+	 * An unexpected exception has been encountered.<br>
+	 * Cause: {0}
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.

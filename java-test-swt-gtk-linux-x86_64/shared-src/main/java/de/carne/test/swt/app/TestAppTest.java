@@ -18,6 +18,7 @@ package de.carne.test.swt.app;
 
 import java.util.function.Consumer;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.ToolBar;
@@ -50,9 +51,10 @@ public class TestAppTest extends SWTTest {
 
 	private void checkMessage(Consumer<String> check) {
 		List list = accessShell().accessChild(ControlAccessor::wrapControl, List.class, 1).get();
-		String[] listSelection = list.getSelection();
+		@NonNull String[] listSelection = list.getSelection();
 
 		Assertions.assertEquals(1, listSelection.length);
+
 		check.accept(listSelection[0]);
 	}
 

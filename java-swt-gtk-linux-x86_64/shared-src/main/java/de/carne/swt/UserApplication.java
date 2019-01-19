@@ -19,11 +19,13 @@ package de.carne.swt;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.boot.Exceptions;
+import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.Late;
@@ -35,8 +37,10 @@ import de.carne.util.cmdline.CmdLineProcessor;
  */
 public abstract class UserApplication {
 
-	private final Late<CmdLineProcessor> cmdLineHolder = new Late<>();
-	private final Late<Display> displayHolder = new Late<>();
+	private static final Log LOG = new Log();
+
+	private final Late<@NonNull CmdLineProcessor> cmdLineHolder = new Late<>();
+	private final Late<@NonNull Display> displayHolder = new Late<>();
 
 	private int status = 0;
 
@@ -51,6 +55,10 @@ public abstract class UserApplication {
 		this.cmdLineHolder.set(cmdLine);
 
 		Display display = this.displayHolder.set(setupDisplay());
+
+		display.setRuntimeExceptionHandler(this::handleRuntimeException);
+		display.setErrorHandler(this::handleError);
+
 		ShellUserInterface userInterface = setupUserInterface(display);
 
 		userInterface.open();
@@ -83,7 +91,7 @@ public abstract class UserApplication {
 
 	/**
 	 * Gets the application's {@linkplain CmdLineProcessor}.
-	 * 
+	 *
 	 * @return the application's {@linkplain CmdLineProcessor}.
 	 */
 	protected CmdLineProcessor getCmdLine() {
@@ -156,6 +164,14 @@ public abstract class UserApplication {
 	 */
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	private void handleRuntimeException(RuntimeException exception) {
+		LOG.error(exception, "Uncaught runtime exception: {0}", Exceptions.toString(exception));
+	}
+
+	private void handleError(Error error) {
+		LOG.error(error, "Uncaught error: {0}", Exceptions.toString(error));
 	}
 
 }

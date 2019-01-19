@@ -46,7 +46,7 @@ public class SWTDisplayParameterResolver implements ParameterResolver, AfterAllC
 
 	@Override
 	public @Nullable Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-		Optional<@Nullable ExtensionContext> optionalParentExtensionContext = extensionContext.getParent();
+		Optional<ExtensionContext> optionalParentExtensionContext = extensionContext.getParent();
 
 		if (!optionalParentExtensionContext.isPresent()) {
 			throw new ParameterResolutionException("Parent extension context missing");
