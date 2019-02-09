@@ -33,25 +33,25 @@ import de.carne.util.ManifestInfos;
  */
 public class AboutInfoDialog extends Dialog {
 
-	private final String moduleName;
+	private final ManifestInfos moduleInfos;
 	private @Nullable URL logoUrl = null;
 	private List<URL> copyrightUrls = new ArrayList<>();
 
-	private AboutInfoDialog(Shell parent, String moduleName) {
+	private AboutInfoDialog(Shell parent, ManifestInfos moduleInfos) {
 		super(parent, SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
-		this.moduleName = moduleName;
+		this.moduleInfos = moduleInfos;
 	}
 
 	/**
 	 * Convenience function for starting a {@linkplain AboutInfoDialog} setup.
 	 *
 	 * @param parent the dialog's parent.
-	 * @param moduleName the module name to retrieve the manifest information from.
+	 * @param moduleInfos the module manifest information to display.
 	 * @return the created {@linkplain AboutInfoDialog} instance for chaining.
 	 * @see ManifestInfos
 	 */
-	public static AboutInfoDialog build(Shell parent, String moduleName) {
-		return new AboutInfoDialog(parent, moduleName);
+	public static AboutInfoDialog build(Shell parent, ManifestInfos moduleInfos) {
+		return new AboutInfoDialog(parent, moduleInfos);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class AboutInfoDialog extends Dialog {
 	 * @throws ResourceException if a required resource is not available.
 	 */
 	public void open() throws ResourceException {
-		AboutInfoUI userInterface = new AboutInfoUI(new Shell(getParent(), getStyle()), this.moduleName, this.logoUrl,
+		AboutInfoUI userInterface = new AboutInfoUI(new Shell(getParent(), getStyle()), this.moduleInfos, this.logoUrl,
 				this.copyrightUrls);
 
 		userInterface.open();

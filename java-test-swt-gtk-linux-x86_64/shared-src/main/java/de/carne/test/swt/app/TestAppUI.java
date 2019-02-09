@@ -41,6 +41,7 @@ import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
 import de.carne.swt.widgets.heapinfo.HeapInfo;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
+import de.carne.util.ManifestInfos;
 
 /**
  * Test application root shell user interface.
@@ -119,7 +120,7 @@ public class TestAppUI extends ShellUserInterface {
 	}
 
 	private void onAbout() {
-		AboutInfoDialog about = AboutInfoDialog.build(root(), "java-swt");
+		AboutInfoDialog about = AboutInfoDialog.build(root(), new ManifestInfos("java-swt"));
 
 		try {
 			URL logoUrl = Objects.requireNonNull(Resources.class.getResource(Resources.APP_ICON48));

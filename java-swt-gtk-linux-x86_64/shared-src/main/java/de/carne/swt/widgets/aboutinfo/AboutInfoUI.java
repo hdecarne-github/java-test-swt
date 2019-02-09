@@ -60,14 +60,14 @@ class AboutInfoUI extends ShellUserInterface {
 	private static final int MAX_HEIGHT = 240;
 
 	private final ResourceTracker resources;
-	private final ManifestInfos manifestInfos;
+	private final ManifestInfos moduleInfos;
 	private final @Nullable URL logoUrl;
 	private final List<URL> copyrightUrls;
 
-	public AboutInfoUI(Shell root, String moduleName, @Nullable URL logoUrl, List<URL> copyrightUrls) {
+	public AboutInfoUI(Shell root, ManifestInfos moduleInfos, @Nullable URL logoUrl, List<URL> copyrightUrls) {
 		super(root);
 		this.resources = ResourceTracker.forDevice(root.getDisplay()).forShell(root);
-		this.manifestInfos = new ManifestInfos(moduleName);
+		this.moduleInfos = moduleInfos;
 		this.logoUrl = logoUrl;
 		this.copyrightUrls = copyrightUrls;
 	}
@@ -96,16 +96,16 @@ class AboutInfoUI extends ShellUserInterface {
 		LabelBuilder separator2 = rootBuilder.addLabelChild(SWT.HORIZONTAL | SWT.SEPARATOR);
 		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NONE);
 
-		rootBuilder.withText(AboutInfoI18N.i18nTitle(this.manifestInfos.name())).withDefaultImages();
+		rootBuilder.withText(AboutInfoI18N.i18nTitle(this.moduleInfos.name())).withDefaultImages();
 
 		URL checkedLogoUrl = this.logoUrl;
 
 		if (checkedLogoUrl != null) {
 			logo.withImage(this.resources.getImage(checkedLogoUrl));
 		}
-		title.withText(AboutInfoI18N.i18nLabelTitle(this.manifestInfos.name()));
-		version.withText(AboutInfoI18N.i18nLabelVersion(this.manifestInfos.version()));
-		build.withText(AboutInfoI18N.i18nLabelBuild(this.manifestInfos.build()));
+		title.withText(AboutInfoI18N.i18nLabelTitle(this.moduleInfos.name()));
+		version.withText(AboutInfoI18N.i18nLabelVersion(this.moduleInfos.version()));
+		build.withText(AboutInfoI18N.i18nLabelBuild(this.moduleInfos.build()));
 		buildCopyrightTabs(infos);
 		buildSystemPropertiesTab(infos);
 		buildButtons(buttons);
