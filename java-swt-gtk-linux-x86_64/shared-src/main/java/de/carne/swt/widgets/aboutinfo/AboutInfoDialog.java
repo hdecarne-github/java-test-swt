@@ -26,32 +26,32 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.carne.swt.graphics.ResourceException;
+import de.carne.util.ManifestInfos;
 
 /**
  * Dialog for display of version and copyright information.
  */
 public class AboutInfoDialog extends Dialog {
 
+	private final String moduleName;
 	private @Nullable URL logoUrl = null;
 	private List<URL> copyrightUrls = new ArrayList<>();
 
-	/**
-	 * Constructs a new {@linkplain AboutInfoDialog} instance.
-	 *
-	 * @param parent the dialog's parent.
-	 */
-	public AboutInfoDialog(Shell parent) {
+	private AboutInfoDialog(Shell parent, String moduleName) {
 		super(parent, SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
+		this.moduleName = moduleName;
 	}
 
 	/**
 	 * Convenience function for starting a {@linkplain AboutInfoDialog} setup.
 	 *
 	 * @param parent the dialog's parent.
+	 * @param moduleName the module name to retrieve the manifest information from.
 	 * @return the created {@linkplain AboutInfoDialog} instance for chaining.
+	 * @see ManifestInfos
 	 */
-	public static AboutInfoDialog build(Shell parent) {
-		return new AboutInfoDialog(parent);
+	public static AboutInfoDialog build(Shell parent, String moduleName) {
+		return new AboutInfoDialog(parent, moduleName);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class AboutInfoDialog extends Dialog {
 	 * @throws ResourceException if a required resource is not available.
 	 */
 	public void open() throws ResourceException {
-		AboutInfoUI userInterface = new AboutInfoUI(new Shell(getParent(), getStyle()), this.logoUrl,
+		AboutInfoUI userInterface = new AboutInfoUI(new Shell(getParent(), getStyle()), this.moduleName, this.logoUrl,
 				this.copyrightUrls);
 
 		userInterface.open();

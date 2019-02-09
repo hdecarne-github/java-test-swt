@@ -119,7 +119,7 @@ public class TestAppUI extends ShellUserInterface {
 	}
 
 	private void onAbout() {
-		AboutInfoDialog about = new AboutInfoDialog(root());
+		AboutInfoDialog about = AboutInfoDialog.build(root(), "java-swt");
 
 		try {
 			URL logoUrl = Objects.requireNonNull(Resources.class.getResource(Resources.APP_ICON48));

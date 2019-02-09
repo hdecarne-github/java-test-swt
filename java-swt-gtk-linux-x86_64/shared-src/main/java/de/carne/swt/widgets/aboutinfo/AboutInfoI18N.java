@@ -27,7 +27,6 @@ public final class AboutInfoI18N {
 
 	/**
 	 * Format a resource string.
-	 * 
 	 * @param key The resource key.
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
