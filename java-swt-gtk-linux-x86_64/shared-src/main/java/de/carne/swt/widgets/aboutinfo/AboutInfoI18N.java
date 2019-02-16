@@ -59,14 +59,14 @@ public final class AboutInfoI18N {
 	/**
 	 * Resource key {@code I18N_LABEL_BUILD}
 	 * <p>
-	 * Build: {0}
+	 * Build&#58;&#32;&#123;0&#125;
 	 */
 	public static final String I18N_LABEL_BUILD = "I18N_LABEL_BUILD";
 
 	/**
 	 * Resource string {@code I18N_LABEL_BUILD}
 	 * <p>
-	 * Build: {0}
+	 * Build&#58;&#32;&#123;0&#125;
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -116,14 +116,14 @@ public final class AboutInfoI18N {
 	/**
 	 * Resource key {@code I18N_LABEL_TITLE}
 	 * <p>
-	 * {0}
+	 * &#123;0&#125;
 	 */
 	public static final String I18N_LABEL_TITLE = "I18N_LABEL_TITLE";
 
 	/**
 	 * Resource string {@code I18N_LABEL_TITLE}
 	 * <p>
-	 * {0}
+	 * &#123;0&#125;
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -135,14 +135,14 @@ public final class AboutInfoI18N {
 	/**
 	 * Resource key {@code I18N_LABEL_VERSION}
 	 * <p>
-	 * Version: {0}
+	 * Version&#58;&#32;&#123;0&#125;
 	 */
 	public static final String I18N_LABEL_VERSION = "I18N_LABEL_VERSION";
 
 	/**
 	 * Resource string {@code I18N_LABEL_VERSION}
 	 * <p>
-	 * Version: {0}
+	 * Version&#58;&#32;&#123;0&#125;
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -154,14 +154,14 @@ public final class AboutInfoI18N {
 	/**
 	 * Resource key {@code I18N_TAB_SYSTEM_PROPERTIES}
 	 * <p>
-	 * System Properties
+	 * System&#32;Properties
 	 */
 	public static final String I18N_TAB_SYSTEM_PROPERTIES = "I18N_TAB_SYSTEM_PROPERTIES";
 
 	/**
 	 * Resource string {@code I18N_TAB_SYSTEM_PROPERTIES}
 	 * <p>
-	 * System Properties
+	 * System&#32;Properties
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
@@ -173,14 +173,14 @@ public final class AboutInfoI18N {
 	/**
 	 * Resource key {@code I18N_TITLE}
 	 * <p>
-	 * About {0}
+	 * About&#32;&#123;0&#125;
 	 */
 	public static final String I18N_TITLE = "I18N_TITLE";
 
 	/**
 	 * Resource string {@code I18N_TITLE}
 	 * <p>
-	 * About {0}
+	 * About&#32;&#123;0&#125;
 	 *
 	 * @param arguments Format arguments.
 	 * @return The formatted string.
