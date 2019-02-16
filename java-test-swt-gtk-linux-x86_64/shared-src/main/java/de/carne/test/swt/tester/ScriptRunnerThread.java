@@ -19,9 +19,11 @@ package de.carne.test.swt.tester;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
@@ -165,10 +167,17 @@ final class ScriptRunnerThread extends Thread {
 		return remainingShellTexts;
 	}
 
+	private static final Set<String> VALID_SCREENSHOT_CMDS = new HashSet<>();
+
+	static {
+		// macOS
+		VALID_SCREENSHOT_CMDS.add("screencapture -c");
+	}
+
 	private void grabScreen() {
 		String screenshotCmd = System.getenv(ENV_SCREENSHOT_CMD);
 
-		if (screenshotCmd != null) {
+		if (screenshotCmd != null && VALID_SCREENSHOT_CMDS.contains(screenshotCmd)) {
 			LOG.info("Invoking screenshot command ''{0}''...", screenshotCmd);
 
 			try {
@@ -191,7 +200,7 @@ final class ScriptRunnerThread extends Thread {
 				LOG.warning(e, "Screenshot command ''{0}'' interupted", screenshotCmd);
 			}
 		} else {
-			LOG.info("Environment variable {0} not set; ignoring screenshot request", ENV_SCREENSHOT_CMD);
+			LOG.info("Environment variable {0} not set or not valid; ignoring screenshot request", ENV_SCREENSHOT_CMD);
 		}
 	}
 
