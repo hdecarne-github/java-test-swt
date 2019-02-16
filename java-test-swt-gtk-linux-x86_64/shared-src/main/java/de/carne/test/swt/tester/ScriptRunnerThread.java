@@ -174,6 +174,7 @@ final class ScriptRunnerThread extends Thread {
 		VALID_SCREENSHOT_CMDS.add("screencapture -c");
 	}
 
+	@SuppressWarnings("squid:S2076")
 	private void grabScreen() {
 		String screenshotCmd = System.getenv(ENV_SCREENSHOT_CMD);
 
