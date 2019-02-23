@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Control;
 
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @param <T> the actual object type to access.
  */
-public class ControlAccessor<T extends Control> extends Accessor<T> {
+public class ControlAccessor<T extends Control> extends Accessor<@NonNull T> {
 
 	/**
 	 * Constructs a new {@linkplain ControlAccessor} instance.

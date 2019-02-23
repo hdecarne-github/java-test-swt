@@ -86,27 +86,28 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * </p>
 	 *
 	 * @param maxDepth the maximum number of sub-levels to search for child controls.
-	 * @param depthsFirst whether to collect depths first or not.
+	 * @param depthFirst whether to collect depths first or not.
 	 * @return all child {@linkplain Control}s of this {@linkplain Composite}.
 	 */
-	public Stream<Control> children(int maxDepth, boolean depthsFirst) {
+	public Stream<Control> children(int maxDepth, boolean depthFirst) {
 		Optional<? extends Composite> optionalComposite = getOptional();
 
 		return (optionalComposite.isPresent()
-				? collectChildren(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream()
+				? collectChildren(new ArrayList<>(), get(), 0, maxDepth, depthFirst).stream()
 				: Stream.empty());
 	}
 
+	@SuppressWarnings("squid:S3776")
 	private List<Control> collectChildren(List<Control> children, Composite composite, int depth, int maxDepth,
-			boolean depthsFirst) {
+			boolean depthFirst) {
 		if (depth <= maxDepth) {
 			@NonNull Control[] controls = composite.getChildren();
 
-			if (depthsFirst) {
+			if (depthFirst) {
 				for (Control control : controls) {
 					children.add(control);
 					if (control instanceof Composite) {
-						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthsFirst);
+						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthFirst);
 					}
 				}
 			} else {
@@ -115,7 +116,7 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 				}
 				for (Control control : controls) {
 					if (control instanceof Composite) {
-						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthsFirst);
+						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthFirst);
 					}
 				}
 			}
@@ -169,8 +170,8 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * @param childIndex the child index to access.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> @NonNull A accessChild(Function<Optional<C>, A> wrap,
-			Class<C> childClass, int childIndex) {
+	public <C extends Control, A extends Accessor<C>> A accessChild(Function<Optional<C>, A> wrap, Class<C> childClass,
+			int childIndex) {
 		Optional<? extends Composite> optionalComposite = getOptional();
 		@Nullable C child = null;
 

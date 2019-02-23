@@ -36,7 +36,7 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 		int status = -1;
 
 		try {
-			CmdLineProcessor cmdLine = new CmdLineProcessor(name(), args);
+			@SuppressWarnings("null") CmdLineProcessor cmdLine = new CmdLineProcessor(name(), args);
 
 			cmdLine.onUnknownArg(CmdLineProcessor::ignore);
 			cmdLine.onUnnamedOption(CmdLineProcessor::ignore);

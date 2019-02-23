@@ -289,7 +289,7 @@ final class ScriptRunnerThread extends Thread {
 			checkNativeDialog(display);
 			try {
 				display.syncExec(() -> resultHolder.set(supplier.get()));
-			} catch (RuntimeException | Error e) {
+			} catch (RuntimeException | SWTError e) {
 				Throwable cause = e.getCause();
 
 				if (cause instanceof AssertionError) {

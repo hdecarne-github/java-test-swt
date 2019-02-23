@@ -29,7 +29,7 @@ import org.opentest4j.AssertionFailedError;
  */
 public class Accessor<T> implements Supplier<T> {
 
-	private final Optional<? extends T> objectHolder;
+	private final Optional<T> objectHolder;
 
 	/**
 	 * Constructs a new {@linkplain Accessor} instance.
@@ -45,7 +45,7 @@ public class Accessor<T> implements Supplier<T> {
 	 *
 	 * @param objectHolder to the optional object to access.
 	 */
-	public Accessor(Optional<? extends T> objectHolder) {
+	public Accessor(Optional<T> objectHolder) {
 		this.objectHolder = objectHolder;
 	}
 
@@ -54,7 +54,7 @@ public class Accessor<T> implements Supplier<T> {
 	 *
 	 * @param accessor accessor to the object to access.
 	 */
-	public Accessor(Accessor<? extends T> accessor) {
+	public Accessor(Accessor<T> accessor) {
 		this(accessor.objectHolder);
 	}
 
@@ -76,7 +76,7 @@ public class Accessor<T> implements Supplier<T> {
 	 *
 	 * @return the optional object instance wrapped by this accessor.
 	 */
-	public Optional<? extends T> getOptional() {
+	public Optional<T> getOptional() {
 		return this.objectHolder;
 	}
 
