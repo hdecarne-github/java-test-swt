@@ -34,6 +34,9 @@ import org.eclipse.swt.widgets.Display;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class HeapInfo extends Canvas implements PaintListener {
 
+	private static final int BORDER_WIDTH = 2;
+	private static final int MARGIN_WIDTH = 2;
+
 	private int timer = 0;
 
 	/**
@@ -65,13 +68,22 @@ public class HeapInfo extends Canvas implements PaintListener {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
+		super.computeSize(wHint, hHint, changed);
 		GC gc = new GC(this);
 		Point size;
 
 		try {
+			int style = getStyle();
+
 			size = gc.textExtent("0000B/0000B", SWT.NONE);
-			size.x += 4;
-			size.y += 4;
+			if ((style & SWT.BORDER) == SWT.BORDER) {
+				size.x += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
+				size.y += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
+			} else {
+				size.x += 2 * MARGIN_WIDTH;
+				size.y += 2 * MARGIN_WIDTH;
+
+			}
 		} finally {
 			gc.dispose();
 		}
@@ -115,7 +127,7 @@ public class HeapInfo extends Canvas implements PaintListener {
 			heapInfo.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
 					.append(MEM_UNITS[totalMemUnitIndex]);
 
-			event.gc.drawString(heapInfo.toString(), 2, 2, true);
+			event.gc.drawString(heapInfo.toString(), MARGIN_WIDTH, MARGIN_WIDTH, true);
 		}
 	}
 

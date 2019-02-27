@@ -110,7 +110,7 @@ public class TestAppUI extends ShellUserInterface {
 		commandsBuilder.onSelected(this::onSelected);
 		commandsBuilder.addItem(SWT.SEPARATOR);
 		commandBarBuilder.addItem(SWT.NONE).withControl(commandsBuilder);
-		commandBarBuilder.addItem(SWT.NONE).withControl(new HeapInfo(commandBarBuilder.get(), SWT.NONE));
+		commandBarBuilder.addItem(SWT.NONE).withControl(new HeapInfo(commandBarBuilder.get(), SWT.BORDER));
 		commandBarBuilder.lock(true).pack();
 		return commandBarBuilder.get();
 	}
