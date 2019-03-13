@@ -16,7 +16,6 @@
  */
 package de.carne.swt.widgets.heapinfo;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Display;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class HeapInfo extends Canvas implements PaintListener {
 
-	private static final int BORDER_WIDTH = 2;
+	private static final int BORDER_WIDTH = 1;
 	private static final int MARGIN_WIDTH = 2;
 
 	private int timer = 0;
@@ -46,8 +45,19 @@ public class HeapInfo extends Canvas implements PaintListener {
 	 * @param style the control's style (no styles supported yet).
 	 */
 	public HeapInfo(Composite parent, int style) {
-		super(parent, style);
+		super(parent, checkStyle(style));
 		addPaintListener(this);
+	}
+
+	private static int checkStyle(int style) {
+		int checkedStyle = (style & (SWT.SHADOW_IN | SWT.SHADOW_OUT | SWT.SHADOW_NONE));
+
+		if ((style & SWT.BORDER) == SWT.BORDER) {
+			checkedStyle |= SWT.SHADOW_IN;
+		} else if ((style & SWT.SHADOW_IN) != SWT.SHADOW_IN && (style & SWT.SHADOW_OUT) != SWT.SHADOW_OUT) {
+			checkedStyle |= SWT.SHADOW_NONE;
+		}
+		return checkedStyle;
 	}
 
 	/**
@@ -69,6 +79,7 @@ public class HeapInfo extends Canvas implements PaintListener {
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		super.computeSize(wHint, hHint, changed);
+
 		GC gc = new GC(this);
 		Point size;
 
@@ -76,13 +87,12 @@ public class HeapInfo extends Canvas implements PaintListener {
 			int style = getStyle();
 
 			size = gc.textExtent("0000B/0000B", SWT.NONE);
-			if ((style & SWT.BORDER) == SWT.BORDER) {
-				size.x += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
-				size.y += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
-			} else {
+			if ((style & SWT.SHADOW_NONE) == SWT.SHADOW_NONE) {
 				size.x += 2 * MARGIN_WIDTH;
 				size.y += 2 * MARGIN_WIDTH;
-
+			} else {
+				size.x += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
+				size.y += 2 * MARGIN_WIDTH + 2 * BORDER_WIDTH;
 			}
 		} finally {
 			gc.dispose();
@@ -93,42 +103,67 @@ public class HeapInfo extends Canvas implements PaintListener {
 	private static final char[] MEM_UNITS = { 'B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
 
 	@Override
-	public void paintControl(@Nullable PaintEvent event) {
-		if (event != null) {
-			Runtime runtime = Runtime.getRuntime();
+	public void paintControl(PaintEvent evt) {
+		Runtime runtime = Runtime.getRuntime();
 
-			long total = runtime.totalMemory();
-			long used = Math.max(0, total - runtime.freeMemory());
-			int usage = (int) ((used * 100) / total);
-			int totalMemUnitIndex = 0;
-			int usedMemUnitIndex = 0;
+		long total = runtime.totalMemory();
+		long used = Math.max(0, total - runtime.freeMemory());
+		int usage = (int) ((used * 100) / total);
+		int totalMemUnitIndex = 0;
+		int usedMemUnitIndex = 0;
 
-			while (total > 1024 && totalMemUnitIndex < MEM_UNITS.length) {
-				total >>= 10;
-				totalMemUnitIndex++;
-				if (used > 1024) {
-					used >>= 10;
-					usedMemUnitIndex++;
-				}
+		while (total > 1024 && totalMemUnitIndex < MEM_UNITS.length) {
+			total >>= 10;
+			totalMemUnitIndex++;
+			if (used > 1024) {
+				used >>= 10;
+				usedMemUnitIndex++;
 			}
-
-			Rectangle clientArea = getClientArea();
-			int fillWidth = (clientArea.width * usage) / 100;
-			Color defaultBackground = event.gc.getBackground();
-			Display display = getDisplay();
-
-			event.gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
-			event.gc.fillRectangle(0, 0, fillWidth, clientArea.height);
-			event.gc.setBackground(defaultBackground);
-			event.gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
-
-			StringBuilder heapInfo = new StringBuilder();
-
-			heapInfo.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
-					.append(MEM_UNITS[totalMemUnitIndex]);
-
-			event.gc.drawString(heapInfo.toString(), MARGIN_WIDTH, MARGIN_WIDTH, true);
 		}
+
+		int style = getStyle();
+		int borderWidth = ((style & SWT.SHADOW_NONE) == SWT.SHADOW_NONE ? 0 : BORDER_WIDTH);
+		Rectangle clientArea = getClientArea();
+		int fillWidth = (clientArea.width * usage) / 100;
+		Color defaultBackground = evt.gc.getBackground();
+		Display display = getDisplay();
+		GC gc = evt.gc;
+
+		gc.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
+		gc.fillRectangle(0, 0, fillWidth, clientArea.height);
+		gc.setBackground(defaultBackground);
+		gc.fillRectangle(fillWidth, 0, clientArea.width - fillWidth, clientArea.height);
+
+		StringBuilder heapInfo = new StringBuilder();
+
+		heapInfo.append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
+				.append(MEM_UNITS[totalMemUnitIndex]);
+
+		gc.drawString(heapInfo.toString(), borderWidth + MARGIN_WIDTH, borderWidth + MARGIN_WIDTH, true);
+		if ((style & SWT.SHADOW_IN) == SWT.SHADOW_IN) {
+			Color ltColor = display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+			Color rbColor = display.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
+
+			drawShadow(gc, ltColor, rbColor, clientArea.x, clientArea.y, clientArea.width - 1, clientArea.height - 1);
+		} else if ((style & SWT.SHADOW_OUT) == SWT.SHADOW_OUT) {
+			Color ltColor = display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW);
+			Color rbColor = display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+
+			drawShadow(gc, ltColor, rbColor, clientArea.x, clientArea.y, clientArea.width - 1, clientArea.height - 1);
+		}
+	}
+
+	private void drawShadow(GC gc, Color ltColor, Color rbColor, int lx, int ty, int rx, int by) {
+		Color fgColor = gc.getForeground();
+
+		gc.setLineWidth(BORDER_WIDTH);
+		gc.setForeground(ltColor);
+		gc.drawLine(lx, ty, rx, ty);
+		gc.drawLine(lx, ty, lx, by);
+		gc.setForeground(rbColor);
+		gc.drawLine(lx, by, rx, by);
+		gc.drawLine(rx, ty, rx, by);
+		gc.setForeground(fgColor);
 	}
 
 	private void onTimer() {
