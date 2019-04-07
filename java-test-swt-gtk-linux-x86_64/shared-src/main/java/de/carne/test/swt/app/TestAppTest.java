@@ -43,8 +43,10 @@ public class TestAppTest extends SWTTest {
 
 		script.add(this::checkShellActivated);
 		script.add(this::doSelectCommand);
-		script.add(this::doOpenAboutinfo, true);
-		script.add(this::waitAboutInfoOpened, this::doCloseAboutinfo);
+		script.add(this::doOpenAboutInfo, true);
+		script.add(this::waitAboutInfoOpened, this::doCloseAboutInfo);
+		script.add(this::doOpenLogView, true);
+		script.add(this::waitLogViewOpened, this::doCloseLogView);
 		script.add(this::doClose);
 		script.execute();
 	}
@@ -70,7 +72,7 @@ public class TestAppTest extends SWTTest {
 		checkMessage(message -> Assertions.assertTrue(message.startsWith("SelectionEvent{")));
 	}
 
-	protected void doOpenAboutinfo() {
+	protected void doOpenAboutInfo() {
 		traceAction();
 		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO)).select();
 	}
@@ -80,7 +82,22 @@ public class TestAppTest extends SWTTest {
 		return accessShell("About TestApp").accessButton(ButtonAccessor.matchText("Close"));
 	}
 
-	protected void doCloseAboutinfo(ButtonAccessor buttonAccessor) {
+	protected void doCloseAboutInfo(ButtonAccessor buttonAccessor) {
+		traceAction();
+		buttonAccessor.select();
+	}
+
+	protected void doOpenLogView() {
+		traceAction();
+		accessShell().accessMenuItem(ItemAccessor.matchText(TestApp.ROOT_MENU_WIDGETS_LOGVIEW)).select();
+	}
+
+	protected ButtonAccessor waitLogViewOpened() {
+		traceAction();
+		return accessShell("Log").accessButton(ButtonAccessor.matchText("Close"));
+	}
+
+	protected void doCloseLogView(ButtonAccessor buttonAccessor) {
 		traceAction();
 		buttonAccessor.select();
 	}

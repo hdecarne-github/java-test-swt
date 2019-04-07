@@ -18,6 +18,7 @@ package de.carne.test.swt.app;
 
 import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
+import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.widgets.CoolBarBuilder;
@@ -39,6 +41,7 @@ import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.ToolBarBuilder;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
 import de.carne.swt.widgets.heapinfo.HeapInfo;
+import de.carne.swt.widgets.logview.LogViewDialog;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
 import de.carne.util.ManifestInfos;
@@ -47,6 +50,8 @@ import de.carne.util.ManifestInfos;
  * Test application root shell user interface.
  */
 public class TestAppUI extends ShellUserInterface {
+
+	private static final Log LOG = new Log();
 
 	private final String title;
 	private final Late<List> messageListHolder = new Late<>();
@@ -64,6 +69,8 @@ public class TestAppUI extends ShellUserInterface {
 
 	@Override
 	public void open() throws ResourceException {
+		LOG.notice("Opening Test UI...");
+
 		Shell shell = root();
 		ShellBuilder shellBuilder = new ShellBuilder(shell);
 
@@ -91,6 +98,7 @@ public class TestAppUI extends ShellUserInterface {
 		menuBarBuilder.addItem(SWT.CASCADE).withText(TestApp.ROOT_MENU_WIDGETS);
 		menuBarBuilder.beginMenu();
 		menuBarBuilder.addItem(SWT.PUSH).withText(TestApp.ROOT_MENU_WIDGETS_ABOUTINFO).onSelected(this::onAbout);
+		menuBarBuilder.addItem(SWT.PUSH).withText(TestApp.ROOT_MENU_WIDGETS_LOGVIEW).onSelected(this::onLog);
 		menuBarBuilder.endMenu();
 		return menuBarBuilder.get();
 	}
@@ -116,10 +124,14 @@ public class TestAppUI extends ShellUserInterface {
 	}
 
 	private void onShellClose() {
+		LOG.info("Closing Main UI...");
+
 		root().close();
 	}
 
 	private void onAbout() {
+		LOG.info("Showing AboutInfo...");
+
 		AboutInfoDialog about = AboutInfoDialog.build(root(), new ManifestInfos("TestApp"));
 
 		try {
@@ -132,12 +144,28 @@ public class TestAppUI extends ShellUserInterface {
 		}
 	}
 
+	private void onLog() {
+		LOG.info("Showing LogView...");
+
+		LogViewDialog log = LogViewDialog.build(root(), Logger.getLogger(""));
+
+		try {
+			log.open();
+		} catch (Exception e) {
+			Assertions.fail(e);
+		}
+	}
+
 	private void onShellActivated(ShellEvent event) {
+		LOG.info("Main UI activated");
+
 		this.messageListHolder.get().add(event.toString());
 		this.messageListHolder.get().select(this.messageListHolder.get().getItemCount() - 1);
 	}
 
 	private void onSelected(SelectionEvent event) {
+		LOG.info("Main UI command selected");
+
 		this.messageListHolder.get().add(event.toString());
 		this.messageListHolder.get().select(this.messageListHolder.get().getItemCount() - 1);
 	}

@@ -14,30 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.test.swt.app;
+@NonNullByDefault
+package de.carne.swt.widgets.logview;
 
-import java.util.regex.Pattern;
-
-/**
- * Test application texts.
- */
-@SuppressWarnings("javadoc")
-public final class TestApp {
-
-	private TestApp() {
-		// prevent instantiation
-	}
-
-	// Root shell
-	public static final Pattern ROOT_TEXT_PATTERN = Pattern.compile(TestApp.class.getSimpleName() + ".*");
-
-	// Root shell menu
-	public static final String ROOT_MENU_SHELL = "Shell";
-	public static final String ROOT_MENU_SHELL_CLOSE = "Close";
-
-	// Widget menus
-	public static final String ROOT_MENU_WIDGETS = "Widgets";
-	public static final String ROOT_MENU_WIDGETS_ABOUTINFO = "Aboutinfo...";
-	public static final String ROOT_MENU_WIDGETS_LOGVIEW = "Logview...";
-
-}
+import org.eclipse.jdt.annotation.NonNullByDefault;

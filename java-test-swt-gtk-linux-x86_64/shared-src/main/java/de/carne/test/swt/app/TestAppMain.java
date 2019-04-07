@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
+import de.carne.boot.logging.Logs;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.ShellUserInterface;
@@ -36,6 +37,8 @@ public class TestAppMain extends UserApplication implements ApplicationMain {
 		int status = -1;
 
 		try {
+			Logs.readConfig(Logs.CONFIG_DEFAULT);
+
 			@SuppressWarnings("null") CmdLineProcessor cmdLine = new CmdLineProcessor(name(), args);
 
 			cmdLine.onUnknownArg(CmdLineProcessor::ignore);
