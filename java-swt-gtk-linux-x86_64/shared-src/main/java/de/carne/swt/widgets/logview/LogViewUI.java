@@ -16,6 +16,7 @@
  */
 package de.carne.swt.widgets.logview;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -30,6 +31,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -44,6 +46,7 @@ import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.layout.RowLayoutBuilder;
 import de.carne.swt.widgets.ButtonBuilder;
 import de.carne.swt.widgets.CompositeBuilder;
+import de.carne.swt.widgets.FileDialogBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.Late;
@@ -94,14 +97,14 @@ class LogViewUI extends ShellUserInterface {
 		CompositeBuilder<Composite> buttons = rootBuilder.addCompositeChild(SWT.NONE);
 
 		rootBuilder.withText(LogViewI18N.i18nTitle()).withDefaultImages();
-		rootBuilder.onDisposed(this::onDisposed);
+		rootBuilder.onDisposed(() -> LogBuffer.removeHandler(this.logger, this.logHandler));
 		buildLogTable(logTable);
 		buildButtons(buttons);
 
 		// Populate log table
 		String loggerName = this.logger.getName();
 
-		LOG.notice("Viewing logs for logger ''{0}''...", (Strings.notEmpty(loggerName) ? loggerName : "<root>"));
+		LOG.notice("Viewing log: ''{0}''...", (Strings.notEmpty(loggerName) ? loggerName : "<root>"));
 
 		LogBuffer logBuffer = LogBuffer.get(this.logger);
 
@@ -142,20 +145,41 @@ class LogViewUI extends ShellUserInterface {
 	}
 
 	private void buildButtons(CompositeBuilder<Composite> buttons) {
+		ButtonBuilder clearButton = buttons.addButtonChild(SWT.PUSH);
+		ButtonBuilder exportButton = buttons.addButtonChild(SWT.PUSH);
 		ButtonBuilder closeButton = buttons.addButtonChild(SWT.PUSH);
 
+		clearButton.withText(LogViewI18N.i18nButtonClear());
+		clearButton.onSelected(this::onClear);
+		exportButton.withText(LogViewI18N.i18nButtonExport());
+		exportButton.onSelected(this::onExport);
 		closeButton.withText(LogViewI18N.i18nButtonClose());
 		closeButton.onSelected(() -> root().close());
 		root().setDefaultButton(closeButton.get());
 		RowLayoutBuilder.layout().fill(true).apply(buttons);
+		RowLayoutBuilder.data().apply(clearButton);
+		RowLayoutBuilder.data().apply(exportButton);
 		RowLayoutBuilder.data().apply(closeButton);
 	}
 
-	private void onDisposed() {
-		LogBuffer logBuffer = LogBuffer.get(this.logger);
+	private void onClear() {
+		LogBuffer.flush(this.logger);
+		this.logTableHolder.get().removeAll();
 
-		if (logBuffer != null) {
-			logBuffer.removeHandler(this.logHandler);
+		LOG.notice("Log cleared");
+	}
+
+	private void onExport() {
+		try {
+			FileDialog fileDialog = FileDialogBuilder.save(get()).withFilter("*.log")
+					.withFileName(Display.getAppName() + ".log").get();
+			String fileName = fileDialog.open();
+
+			if (fileName != null) {
+				LogBuffer.exportTo(this.logger, new File(fileName), false);
+			}
+		} catch (Exception e) {
+			LOG.error(e, "Failed to export log");
 		}
 	}
 
@@ -189,6 +213,7 @@ class LogViewUI extends ShellUserInterface {
 
 			if (selection == -1 || (selection + 1) == itemCount) {
 				logTable.select(itemCount);
+				logTable.setTopIndex(itemCount);
 			}
 			logTableItem.setData(record);
 		} else {

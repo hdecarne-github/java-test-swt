@@ -38,6 +38,25 @@ public final class LogViewI18N {
 	}
 
 	/**
+	 * Resource key {@code I18N_BUTTON_CLEAR}
+	 * <p>
+	 * Clear
+	 */
+	public static final String I18N_BUTTON_CLEAR = "I18N_BUTTON_CLEAR";
+
+	/**
+	 * Resource string {@code I18N_BUTTON_CLEAR}
+	 * <p>
+	 * Clear
+	 *
+	 * @param arguments Format arguments.
+	 * @return The formatted string.
+	 */
+	public static String i18nButtonClear(Object... arguments) {
+		return format(I18N_BUTTON_CLEAR, arguments);
+	}
+
+	/**
 	 * Resource key {@code I18N_BUTTON_CLOSE}
 	 * <p>
 	 * Close
@@ -54,6 +73,25 @@ public final class LogViewI18N {
 	 */
 	public static String i18nButtonClose(Object... arguments) {
 		return format(I18N_BUTTON_CLOSE, arguments);
+	}
+
+	/**
+	 * Resource key {@code I18N_BUTTON_EXPORT}
+	 * <p>
+	 * Export&#8230;
+	 */
+	public static final String I18N_BUTTON_EXPORT = "I18N_BUTTON_EXPORT";
+
+	/**
+	 * Resource string {@code I18N_BUTTON_EXPORT}
+	 * <p>
+	 * Export&#8230;
+	 *
+	 * @param arguments Format arguments.
+	 * @return The formatted string.
+	 */
+	public static String i18nButtonExport(Object... arguments) {
+		return format(I18N_BUTTON_EXPORT, arguments);
 	}
 
 	/**
