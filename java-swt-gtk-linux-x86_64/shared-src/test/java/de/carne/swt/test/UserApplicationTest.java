@@ -16,6 +16,7 @@
  */
 package de.carne.swt.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.swt.UserApplication;
@@ -30,7 +31,7 @@ class UserApplicationTest extends TestAppTest {
 
 	@Test
 	void testTestUserApplication() {
-		executeTestScript(getClass().getSimpleName());
+		Assertions.assertDoesNotThrow(() -> executeTestScript(getClass().getSimpleName()));
 	}
 
 }
