@@ -17,6 +17,7 @@
 package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -111,9 +112,7 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 					}
 				}
 			} else {
-				for (Control control : controls) {
-					children.add(control);
-				}
+				children.addAll(Arrays.asList(controls));
 				for (Control control : controls) {
 					if (control instanceof Composite) {
 						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthFirst);
