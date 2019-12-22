@@ -19,7 +19,6 @@ package de.carne.swt.widgets;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Event;
@@ -64,7 +63,7 @@ public class WidgetBuilder<T extends Widget> implements Supplier<T> {
 	 * @return the updated builder.
 	 * @see Widget#addListener(int, org.eclipse.swt.widgets.Listener)
 	 */
-	public WidgetBuilder<T> onEvent(int eventType, Consumer<@Nullable Event> action) {
+	public WidgetBuilder<T> onEvent(int eventType, Consumer<Event> action) {
 		this.widget.addListener(eventType, action::accept);
 		return this;
 	}

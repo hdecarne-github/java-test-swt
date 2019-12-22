@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T> the actual property type.
  */
 @FunctionalInterface
-public interface PropertyChangedListener<T> {
+public interface PropertyChangedListener<@Nullable T> {
 
 	/**
 	 * Called every time the property value has been changed.
@@ -32,6 +32,6 @@ public interface PropertyChangedListener<T> {
 	 * @param newValue the new property value.
 	 * @param oldValue the old property value.
 	 */
-	void changed(@Nullable T newValue, @Nullable T oldValue);
+	void changed(T newValue, T oldValue);
 
 }

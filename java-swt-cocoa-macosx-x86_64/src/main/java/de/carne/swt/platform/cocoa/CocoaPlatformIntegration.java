@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
@@ -89,7 +88,7 @@ public class CocoaPlatformIntegration extends PlatformIntegration {
 		}
 	}
 
-	private static void invokeSystemMenuListener(Display display, Listener listener, @Nullable Event event) {
+	private static void invokeSystemMenuListener(Display display, Listener listener, Event event) {
 		Collection<MenuItem> disabledMenuItems = new ArrayList<>();
 
 		try {

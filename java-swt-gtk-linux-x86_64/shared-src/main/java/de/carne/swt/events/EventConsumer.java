@@ -16,11 +16,9 @@
  */
 package de.carne.swt.events;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
@@ -74,8 +72,8 @@ public class EventConsumer<T extends TypedEvent> implements Listener {
 	}
 
 	@Override
-	public void handleEvent(@Nullable Event event) {
-		this.consumer.accept(this.eventFactory.apply(Objects.requireNonNull(event)));
+	public void handleEvent(Event event) {
+		this.consumer.accept(this.eventFactory.apply(event));
 	}
 
 }

@@ -28,9 +28,9 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> the actual property type.
  */
-public class Property<T> implements Supplier<@Nullable T> {
+public class Property<@Nullable T> implements Supplier<T> {
 
-	private @Nullable T value;
+	private T value;
 	private List<PropertyChangedListener<T>> changedListeners = new ArrayList<>();
 
 	/**
@@ -47,7 +47,7 @@ public class Property<T> implements Supplier<@Nullable T> {
 	 *
 	 * @param value the initial property value.
 	 */
-	public Property(@Nullable T value) {
+	public Property(T value) {
 		this.value = value;
 	}
 
@@ -55,7 +55,6 @@ public class Property<T> implements Supplier<@Nullable T> {
 	 * Gets the property value.
 	 */
 	@Override
-	@Nullable
 	public T get() {
 		return this.value;
 	}
@@ -66,8 +65,7 @@ public class Property<T> implements Supplier<@Nullable T> {
 	 * @param newValue the value to set.
 	 * @return the old property value.
 	 */
-	@Nullable
-	public T set(@Nullable T newValue) {
+	public T set(T newValue) {
 		return set(newValue, false);
 	}
 
@@ -79,9 +77,8 @@ public class Property<T> implements Supplier<@Nullable T> {
 	 * ({@code false}).
 	 * @return the old property value.
 	 */
-	@Nullable
-	public synchronized T set(@Nullable T newValue, boolean forceChange) {
-		@Nullable T oldValue = this.value;
+	public synchronized T set(T newValue, boolean forceChange) {
+		T oldValue = this.value;
 
 		this.value = newValue;
 		if (forceChange || !Objects.equals(this.value, oldValue)) {

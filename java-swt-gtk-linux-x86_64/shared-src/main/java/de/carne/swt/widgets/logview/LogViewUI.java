@@ -25,7 +25,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -230,8 +229,8 @@ class LogViewUI extends ShellUserInterface {
 		}
 
 		@Override
-		public void publish(@Nullable LogRecord record) {
-			if (record != null && this.locked.compareAndSet(false, true)) {
+		public void publish(LogRecord record) {
+			if (this.locked.compareAndSet(false, true)) {
 				try {
 					LogViewUI.this.publish(record);
 				} finally {

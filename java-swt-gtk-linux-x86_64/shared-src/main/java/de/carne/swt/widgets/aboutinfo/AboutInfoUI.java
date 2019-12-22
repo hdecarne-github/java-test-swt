@@ -205,10 +205,8 @@ class AboutInfoUI extends ShellUserInterface {
 		RowLayoutBuilder.data().apply(closeButton);
 	}
 
-	private void onLinkSelected(@Nullable SelectionEvent event) {
-		if (event != null) {
-			Program.launch(event.text);
-		}
+	private void onLinkSelected(SelectionEvent event) {
+		Program.launch(event.text);
 	}
 
 }

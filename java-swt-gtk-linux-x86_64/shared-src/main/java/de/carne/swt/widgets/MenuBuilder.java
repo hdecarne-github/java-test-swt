@@ -39,7 +39,7 @@ import de.carne.swt.events.EventReceiver;
  */
 public final class MenuBuilder implements Supplier<Menu> {
 
-	private Deque<@Nullable Menu> menuStack = new LinkedList<>();
+	private Deque<Menu> menuStack = new LinkedList<>();
 	private @Nullable MenuItem currentItem = null;
 
 	/**

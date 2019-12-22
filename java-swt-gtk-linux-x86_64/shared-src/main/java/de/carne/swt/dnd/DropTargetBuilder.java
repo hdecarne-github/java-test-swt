@@ -95,29 +95,25 @@ public class DropTargetBuilder implements Supplier<DropTarget> {
 		return withDropListener(new DropTargetAdapter() {
 
 			@Override
-			public void dragEnter(@Nullable DropTargetEvent event) {
+			public void dragEnter(DropTargetEvent event) {
 				dropAccept(event);
 			}
 
 			@Override
-			public void drop(@Nullable DropTargetEvent event) {
-				if (event != null) {
-					action.accept(Check.isInstanceOf(event.data, String[].class));
-				}
+			public void drop(DropTargetEvent event) {
+				action.accept(Check.isInstanceOf(event.data, String[].class));
 			}
 
 			@Override
-			public void dropAccept(@Nullable DropTargetEvent event) {
-				if (event != null) {
-					TransferData acceptedDataType = acceptDataType(FileTransfer.getInstance(),
-							Objects.requireNonNull(event.dataTypes), Objects.requireNonNull(event.currentDataType));
+			public void dropAccept(DropTargetEvent event) {
+				TransferData acceptedDataType = acceptDataType(FileTransfer.getInstance(),
+						Objects.requireNonNull(event.dataTypes), Objects.requireNonNull(event.currentDataType));
 
-					if (acceptedDataType != null) {
-						event.currentDataType = acceptedDataType;
-						updateDropTargetEventDetail(event);
-					} else {
-						event.detail = DND.DROP_NONE;
-					}
+				if (acceptedDataType != null) {
+					event.currentDataType = acceptedDataType;
+					updateDropTargetEventDetail(event);
+				} else {
+					event.detail = DND.DROP_NONE;
 				}
 			}
 

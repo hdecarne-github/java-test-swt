@@ -16,7 +16,6 @@
  */
 package de.carne.swt.events;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -42,7 +41,7 @@ public class EventReceiver implements Listener {
 	}
 
 	@Override
-	public void handleEvent(@Nullable Event event) {
+	public void handleEvent(Event event) {
 		this.receiver.run();
 	}
 

@@ -180,7 +180,7 @@ public class Notification {
 		Check.isInstanceOf(event.widget, Shell.class).close();
 	}
 
-	private void onKeyPressed(@Nullable KeyEvent event) {
+	private void onKeyPressed(KeyEvent event) {
 		Objects.requireNonNull(event);
 
 		if ("\u001b\r ".indexOf(event.keyCode) >= 0) {
