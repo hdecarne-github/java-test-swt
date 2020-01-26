@@ -79,7 +79,7 @@ public class TestAppTest extends SWTTest {
 
 	protected ButtonAccessor waitAboutInfoOpened() {
 		traceAction();
-		return accessShell("About TestApp").accessButton(ButtonAccessor.matchText("Close"));
+		return accessShell("About n/a").accessButton(ButtonAccessor.matchText("Close"));
 	}
 
 	protected void doCloseAboutInfo(ButtonAccessor buttonAccessor) {
