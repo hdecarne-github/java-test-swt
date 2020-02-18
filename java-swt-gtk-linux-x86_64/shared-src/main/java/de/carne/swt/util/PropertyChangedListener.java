@@ -16,15 +16,13 @@
  */
 package de.carne.swt.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * Functional interface used to signal a property value has been changed.
  *
  * @param <T> the actual property type.
  */
 @FunctionalInterface
-public interface PropertyChangedListener<@Nullable T> {
+public interface PropertyChangedListener<T> {
 
 	/**
 	 * Called every time the property value has been changed.

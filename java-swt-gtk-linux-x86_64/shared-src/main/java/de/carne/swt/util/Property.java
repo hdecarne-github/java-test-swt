@@ -21,26 +21,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * This class represents an observable property value.
  *
  * @param <T> the actual property type.
  */
-public class Property<@Nullable T> implements Supplier<T> {
+public class Property<T> implements Supplier<T> {
 
 	private T value;
 	private List<PropertyChangedListener<T>> changedListeners = new ArrayList<>();
-
-	/**
-	 * Constructs a new {@linkplain Property} instance.
-	 * <p>
-	 * The initial property value is {@code null}.
-	 */
-	public Property() {
-		this(null);
-	}
 
 	/**
 	 * Constructs a new {@linkplain Property} instance.
