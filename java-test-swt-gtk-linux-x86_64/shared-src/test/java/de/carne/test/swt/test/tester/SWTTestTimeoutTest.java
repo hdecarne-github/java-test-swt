@@ -57,7 +57,7 @@ class SWTTestTimeoutTest extends SWTTest {
 
 		messageBox.setText(getClass().getSimpleName());
 		messageBox.setMessage("Waiting for " + TIMEOUT + " ms timeout...");
-		messageBox.open();
+		// messageBox.open();
 	}
 
 }

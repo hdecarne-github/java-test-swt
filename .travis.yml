@@ -18,9 +18,10 @@ env:
   DBUS_SESSION_BUS_ADDRESS="/dev/null"
 
 addons:
-  apt:
-    packages:
-      - fluxbox
+  sonarcloud:
+    organization: "hdecarne-github"  apt:
+  packages:
+    - fluxbox
 
 git:
   depth: false  
