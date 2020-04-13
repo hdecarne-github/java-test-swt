@@ -10,7 +10,7 @@ os:
 dist: bionic
 osx_image: xcode11.3
 
-service:
+services:
   - xvfb
 
 #env:
