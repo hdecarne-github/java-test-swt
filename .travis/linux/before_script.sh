@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
-sh -e /etc/init.d/xvfb start
-sleep 10 # give xvfb some time to start
+#sh -e /etc/init.d/xvfb start
+#sleep 10 # give xvfb some time to start
 xterm &
 fluxbox &
-sleep 20 # give fluxbox some time to start
+sleep 20 # give programs some time to start

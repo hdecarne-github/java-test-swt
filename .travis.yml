@@ -10,17 +10,20 @@ os:
 dist: bionic
 osx_image: xcode11.3
 
-env:
-  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
-  DISPLAY=":99.0"
-  DBUS_SESSION_BUS_ADDRESS="/dev/null"
+service:
+  - xvfb
+
+#env:
+#  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
+#  DISPLAY=":99.0"
+#  DBUS_SESSION_BUS_ADDRESS="/dev/null"
 
 addons:
   apt:
     packages:
       - fluxbox
-  sonarcloud:
-    organization: "hdecarne-github"
+#  sonarcloud:
+#    organization: "hdecarne-github"
 
 git:
   depth: false  
