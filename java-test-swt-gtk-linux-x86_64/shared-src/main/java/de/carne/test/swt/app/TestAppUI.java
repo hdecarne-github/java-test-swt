@@ -34,14 +34,15 @@ import org.junit.jupiter.api.Assertions;
 import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.layout.GridLayoutBuilder;
+import de.carne.swt.widgets.ControlBuilder;
 import de.carne.swt.widgets.CoolBarBuilder;
 import de.carne.swt.widgets.MenuBuilder;
 import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.swt.widgets.ToolBarBuilder;
 import de.carne.swt.widgets.aboutinfo.AboutInfoDialog;
-import de.carne.swt.widgets.heapinfo.HeapInfo;
 import de.carne.swt.widgets.logview.LogViewDialog;
+import de.carne.swt.widgets.runtimeinfo.RuntimeInfo;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
 import de.carne.util.ManifestInfos;
@@ -108,6 +109,8 @@ public class TestAppUI extends ShellUserInterface {
 		Display display = root.getDisplay();
 		CoolBarBuilder commandBarBuilder = CoolBarBuilder.horizontal(root, SWT.FLAT);
 		ToolBarBuilder commandsBuilder = ToolBarBuilder.horizontal(commandBarBuilder, SWT.FLAT);
+		ControlBuilder<RuntimeInfo> runtimeInfoBuilder = new ControlBuilder<>(
+				new RuntimeInfo(commandBarBuilder.get(), SWT.BORDER));
 
 		commandsBuilder.addItem(SWT.PUSH);
 		commandsBuilder.withImage(Resources.getImage(display, Resources.APP_ICON16));
@@ -118,8 +121,9 @@ public class TestAppUI extends ShellUserInterface {
 		commandsBuilder.onSelected(this::onSelected);
 		commandsBuilder.addItem(SWT.SEPARATOR);
 		commandBarBuilder.addItem(SWT.NONE).withControl(commandsBuilder);
-		commandBarBuilder.addItem(SWT.NONE).withControl(new HeapInfo(commandBarBuilder.get(), SWT.BORDER));
+		commandBarBuilder.addItem(SWT.NONE).withControl(runtimeInfoBuilder.get());
 		commandBarBuilder.lock(true).pack();
+		runtimeInfoBuilder.get().setTimer(500);
 		return commandBarBuilder.get();
 	}
 

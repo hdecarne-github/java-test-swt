@@ -15,6 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 @NonNullByDefault
-package de.carne.swt.widgets.heapinfo;
+package de.carne.swt.widgets.runtimeinfo;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
