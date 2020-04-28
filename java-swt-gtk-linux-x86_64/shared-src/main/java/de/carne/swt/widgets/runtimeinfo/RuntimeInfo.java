@@ -148,7 +148,15 @@ public class RuntimeInfo extends Canvas implements PaintListener {
 		}
 		this.text = new StringBuilder().append(used).append(MEM_UNITS[usedMemUnitIndex]).append('/').append(total)
 				.append(MEM_UNITS[totalMemUnitIndex]).toString();
-		setToolTipText(this.text);
+
+		StringBuilder toolTipText = new StringBuilder();
+
+		toolTipText.append("Java VM: ").append(System.getProperty("java.vm.name")).append(System.lineSeparator());
+		toolTipText.append("VM version: ").append(System.getProperty("java.runtime.version"))
+				.append(System.lineSeparator());
+		toolTipText.append("Processors: ").append(runtime.availableProcessors()).append(System.lineSeparator());
+		toolTipText.append("Heap usage: ").append(this.text);
+		setToolTipText(toolTipText.toString());
 	}
 
 }
