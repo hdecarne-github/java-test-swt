@@ -24,13 +24,13 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.Exceptions;
-import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.ShellUserInterface;
+import de.carne.util.Exceptions;
 import de.carne.util.Late;
 import de.carne.util.cmdline.CmdLineException;
 import de.carne.util.cmdline.CmdLineProcessor;
+import de.carne.util.logging.Log;
 
 /**
  * Base class for any kind of SWT based application.

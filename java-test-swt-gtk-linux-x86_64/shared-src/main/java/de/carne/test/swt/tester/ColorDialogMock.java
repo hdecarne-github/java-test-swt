@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -34,7 +34,7 @@ public final class ColorDialogMock {
 	private @Nullable RGB nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<ColorDialog> mockUp = new MockUp<ColorDialog>() {
+	private final MockUp<ColorDialog> mockUp = new MockUp<>() {
 
 		@Mock
 		public @Nullable RGB open() {

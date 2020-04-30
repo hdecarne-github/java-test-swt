@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.check.Check;
 import de.carne.swt.events.EventConsumer;
 import de.carne.swt.layout.GridLayoutBuilder;
+import de.carne.util.Check;
 import de.carne.util.Strings;
 
 /**

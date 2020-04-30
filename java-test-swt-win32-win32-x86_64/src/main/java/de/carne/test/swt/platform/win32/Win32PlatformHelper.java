@@ -22,8 +22,8 @@ import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.logging.Log;
 import de.carne.test.swt.platform.PlatformHelper;
+import de.carne.util.logging.Log;
 
 /**
  * Win32 platform helper.

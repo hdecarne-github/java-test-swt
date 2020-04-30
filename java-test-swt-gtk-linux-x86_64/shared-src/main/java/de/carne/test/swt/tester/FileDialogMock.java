@@ -19,7 +19,7 @@ package de.carne.test.swt.tester;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.FileDialog;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -33,7 +33,7 @@ public final class FileDialogMock {
 	private @Nullable String nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<FileDialog> mockUp = new MockUp<FileDialog>() {
+	private final MockUp<FileDialog> mockUp = new MockUp<>() {
 
 		@Mock
 		public @Nullable String open() {

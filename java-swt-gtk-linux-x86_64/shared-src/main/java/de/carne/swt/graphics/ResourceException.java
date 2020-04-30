@@ -16,7 +16,7 @@
  */
 package de.carne.swt.graphics;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 
 /**
  * Indicates that a SWT {@linkplain org.eclipse.swt.graphics.Resource} is not accessible.

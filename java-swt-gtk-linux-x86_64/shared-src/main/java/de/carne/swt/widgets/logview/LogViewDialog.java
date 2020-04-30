@@ -26,9 +26,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.util.ManifestInfos;
+import de.carne.util.logging.Log;
 
 /**
  * Dialog for displaying the application log.

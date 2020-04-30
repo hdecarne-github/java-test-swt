@@ -19,8 +19,8 @@ package de.carne.swt.widgets;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.Exceptions;
-import de.carne.boot.logging.Log;
+import de.carne.util.Exceptions;
+import de.carne.util.logging.Log;
 
 /**
  * Base class for {@linkplain Shell} based top-level user interfaces.

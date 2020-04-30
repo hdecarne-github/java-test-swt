@@ -25,14 +25,14 @@ import org.eclipse.swt.internal.gtk.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.carne.boot.logging.Log;
 import de.carne.test.swt.platform.PlatformHelper;
+import de.carne.util.logging.Log;
 
 /**
  * GTK platform helper.
  */
 public class GtkPlatformHelper extends PlatformHelper {
-	
+
 	private static final Log LOG = new Log();
 
 	@Override
@@ -61,10 +61,10 @@ public class GtkPlatformHelper extends PlatformHelper {
 		if (!display.isDisposed()) {
 			if (Thread.currentThread().equals(display.getThread())) {
 				long nativeDialog = findNativeDialog(display);
-				
-				if(nativeDialog != 0) {
+
+				if (nativeDialog != 0) {
 					LOG.debug("Destroying native dialog: 0x{0}", Long.toHexString(nativeDialog));
-					
+
 					GTK.gtk_widget_destroy(nativeDialog);
 					resultHolder.set(true);
 				}
@@ -74,30 +74,30 @@ public class GtkPlatformHelper extends PlatformHelper {
 		}
 		return resultHolder.get();
 	}
-	
+
 	private long findNativeDialog(Display display) {
 		Set<Long> shellToplevels = new HashSet<>();
-		
-		for(Shell shell : display.getShells()) {
+
+		for (Shell shell : display.getShells()) {
 			shellToplevels.add(GTK.gtk_widget_get_toplevel(shell.handle));
 		}
-		
+
 		long nativeDialog = 0;
 		long toplevels = GTK.gtk_window_list_toplevels();
-		
-		while(toplevels != 0) {
+
+		while (toplevels != 0) {
 			long toplevel = OS.g_list_data(toplevels);
 
-			if(!shellToplevels.contains(toplevel) && GTK.gtk_window_get_modal(toplevel)) {
+			if (!shellToplevels.contains(toplevel) && GTK.gtk_window_get_modal(toplevel)) {
 				nativeDialog = toplevel;
 				break;
 			}
 			toplevels = OS.g_list_next(toplevels);
 		}
 		OS.g_list_free(toplevels);
-		
+
 		LOG.debug("Find native dialog result: 0x{0}", Long.toHexString(nativeDialog));
-		
+
 		return nativeDialog;
 	}
 

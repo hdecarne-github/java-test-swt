@@ -22,7 +22,7 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -48,7 +48,7 @@ public final class MessageBoxMock {
 	private int nextResult = SWT.CANCEL;
 
 	@SuppressWarnings("unused")
-	private final MockUp<MessageBox> mockUp = new MockUp<MessageBox>() {
+	private final MockUp<MessageBox> mockUp = new MockUp<>() {
 
 		@Mock
 		public int open() {

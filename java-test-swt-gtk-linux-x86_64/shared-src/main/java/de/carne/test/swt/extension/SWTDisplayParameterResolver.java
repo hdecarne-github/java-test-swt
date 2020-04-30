@@ -28,7 +28,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import de.carne.boot.check.Check;
+import de.carne.util.Check;
 
 /**
  * {@linkplain ParameterResolver} that takes care of creation and disposal of the SWT {@linkplain Display} needed during

@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
-import de.carne.boot.logging.Logs;
 import de.carne.swt.UserApplication;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.cmdline.CmdLineProcessor;
+import de.carne.util.logging.Logs;
 
 /**
  * Test application main class.

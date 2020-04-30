@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -34,7 +34,7 @@ public final class FontDialogMock {
 	private @Nullable FontData nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<FontDialog> mockUp = new MockUp<FontDialog>() {
+	private final MockUp<FontDialog> mockUp = new MockUp<>() {
 
 		@Mock
 		public @Nullable FontData open() {

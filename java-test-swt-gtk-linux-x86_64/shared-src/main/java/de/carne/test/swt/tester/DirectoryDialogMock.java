@@ -19,7 +19,7 @@ package de.carne.test.swt.tester;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -33,7 +33,7 @@ public final class DirectoryDialogMock {
 	private @Nullable String nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<DirectoryDialog> mockUp = new MockUp<DirectoryDialog>() {
+	private final MockUp<DirectoryDialog> mockUp = new MockUp<>() {
 
 		@Mock
 		public @Nullable String open() {

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 
 /**
  * {@linkplain Composite} builder.

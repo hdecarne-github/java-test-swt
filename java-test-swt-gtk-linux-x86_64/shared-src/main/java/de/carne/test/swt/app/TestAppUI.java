@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
-import de.carne.boot.logging.Log;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.layout.GridLayoutBuilder;
 import de.carne.swt.widgets.ControlBuilder;
@@ -46,6 +45,7 @@ import de.carne.swt.widgets.runtimeinfo.RuntimeInfo;
 import de.carne.test.swt.app.resources.Resources;
 import de.carne.util.Late;
 import de.carne.util.ManifestInfos;
+import de.carne.util.logging.Log;
 
 /**
  * Test application root shell user interface.

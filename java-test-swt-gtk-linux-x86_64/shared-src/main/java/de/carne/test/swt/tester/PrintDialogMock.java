@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
 
-import de.carne.boot.logging.Log;
+import de.carne.util.logging.Log;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -34,7 +34,7 @@ public final class PrintDialogMock {
 	private @Nullable PrinterData nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<PrintDialog> mockUp = new MockUp<PrintDialog>() {
+	private final MockUp<PrintDialog> mockUp = new MockUp<>() {
 
 		@Mock
 		public @Nullable PrinterData open() {

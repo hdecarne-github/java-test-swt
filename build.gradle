@@ -74,12 +74,11 @@ subprojects {
 	def swtPlatformSuffix = platformSuffix.replace("-", ".")
 
 	dependencies {
-		compileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
-		testCompileOnly(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
-		api(group: "de.carne.common", name: "java-default", version: project.javaDefaultVersion)
+		api(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: project.annotationVersion)
 		api(group: "org.eclipse.platform", name: "org.eclipse.swt${swtPlatformSuffix}", version: project.swtVersion) {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
+		implementation(group: "de.carne.common", name: "java-default", version: project.javaDefaultVersion)
 		if(projectBaseName.equals("java-swt")) {
 			testImplementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
 			testImplementation(group: "org.jmockit", name: "jmockit", version: project.jmockitVersion)

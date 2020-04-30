@@ -19,7 +19,7 @@ package de.carne.test.swt.platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 import de.carne.util.Lazy;
 
 /**

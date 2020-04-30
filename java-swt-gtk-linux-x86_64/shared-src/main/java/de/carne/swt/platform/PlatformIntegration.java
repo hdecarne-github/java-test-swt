@@ -22,9 +22,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 
-import de.carne.boot.Exceptions;
-import de.carne.boot.platform.Platform;
+import de.carne.util.Exceptions;
 import de.carne.util.Lazy;
+import de.carne.util.Platform;
 
 /**
  * This class provides a generic access to platform specific OS integration features (like the application menu on
@@ -52,7 +52,7 @@ public abstract class PlatformIntegration {
 
 	/**
 	 * Gets the toolkit name of the currently running platform.
-	 * 
+	 *
 	 * @return the toolkit name of the currently running platform.
 	 */
 	public static String toolkitName() {

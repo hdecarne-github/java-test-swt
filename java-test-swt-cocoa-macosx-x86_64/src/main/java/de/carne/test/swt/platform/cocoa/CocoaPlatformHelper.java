@@ -21,8 +21,8 @@ import org.eclipse.swt.internal.cocoa.NSThread;
 import org.eclipse.swt.internal.cocoa.OS;
 import org.eclipse.swt.widgets.Display;
 
-import de.carne.boot.logging.Log;
 import de.carne.test.swt.platform.PlatformHelper;
+import de.carne.util.logging.Log;
 
 /**
  * Cocoa platform helper.

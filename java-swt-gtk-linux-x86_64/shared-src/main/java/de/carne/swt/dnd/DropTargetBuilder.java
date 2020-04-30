@@ -31,7 +31,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Control;
 
-import de.carne.boot.check.Check;
+import de.carne.util.Check;
 
 /**
  * {@linkplain DropTarget} builder.

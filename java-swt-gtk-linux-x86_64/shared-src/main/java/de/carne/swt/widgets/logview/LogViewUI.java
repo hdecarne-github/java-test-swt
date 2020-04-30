@@ -36,9 +36,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import de.carne.boot.logging.Log;
-import de.carne.boot.logging.LogBuffer;
-import de.carne.boot.logging.LogLineFormatter;
 import de.carne.swt.graphics.ResourceException;
 import de.carne.swt.graphics.ResourceTracker;
 import de.carne.swt.layout.GridLayoutBuilder;
@@ -50,6 +47,9 @@ import de.carne.swt.widgets.ShellBuilder;
 import de.carne.swt.widgets.ShellUserInterface;
 import de.carne.util.Late;
 import de.carne.util.Strings;
+import de.carne.util.logging.Log;
+import de.carne.util.logging.LogBuffer;
+import de.carne.util.logging.LogLineFormatter;
 
 class LogViewUI extends ShellUserInterface {
 

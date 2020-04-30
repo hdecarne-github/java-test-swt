@@ -19,8 +19,8 @@ package de.carne.test.swt.tester;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import de.carne.boot.logging.Log;
 import de.carne.test.swt.tester.accessor.Accessor;
+import de.carne.util.logging.Log;
 
 abstract class ScriptAction {
 

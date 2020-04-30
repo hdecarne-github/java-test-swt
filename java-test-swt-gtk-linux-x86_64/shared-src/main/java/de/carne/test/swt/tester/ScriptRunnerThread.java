@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 
-import de.carne.boot.logging.Log;
-import de.carne.boot.logging.LogLevel;
 import de.carne.test.swt.platform.PlatformHelper;
 import de.carne.util.Strings;
+import de.carne.util.logging.Log;
+import de.carne.util.logging.LogLevel;
 
 /**
  * {@linkplain Thread} class used to run the configured script actions against the SWT application.

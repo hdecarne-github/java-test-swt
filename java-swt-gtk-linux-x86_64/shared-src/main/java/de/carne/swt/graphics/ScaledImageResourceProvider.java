@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageDataProvider;
 
-import de.carne.boot.Exceptions;
+import de.carne.util.Exceptions;
 
 final class ScaledImageResourceProvider implements ImageDataProvider {
 

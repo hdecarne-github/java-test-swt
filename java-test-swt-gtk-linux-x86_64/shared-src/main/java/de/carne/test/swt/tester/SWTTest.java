@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.boot.ApplicationMain;
-import de.carne.boot.logging.Log;
 import de.carne.test.swt.tester.ScriptAction.AsyncDoScriptAction;
 import de.carne.test.swt.tester.ScriptAction.DoScriptAction;
 import de.carne.test.swt.tester.ScriptAction.WaitScriptAction;
@@ -40,6 +39,7 @@ import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
 import de.carne.util.Late;
 import de.carne.util.Strings;
+import de.carne.util.logging.Log;
 import de.carne.util.stream.Unique;
 
 /**
