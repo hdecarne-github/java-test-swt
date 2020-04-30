@@ -33,7 +33,7 @@ public final class DirectoryDialogMock {
 	private @Nullable String nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<DirectoryDialog> mockUp = new MockUp<>() {
+	private final MockUp<DirectoryDialog> mockUp = new MockUp<DirectoryDialog>() {
 
 		@Mock
 		public @Nullable String open() {

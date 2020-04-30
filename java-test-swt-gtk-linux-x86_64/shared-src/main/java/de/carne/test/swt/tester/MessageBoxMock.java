@@ -48,7 +48,7 @@ public final class MessageBoxMock {
 	private int nextResult = SWT.CANCEL;
 
 	@SuppressWarnings("unused")
-	private final MockUp<MessageBox> mockUp = new MockUp<>() {
+	private final MockUp<MessageBox> mockUp = new MockUp<MessageBox>() {
 
 		@Mock
 		public int open() {

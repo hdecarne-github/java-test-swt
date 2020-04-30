@@ -34,7 +34,7 @@ public final class FontDialogMock {
 	private @Nullable FontData nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<FontDialog> mockUp = new MockUp<>() {
+	private final MockUp<FontDialog> mockUp = new MockUp<FontDialog>() {
 
 		@Mock
 		public @Nullable FontData open() {

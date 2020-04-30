@@ -34,7 +34,7 @@ public final class PrintDialogMock {
 	private @Nullable PrinterData nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<PrintDialog> mockUp = new MockUp<>() {
+	private final MockUp<PrintDialog> mockUp = new MockUp<PrintDialog>() {
 
 		@Mock
 		public @Nullable PrinterData open() {

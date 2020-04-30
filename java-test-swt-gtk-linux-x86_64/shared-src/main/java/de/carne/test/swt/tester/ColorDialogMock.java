@@ -34,7 +34,7 @@ public final class ColorDialogMock {
 	private @Nullable RGB nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<ColorDialog> mockUp = new MockUp<>() {
+	private final MockUp<ColorDialog> mockUp = new MockUp<ColorDialog>() {
 
 		@Mock
 		public @Nullable RGB open() {

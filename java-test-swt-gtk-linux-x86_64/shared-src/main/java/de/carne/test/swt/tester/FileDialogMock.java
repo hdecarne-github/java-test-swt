@@ -33,7 +33,7 @@ public final class FileDialogMock {
 	private @Nullable String nextResult = null;
 
 	@SuppressWarnings("unused")
-	private final MockUp<FileDialog> mockUp = new MockUp<>() {
+	private final MockUp<FileDialog> mockUp = new MockUp<FileDialog>() {
 
 		@Mock
 		public @Nullable String open() {
