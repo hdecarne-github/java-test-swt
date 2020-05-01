@@ -14,7 +14,8 @@ services:
   - xvfb
 
 env:
-  JAVA_OPTS="-Xmx2g -Dfile.encoding=UTF-8"
+  JAVA_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+  N1J0G2W1AEzwY5rdJpgQCDNWo1UE2NS2
   DBUS_SESSION_BUS_ADDRESS="/dev/null"
 
 addons:
