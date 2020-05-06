@@ -275,9 +275,11 @@ public abstract class SWTTest {
 
 			Display display = Display.getCurrent();
 
-			while (!display.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
+			if (display != null) {
+				while (!display.isDisposed()) {
+					if (!display.readAndDispatch()) {
+						display.sleep();
+					}
 				}
 			}
 
