@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 
-import de.carne.boot.ApplicationMain;
 import de.carne.test.swt.tester.ScriptAction.AsyncDoScriptAction;
 import de.carne.test.swt.tester.ScriptAction.DoScriptAction;
 import de.carne.test.swt.tester.ScriptAction.WaitScriptAction;
@@ -88,11 +87,11 @@ public abstract class SWTTest {
 	/**
 	 * Creates a {@linkplain Script} instance to be executed after the necessary actions have been added.
 	 *
-	 * @param application the SWT application to test.
+	 * @param application the main function of the SWT application to test.
 	 * @return the created {@linkplain Script} instance.
 	 * @see Script
 	 */
-	public Script script(ApplicationMain application) {
+	public Script script(MainFunction application) {
 		return new Script(application);
 	}
 
@@ -108,11 +107,12 @@ public abstract class SWTTest {
 	 */
 	public final class Script {
 
-		private final ApplicationMain application;
+		private final MainFunction application;
 		private String[] applicationArgs = new String[0];
 		private final List<ScriptAction> actions = new LinkedList<>();
+		private boolean passed = false;
 
-		Script(ApplicationMain application) {
+		Script(MainFunction application) {
 			this.application = application;
 		}
 
@@ -245,11 +245,21 @@ public abstract class SWTTest {
 		 */
 		public void execute(boolean ignoreRemaining, Duration timeout) {
 			runScript(this.application, this.applicationArgs, this.actions, ignoreRemaining, timeout);
+			this.passed = true;
+		}
+
+		/**
+		 * Checks whether all scripts tests have been passed and the script completed successfully.
+		 *
+		 * @return {@code true} if all script tests have been passed and the script completed successfully.
+		 */
+		public boolean passed() {
+			return this.passed;
 		}
 
 	}
 
-	void runScript(ApplicationMain application, String[] applicationArgs, Iterable<ScriptAction> actions,
+	void runScript(MainFunction application, String[] applicationArgs, Iterable<ScriptAction> actions,
 			boolean ignoreRemaining, Duration timeout) {
 		try {
 			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining, timeout);
@@ -257,11 +267,19 @@ public abstract class SWTTest {
 			scriptRunnerThread.setDaemon(true);
 			scriptRunnerThread.start();
 
-			LOG.info("Running application {0} {1}...", application.name(), Strings.join(applicationArgs, " "));
+			LOG.info("Running application {0} {1}...", application, Strings.join(applicationArgs, " "));
 
-			int applicationStatus = application.run(applicationArgs);
+			application.main(applicationArgs);
 
-			LOG.info("Application terminated normally (status {0})", applicationStatus);
+			LOG.info("Application terminated normally");
+
+			Display display = Display.getCurrent();
+
+			while (!display.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
 
 			Timing wait = new Timing(scriptRunnerThread::join);
 

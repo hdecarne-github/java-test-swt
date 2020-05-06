@@ -91,6 +91,7 @@ final class ScriptRunnerThread extends Thread {
 				LOG.debug("All actions processed; cleaning up...");
 			} finally {
 				remainingShellTexts = disposeRemaining(display, !this.ignoreRemaining);
+				display.dispose();
 			}
 			if (!this.ignoreRemaining && !remainingShellTexts.isEmpty()) {
 				Assertions.fail("Remaining Shells detected: " + Strings.join(remainingShellTexts, ", "));

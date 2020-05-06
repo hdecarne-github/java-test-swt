@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2020 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2017-2020 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault
-package de.carne.swt.test.graphics;
+package de.carne.test.swt.tester;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+/**
+ * Functional interface for application execution.
+ */
+@FunctionalInterface
+public interface MainFunction {
+
+	/**
+	 * Runs the applications.
+	 * 
+	 * @param args the application command line.
+	 */
+	void main(String[] args);
+
+}

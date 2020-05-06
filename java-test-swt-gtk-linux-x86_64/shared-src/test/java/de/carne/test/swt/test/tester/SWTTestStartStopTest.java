@@ -16,9 +16,9 @@
  */
 package de.carne.test.swt.test.tester;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.boot.Application;
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTest;
 
@@ -30,7 +30,11 @@ class SWTTestStartStopTest extends SWTTest {
 
 	@Test
 	void testStartStop() {
-		script(Application::run).args(getClass().getSimpleName()).execute(true);
+		Script script = script(SWTTestApplication::main);
+
+		script.args(getClass().getSimpleName()).execute(true);
+
+		Assertions.assertTrue(script.passed());
 	}
 
 }

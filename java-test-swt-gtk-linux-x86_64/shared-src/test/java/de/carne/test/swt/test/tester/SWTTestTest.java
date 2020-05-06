@@ -16,21 +16,35 @@
  */
 package de.carne.test.swt.test.tester;
 
+import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
-import de.carne.test.swt.app.TestAppTest;
 import de.carne.test.swt.tester.SWTTest;
 
 /**
  * Test {@linkplain SWTTest} class - Full application test.
  */
 @DisableIfThreadNotSWTCapable
-class SWTTestTest extends TestAppTest {
+class SWTTestTest extends SWTTest {
 
 	@Test
 	void testApplication() {
-		executeTestScript(getClass().getSimpleName());
+		Script script = script(SWTTestApplication::main);
+
+		script.add(this::doCloseRoot);
+		script.execute();
+
+		Assertions.assertTrue(script.passed());
+	}
+
+	protected void doCloseRoot() {
+		traceAction();
+
+		Shell root = accessShell(SWTTestApplication.ROOT_TITLE).get();
+
+		root.close();
 	}
 
 }
