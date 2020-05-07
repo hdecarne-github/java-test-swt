@@ -17,7 +17,6 @@
 package de.carne.test.swt.tester.accessor;
 
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -58,17 +57,6 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	}
 
 	/**
-	 * Wraps a {@linkplain Control} object for further accessor based processing.
-	 *
-	 * @param <C> the actual control type to wrap.
-	 * @param optionalControl the optional {@linkplain Control} object to wrap.
-	 * @return the wrapped optional {@linkplain Control} object.
-	 */
-	public static <C extends Control> ControlAccessor<C> wrapControl(Optional<C> optionalControl) {
-		return new ControlAccessor<>(optionalControl);
-	}
-
-	/**
 	 * Creates a {@linkplain Predicate} for control type matching.
 	 *
 	 * @param type the control type to match.
@@ -76,17 +64,6 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	 */
 	public static Predicate<Control> matchClass(Class<? extends Control> type) {
 		return control -> type.isAssignableFrom(control.getClass());
-	}
-
-	/**
-	 * Creates a {@linkplain Function} for control type mapping.
-	 *
-	 * @param type the control type to map to.
-	 * @return the created {@linkplain Function}.
-	 * @param <S> the control type to map to.
-	 */
-	public static <S extends Control> Function<Control, S> mapClass(Class<S> type) {
-		return type::cast;
 	}
 
 }

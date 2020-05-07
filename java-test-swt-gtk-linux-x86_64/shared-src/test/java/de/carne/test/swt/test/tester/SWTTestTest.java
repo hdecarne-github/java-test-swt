@@ -16,12 +16,16 @@
  */
 package de.carne.test.swt.test.tester;
 
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.carne.test.swt.DisableIfThreadNotSWTCapable;
 import de.carne.test.swt.tester.SWTTest;
+import de.carne.test.swt.tester.accessor.ButtonAccessor;
+import de.carne.test.swt.tester.accessor.CompositeAccessor;
+import de.carne.test.swt.tester.accessor.ControlAccessor;
 
 /**
  * Test {@linkplain SWTTest} class - Full application test.
@@ -33,18 +37,32 @@ class SWTTestTest extends SWTTest {
 	void testApplication() {
 		Script script = script(SWTTestApplication::main);
 
+		script.add(this::doTestRightButton);
 		script.add(this::doCloseRoot);
 		script.execute();
 
 		Assertions.assertTrue(script.passed());
 	}
 
+	protected void doTestRightButton() {
+		traceAction();
+
+		accessShell().accessChild(CompositeAccessor::new, Composite.class, 1)
+				.accessButton(ButtonAccessor.matchText(SWTTestApplication.BUTTON_RIGHT)).select();
+
+		Assertions.assertEquals("Button selected: " + SWTTestApplication.BUTTON_RIGHT, getLastMessage());
+	}
+
 	protected void doCloseRoot() {
 		traceAction();
 
-		Shell root = accessShell(SWTTestApplication.ROOT_TITLE).get();
+		accessShell().get().close();
+	}
 
-		root.close();
+	private String getLastMessage() {
+		List messages = accessShell().accessChild(ControlAccessor::new, List.class, 3).get();
+
+		return messages.getItem(messages.getItemCount() - 1);
 	}
 
 }

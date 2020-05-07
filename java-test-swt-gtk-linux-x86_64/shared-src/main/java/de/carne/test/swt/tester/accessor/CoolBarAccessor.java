@@ -65,7 +65,7 @@ public class CoolBarAccessor extends ControlAccessor<CoolBar> {
 	 * @return the found {@linkplain CoolItem}.
 	 */
 	public CoolItemAccessor accessCoolItem(int itemIndex) {
-		Optional<? extends CoolBar> optionalCoolBar = getOptional();
+		Optional<CoolBar> optionalCoolBar = getOptional();
 
 		return new CoolItemAccessor(optionalCoolBar.isPresent() ? getCoolItem(optionalCoolBar.get(), itemIndex) : null);
 	}

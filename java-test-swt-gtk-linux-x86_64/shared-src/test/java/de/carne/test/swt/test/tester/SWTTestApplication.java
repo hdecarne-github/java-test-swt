@@ -21,15 +21,19 @@ import java.util.Arrays;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -41,6 +45,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import de.carne.util.Check;
 import de.carne.util.Late;
 
 class SWTTestApplication {
@@ -53,6 +58,10 @@ class SWTTestApplication {
 	final static String TOOL_ITEM_FILE = "File";
 	final static String TOOL_ITEM_FONT = "Font";
 	final static String TOOL_ITEM_PRINT = "Print";
+
+	final static String BUTTON_LEFT = "Left button";
+	final static String BUTTON_MIDDLE = "Middle button";
+	final static String BUTTON_RIGHT = "Right button";
 
 	private final Shell root;
 	private final Late<List> messageListHolder = new Late<>();
@@ -81,6 +90,7 @@ class SWTTestApplication {
 				display.sleep();
 			}
 		}
+		display.dispose();
 	}
 
 	private void setupRoot() {
@@ -119,6 +129,11 @@ class SWTTestApplication {
 
 		dialogBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		setupDialogBar(dialogBar);
+
+		Composite buttonRow = new Composite(this.root, SWT.BORDER);
+
+		buttonRow.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		setupButtonRow(buttonRow);
 
 		Label messageListLabel = new Label(this.root, SWT.LEFT);
 
@@ -253,6 +268,29 @@ class SWTTestApplication {
 		PrinterData printer = dialog.open();
 
 		addMessage("PrintDialog: " + printer);
+	}
+
+	private void setupButtonRow(Composite buttonRow) {
+		buttonRow.setLayout(new RowLayout());
+
+		Button leftButton = new Button(buttonRow, SWT.PUSH);
+
+		leftButton.setText(BUTTON_LEFT);
+		leftButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onButtonSelected));
+
+		Button middleButton = new Button(buttonRow, SWT.PUSH);
+
+		middleButton.setText(BUTTON_MIDDLE);
+		middleButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onButtonSelected));
+
+		Button rightButton = new Button(buttonRow, SWT.PUSH);
+
+		rightButton.setText(BUTTON_RIGHT);
+		rightButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onButtonSelected));
+	}
+
+	private void onButtonSelected(SelectionEvent evt) {
+		addMessage("Button selected: " + Check.isInstanceOf(evt.widget, Button.class).getText());
 	}
 
 	private void addMessage(String message) {

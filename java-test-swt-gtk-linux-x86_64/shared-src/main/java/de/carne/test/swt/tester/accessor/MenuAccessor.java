@@ -17,6 +17,7 @@
 package de.carne.test.swt.tester.accessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -75,7 +76,8 @@ public class MenuAccessor extends Accessor<Menu> {
 	public Stream<MenuItem> items(int maxDepth, boolean depthsFirst) {
 		Optional<? extends Menu> optionalMenu = getOptional();
 
-		return (optionalMenu.isPresent() ? collectItems(new ArrayList<>(), get(), 0, maxDepth, depthsFirst).stream()
+		return (optionalMenu.isPresent()
+				? collectItems(new ArrayList<>(), optionalMenu.get(), 0, maxDepth, depthsFirst).stream()
 				: Stream.empty());
 	}
 
@@ -89,9 +91,7 @@ public class MenuAccessor extends Accessor<Menu> {
 					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
 				}
 			} else {
-				for (MenuItem menuItem : menuItems) {
-					items.add(menuItem);
-				}
+				items.addAll(Arrays.asList(menuItems));
 				for (MenuItem menuItem : menuItems) {
 					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
 				}

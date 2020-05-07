@@ -65,7 +65,7 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	 * @return the found {@linkplain ToolItem}.
 	 */
 	public ToolItemAccessor accessToolItem(int itemIndex) {
-		Optional<? extends ToolBar> optionalToolBar = getOptional();
+		Optional<ToolBar> optionalToolBar = getOptional();
 
 		return new ToolItemAccessor(optionalToolBar.isPresent() ? getToolItem(optionalToolBar.get(), itemIndex) : null);
 	}

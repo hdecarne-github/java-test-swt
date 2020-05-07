@@ -16,11 +16,8 @@
  */
 package de.carne.test.swt.tester.accessor;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolItem;
@@ -60,8 +57,7 @@ public class CoolItemAccessor extends ItemAccessor<CoolItem> {
 	 * @param controlClass the type of requested control.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> @NonNull A accessControl(Function<Optional<C>, A> wrap,
-			Class<C> controlClass) {
+	public <C extends Control, A extends Accessor<C>> A accessControl(WrapFunction<C, A> wrap, Class<C> controlClass) {
 		Optional<? extends CoolItem> optionalCoolItem = getOptional();
 		@Nullable C control = null;
 
@@ -72,7 +68,7 @@ public class CoolItemAccessor extends ItemAccessor<CoolItem> {
 				control = controlClass.cast(coolItemControl);
 			}
 		}
-		return Objects.requireNonNull(wrap.apply(Optional.ofNullable(control)));
+		return wrap.apply(Optional.ofNullable(control));
 	}
 
 }
