@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Control;
  * @param <A> the actual control accessor type.
  */
 @FunctionalInterface
-public interface WrapFunction<C extends Control, A extends Accessor<C>> extends Function<Optional<C>, A> {
+public interface WrapFunction<C extends Control, A extends Accessor<?>> extends Function<Optional<C>, A> {
 
 	// Nothing to declare here
 

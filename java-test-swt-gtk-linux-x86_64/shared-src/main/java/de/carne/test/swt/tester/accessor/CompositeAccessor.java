@@ -153,7 +153,7 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * @param childIndex the child index to access.
 	 * @return the found {@linkplain Control}.
 	 */
-	public <C extends Control, A extends Accessor<C>> A accessChild(WrapFunction<C, A> wrap, Class<C> childClass,
+	public <C extends Control, A extends Accessor<?>> A accessChild(WrapFunction<C, A> wrap, Class<C> childClass,
 			int childIndex) {
 		Optional<? extends Composite> optionalComposite = getOptional();
 		@Nullable C child = null;
