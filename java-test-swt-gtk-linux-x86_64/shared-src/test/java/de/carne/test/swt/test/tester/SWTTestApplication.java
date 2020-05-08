@@ -34,6 +34,8 @@ import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -134,6 +136,11 @@ class SWTTestApplication {
 
 		buttonRow.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		setupButtonRow(buttonRow);
+
+		CoolBar coolBar = new CoolBar(this.root, SWT.FLAT);
+
+		coolBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		setupCoolBar(coolBar);
 
 		Label messageListLabel = new Label(this.root, SWT.LEFT);
 
@@ -291,6 +298,36 @@ class SWTTestApplication {
 
 	private void onButtonSelected(SelectionEvent evt) {
 		addMessage("Button selected: " + Check.isInstanceOf(evt.widget, Button.class).getText());
+	}
+
+	private void setupCoolBar(CoolBar coolBar) {
+		CoolItem leftItem = new CoolItem(coolBar, SWT.NONE);
+		Button leftButton = new Button(coolBar, SWT.PUSH);
+
+		leftButton.setText(BUTTON_LEFT);
+		leftButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onCoolButtonSelected));
+		leftItem.setControl(leftButton);
+		leftItem.setPreferredSize(leftButton.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		CoolItem middleItem = new CoolItem(coolBar, SWT.NONE);
+		Button middleButton = new Button(coolBar, SWT.PUSH);
+
+		middleButton.setText(BUTTON_MIDDLE);
+		middleButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onCoolButtonSelected));
+		middleItem.setControl(middleButton);
+		middleItem.setPreferredSize(middleButton.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		CoolItem rightItem = new CoolItem(coolBar, SWT.NONE);
+		Button rightButton = new Button(coolBar, SWT.PUSH);
+
+		rightButton.setText(BUTTON_RIGHT);
+		rightButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onCoolButtonSelected));
+		rightItem.setControl(rightButton);
+		rightItem.setPreferredSize(rightButton.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	}
+
+	private void onCoolButtonSelected(SelectionEvent evt) {
+		addMessage("CoolButton selected: " + Check.isInstanceOf(evt.widget, Button.class).getText());
 	}
 
 	private void addMessage(String message) {

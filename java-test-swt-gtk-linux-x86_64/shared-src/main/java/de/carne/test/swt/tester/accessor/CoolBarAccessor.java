@@ -16,11 +16,17 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.ToolItem;
+
+import de.carne.util.stream.Unique;
 
 /**
  * Accessor class for {@linkplain CoolBar} objects.
@@ -46,13 +52,27 @@ public class CoolBarAccessor extends ControlAccessor<CoolBar> {
 	}
 
 	/**
-	 * Wraps a {@linkplain CoolBar} object for further accessor based processing.
+	 * Gets all {@linkplain CoolItem}s of this {@linkplain CoolBar}.
 	 *
-	 * @param optionalCoolBar the optional {@linkplain CoolBar} object to wrap.
-	 * @return the wrapped optional {@linkplain CoolBar} object.
+	 * @return all {@linkplain CoolItem}s of this {@linkplain CoolBar}.
 	 */
-	public static CoolBarAccessor wrapCoolBar(Optional<CoolBar> optionalCoolBar) {
-		return new CoolBarAccessor(optionalCoolBar);
+	public Stream<CoolItem> items() {
+		Optional<CoolBar> optionalCoolBar = getOptional();
+
+		return (optionalCoolBar.isPresent() ? Arrays.stream(optionalCoolBar.get().getItems()) : Stream.empty());
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain CoolItem}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain ToolItem} exists.
+	 * </p>
+	 *
+	 * @param predicate the match criteria to use.
+	 * @return the found {@linkplain CoolItem}.
+	 */
+	public CoolItemAccessor accessItem(Predicate<CoolItem> predicate) {
+		return new CoolItemAccessor(items().filter(predicate).collect(Unique.getOptional()));
 	}
 
 	/**
@@ -64,7 +84,7 @@ public class CoolBarAccessor extends ControlAccessor<CoolBar> {
 	 * @param itemIndex the item index to get.
 	 * @return the found {@linkplain CoolItem}.
 	 */
-	public CoolItemAccessor accessCoolItem(int itemIndex) {
+	public CoolItemAccessor accessItem(int itemIndex) {
 		Optional<CoolBar> optionalCoolBar = getOptional();
 
 		return new CoolItemAccessor(optionalCoolBar.isPresent() ? getCoolItem(optionalCoolBar.get(), itemIndex) : null);

@@ -22,7 +22,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.ToolBar;
@@ -35,6 +37,7 @@ import de.carne.test.swt.tester.SWTTest;
 import de.carne.test.swt.tester.accessor.ButtonAccessor;
 import de.carne.test.swt.tester.accessor.CompositeAccessor;
 import de.carne.test.swt.tester.accessor.ControlAccessor;
+import de.carne.test.swt.tester.accessor.CoolBarAccessor;
 import de.carne.test.swt.tester.accessor.ToolBarAccessor;
 
 /**
@@ -54,6 +57,7 @@ class SWTTestApplicationTest extends SWTTest {
 		script.add(this::doTestFontDialog);
 		script.add(this::doTestPrintDialog);
 		script.add(this::doTestMiddleButton);
+		script.add(this::doTestMiddleCoolButton);
 		script.add(this::doCloseRoot);
 		script.execute();
 
@@ -67,8 +71,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		mockMessageBox().result(result);
 
-		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0)
-				.accessItem(SWTTestApplication.TOOL_ITEM_MESSAGE).select();
+		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(0).select();
 
 		Assertions.assertEquals("MessageBox: " + result, getLastMessage());
 	}
@@ -147,6 +150,15 @@ class SWTTestApplicationTest extends SWTTest {
 		Assertions.assertEquals("Button selected: " + SWTTestApplication.BUTTON_MIDDLE, getLastMessage());
 	}
 
+	protected void doTestMiddleCoolButton() {
+		traceAction();
+
+		accessShell().accessChild(CoolBarAccessor::new, CoolBar.class, 2).accessItem(1)
+				.accessControl(ButtonAccessor::new, Button.class).select();
+
+		Assertions.assertEquals("CoolButton selected: " + SWTTestApplication.BUTTON_MIDDLE, getLastMessage());
+	}
+
 	protected void doCloseRoot() {
 		traceAction();
 
@@ -154,7 +166,7 @@ class SWTTestApplicationTest extends SWTTest {
 	}
 
 	private String getLastMessage() {
-		List messages = accessShell().accessChild(ControlAccessor::new, List.class, 3).get();
+		List messages = accessShell().accessChild(ControlAccessor::new, List.class, 4).get();
 
 		return messages.getItem(messages.getItemCount() - 1);
 	}

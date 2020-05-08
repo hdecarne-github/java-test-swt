@@ -84,7 +84,7 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	 * @return the found {@linkplain ToolItem}.
 	 */
 	public ToolItemAccessor accessItem(String text) {
-		return new ToolItemAccessor(items().filter(ItemAccessor.matchText(text)).collect(Unique.getOptional()));
+		return accessItem(ItemAccessor.matchText(text));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	 * @param itemIndex the item index to get.
 	 * @return the found {@linkplain ToolItem}.
 	 */
-	public ToolItemAccessor accessToolItem(int itemIndex) {
+	public ToolItemAccessor accessItem(int itemIndex) {
 		Optional<ToolBar> optionalToolBar = getOptional();
 
 		return new ToolItemAccessor(optionalToolBar.isPresent() ? getToolItem(optionalToolBar.get(), itemIndex) : null);

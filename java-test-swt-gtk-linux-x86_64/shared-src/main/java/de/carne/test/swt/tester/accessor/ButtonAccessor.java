@@ -49,16 +49,6 @@ public class ButtonAccessor extends ControlAccessor<Button> {
 	}
 
 	/**
-	 * Wraps a {@linkplain Button} object for further accessor based processing.
-	 *
-	 * @param optionalButton the optional {@linkplain Button} object to wrap.
-	 * @return the wrapped optional {@linkplain Button} object.
-	 */
-	public static ButtonAccessor wrapButton(Optional<Button> optionalButton) {
-		return new ButtonAccessor(optionalButton);
-	}
-
-	/**
 	 * Creates a {@linkplain Predicate} for exact text matching.
 	 *
 	 * @param text the text to match.
