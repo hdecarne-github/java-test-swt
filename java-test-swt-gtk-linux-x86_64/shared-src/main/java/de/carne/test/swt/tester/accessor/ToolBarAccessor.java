@@ -16,11 +16,16 @@
  */
 package de.carne.test.swt.tester.accessor;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import de.carne.util.stream.Unique;
 
 /**
  * Accessor class for {@linkplain ToolBar} objects.
@@ -46,13 +51,40 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	}
 
 	/**
-	 * Wraps a {@linkplain ToolBar} object for further accessor based processing.
+	 * Gets all {@linkplain ToolItem}s of this {@linkplain ToolBar}.
 	 *
-	 * @param optionalToolBar the optional {@linkplain ToolBar} object to wrap.
-	 * @return the wrapped optional {@linkplain ToolBar} object.
+	 * @return all {@linkplain ToolItem}s of this {@linkplain ToolBar}.
 	 */
-	public static ToolBarAccessor wrapToolBar(Optional<ToolBar> optionalToolBar) {
-		return new ToolBarAccessor(optionalToolBar);
+	public Stream<ToolItem> items() {
+		Optional<ToolBar> optionalToolBar = getOptional();
+
+		return (optionalToolBar.isPresent() ? Arrays.stream(optionalToolBar.get().getItems()) : Stream.empty());
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain ToolItem}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain ToolItem} exists.
+	 * </p>
+	 *
+	 * @param predicate the match criteria to use.
+	 * @return the found {@linkplain ToolItem}.
+	 */
+	public ToolItemAccessor accessItem(Predicate<ToolItem> predicate) {
+		return new ToolItemAccessor(items().filter(predicate).collect(Unique.getOptional()));
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain ToolItem}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain ToolItem} exists.
+	 * </p>
+	 *
+	 * @param text the item text to match.
+	 * @return the found {@linkplain ToolItem}.
+	 */
+	public ToolItemAccessor accessItem(String text) {
+		return new ToolItemAccessor(items().filter(ItemAccessor.matchText(text)).collect(Unique.getOptional()));
 	}
 
 	/**
