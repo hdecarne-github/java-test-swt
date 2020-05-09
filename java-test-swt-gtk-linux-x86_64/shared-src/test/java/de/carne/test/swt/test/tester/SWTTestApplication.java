@@ -42,6 +42,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
@@ -53,6 +55,8 @@ import de.carne.util.Late;
 class SWTTestApplication {
 
 	final static String ROOT_TITLE = "root";
+
+	final static String MENU_ITEM_QUIT = "Quit";
 
 	final static String TOOL_ITEM_MESSAGE = "Message";
 	final static String TOOL_ITEM_COLOR = "Color";
@@ -126,6 +130,7 @@ class SWTTestApplication {
 			}
 
 		});
+		setupMenuBar();
 
 		ToolBar dialogBar = new ToolBar(this.root, SWT.FLAT);
 
@@ -151,6 +156,23 @@ class SWTTestApplication {
 
 		messageList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		this.messageListHolder.set(messageList);
+	}
+
+	private void setupMenuBar() {
+		Menu menuBar = new Menu(this.root, SWT.BAR);
+		MenuItem applicationItem = new MenuItem(menuBar, SWT.CASCADE);
+
+		applicationItem.setText(ROOT_TITLE);
+
+		Menu applicationMenu = new Menu(applicationItem);
+
+		applicationItem.setMenu(applicationMenu);
+
+		MenuItem quitItem = new MenuItem(applicationMenu, SWT.PUSH);
+
+		quitItem.setText(MENU_ITEM_QUIT);
+		quitItem.addSelectionListener(SelectionListener.widgetSelectedAdapter(evt -> this.root.close()));
+		this.root.setMenuBar(menuBar);
 	}
 
 	private void setupDialogBar(ToolBar dialogBar) {

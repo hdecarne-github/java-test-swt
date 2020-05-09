@@ -68,7 +68,7 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	 * @return the found {@linkplain MenuItem}.
 	 */
 	public MenuItemAccessor accessMenuItem(Predicate<MenuItem> predicate) {
-		return accessMenuBar().accessMenuItem(predicate);
+		return accessMenuBar().accessItem(predicate);
 	}
 
 }

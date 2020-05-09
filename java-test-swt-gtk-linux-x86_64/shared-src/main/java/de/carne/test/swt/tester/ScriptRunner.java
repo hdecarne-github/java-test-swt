@@ -26,4 +26,6 @@ interface ScriptRunner {
 
 	<T> T runWait(Supplier<T> supplier);
 
+	void recordAssertion(AssertionError assertion);
+
 }

@@ -121,8 +121,21 @@ public class MenuAccessor extends Accessor<Menu> {
 	 * @param predicate the match criteria to use.
 	 * @return the found {@linkplain MenuItem}.
 	 */
-	public MenuItemAccessor accessMenuItem(Predicate<MenuItem> predicate) {
+	public MenuItemAccessor accessItem(Predicate<MenuItem> predicate) {
 		return new MenuItemAccessor(items().filter(predicate).collect(Unique.getOptional()));
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain MenuItem}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain MenuItem} exists.
+	 * </p>
+	 *
+	 * @param text the item text to match.
+	 * @return the found {@linkplain MenuItem}.
+	 */
+	public MenuItemAccessor accessItem(String text) {
+		return accessItem(ItemAccessor.matchText(text));
 	}
 
 }

@@ -191,6 +191,19 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * A test failure is signaled if either none or more than one matching {@linkplain Button} exists.
 	 * </p>
 	 *
+	 * @param text the button text to match.
+	 * @return the found {@linkplain Button}.
+	 */
+	public ButtonAccessor accessButton(String text) {
+		return accessChild(ButtonAccessor::new, Button.class, ButtonAccessor.matchText(text));
+	}
+
+	/**
+	 * Convenience function which gets a specific {@linkplain Button}.
+	 * <p>
+	 * A test failure is signaled if either none or more than one matching {@linkplain Button} exists.
+	 * </p>
+	 *
 	 * @param childIndex the child index to access.
 	 * @return the found {@linkplain Button}.
 	 */

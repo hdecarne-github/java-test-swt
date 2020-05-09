@@ -30,6 +30,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -55,7 +56,7 @@ final class ScriptRunnerThread extends Thread {
 	private final Iterable<ScriptAction> actions;
 	private final boolean ignoreRemaining;
 	private final Duration timeout;
-	private final AtomicReference<AssertionError> assertionStatus = new AtomicReference<>();
+	private final AtomicReference<@Nullable AssertionError> assertionStatus = new AtomicReference<>();
 
 	ScriptRunnerThread(Iterable<ScriptAction> actions, boolean ignoreRemaining, Duration timeout) {
 		super(ScriptRunnerThread.class.getName());
@@ -256,6 +257,11 @@ final class ScriptRunnerThread extends Thread {
 				return ScriptRunnerThread.this.runWait(display, supplier);
 			}
 
+			@Override
+			public void recordAssertion(AssertionError assertion) {
+				ScriptRunnerThread.this.recordAssertion(assertion);
+			}
+
 		};
 	}
 
@@ -268,16 +274,8 @@ final class ScriptRunnerThread extends Thread {
 			runnable.run();
 		} else {
 			checkNativeDialog(display);
-			try {
-				display.syncExec(runnable);
-			} catch (RuntimeException | SWTError e) {
-				Throwable cause = e.getCause();
-
-				if (cause instanceof AssertionError) {
-					throw (AssertionError) cause;
-				}
-				throw e;
-			}
+			display.syncExec(runnable);
+			checkAssertion();
 		}
 	}
 
@@ -300,6 +298,26 @@ final class ScriptRunnerThread extends Thread {
 			}
 		}
 		return resultHolder.get();
+	}
+
+	void recordAssertion(AssertionError assertion) {
+		this.assertionStatus.accumulateAndGet(assertion, (current, update) -> {
+			AssertionError next = update;
+
+			if (current != null) {
+				current.addSuppressed(update);
+				next = current;
+			}
+			return next;
+		});
+	}
+
+	private void checkAssertion() {
+		AssertionError assertion = this.assertionStatus.get();
+
+		if (assertion != null) {
+			throw assertion;
+		}
 	}
 
 	private void checkNativeDialog(Display display) {

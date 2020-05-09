@@ -54,7 +54,13 @@ abstract class ScriptAction {
 
 		@Override
 		void run(ScriptRunner scriptRunner) throws InterruptedException {
-			scriptRunner.runNoWait(this.doAction);
+			scriptRunner.runNoWait(() -> {
+				try {
+					this.doAction.run();
+				} catch (AssertionError assertion) {
+					scriptRunner.recordAssertion(assertion);
+				}
+			});
 
 			Timing.step();
 
@@ -76,7 +82,13 @@ abstract class ScriptAction {
 		void run(ScriptRunner scriptRunner) throws InterruptedException {
 			long start = System.nanoTime();
 
-			scriptRunner.runWait(this.doAction);
+			scriptRunner.runWait(() -> {
+				try {
+					this.doAction.run();
+				} catch (AssertionError assertion) {
+					scriptRunner.recordAssertion(assertion);
+				}
+			});
 
 			long elapsed = System.nanoTime() - start;
 
