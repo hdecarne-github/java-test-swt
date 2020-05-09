@@ -63,6 +63,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testControlAccessor() {
 		Control value = null;
 		Optional<Control> optional = Optional.ofNullable(value);
@@ -73,6 +74,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testButtonAccessor() {
 		Button value = null;
 		Optional<Button> optional = Optional.ofNullable(value);
@@ -83,6 +85,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testCompositeAccessor() {
 		Composite value = null;
 		Optional<Composite> optional = Optional.ofNullable(value);
@@ -93,6 +96,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testDecorationsAccessor() {
 		Decorations value = null;
 		Optional<Decorations> optional = Optional.ofNullable(value);
@@ -103,6 +107,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testShellAccessor() {
 		Shell value = null;
 		Optional<Shell> optional = Optional.ofNullable(value);
@@ -113,6 +118,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testCoolBarAccessor() {
 		CoolBar value = null;
 		Optional<CoolBar> optional = Optional.ofNullable(value);
@@ -123,6 +129,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testToolBarAccessor() {
 		ToolBar value = null;
 		Optional<ToolBar> optional = Optional.ofNullable(value);
@@ -133,6 +140,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testItemAccessor() {
 		Item value = null;
 		Optional<Item> optional = Optional.ofNullable(value);
@@ -143,6 +151,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testCoolItemAccessor() {
 		CoolItem value = null;
 		Optional<CoolItem> optional = Optional.ofNullable(value);
@@ -153,6 +162,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testMenuItemAccessor() {
 		MenuItem value = null;
 		Optional<MenuItem> optional = Optional.ofNullable(value);
@@ -163,6 +173,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testToolItemAccessor() {
 		ToolItem value = null;
 		Optional<ToolItem> optional = Optional.ofNullable(value);
@@ -173,6 +184,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 	}
 
+	@Test
 	void testMenuAccessor() {
 		Menu value = null;
 		Optional<Menu> optional = Optional.ofNullable(value);
