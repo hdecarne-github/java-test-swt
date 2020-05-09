@@ -47,6 +47,15 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain ShellAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Shell} instance to access.
+	 */
+	public ShellAccessor(Accessor<Shell> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Gets this {@linkplain Shell}'s menu bar.
 	 *
 	 * @return this {@linkplain Shell}'s menu bar.

@@ -47,6 +47,15 @@ public class MenuItemAccessor extends ItemAccessor<MenuItem> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain MenuItemAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain MenuItem} instance to access.
+	 */
+	public MenuItemAccessor(Accessor<MenuItem> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Generate a selection event to the {@linkplain MenuItem}.
 	 */
 	public void select() {

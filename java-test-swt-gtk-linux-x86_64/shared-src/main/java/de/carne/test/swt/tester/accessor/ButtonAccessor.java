@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Event;
  */
 public class ButtonAccessor extends ControlAccessor<Button> {
 
-	private static final ButtonAccessor NOT_PRESENT = new ButtonAccessor(Optional.empty());
-
 	/**
 	 * Constructs a new {@linkplain ButtonAccessor} instance.
 	 *
@@ -48,6 +46,15 @@ public class ButtonAccessor extends ControlAccessor<Button> {
 	 */
 	public ButtonAccessor(Optional<Button> buttonHolder) {
 		super(buttonHolder);
+	}
+
+	/**
+	 * Constructs a new {@linkplain ButtonAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Button} instance to access.
+	 */
+	public ButtonAccessor(Accessor<Button> accessor) {
+		super(accessor);
 	}
 
 	/**
@@ -68,17 +75,6 @@ public class ButtonAccessor extends ControlAccessor<Button> {
 	 */
 	public static Predicate<Button> matchText(Pattern textPattern) {
 		return button -> textPattern.matcher(button.getText()).matches();
-	}
-
-	/**
-	 * Gets the button only if it is enabled.
-	 * 
-	 * @return the accessor for the enabled button.
-	 */
-	public ButtonAccessor accessEnabled() {
-		Optional<Button> optionalButton = getOptional();
-
-		return (optionalButton.isPresent() && optionalButton.get().isEnabled() ? this : NOT_PRESENT);
 	}
 
 	/**

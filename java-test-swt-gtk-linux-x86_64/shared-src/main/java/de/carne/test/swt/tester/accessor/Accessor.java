@@ -29,6 +29,8 @@ import org.opentest4j.AssertionFailedError;
  */
 public class Accessor<T> implements Supplier<T> {
 
+	private static final Accessor<Object> NOT_PRESENT = new Accessor<>(Optional.empty());
+
 	private final Optional<T> objectHolder;
 
 	/**
@@ -92,6 +94,17 @@ public class Accessor<T> implements Supplier<T> {
 	 */
 	public static <T> T get(@Nullable T object) {
 		return new Accessor<>(object).get();
+	}
+
+	/**
+	 * Gets the empty accessor.
+	 * 
+	 * @param <T> the actual object type to access.
+	 * @return the empty accessor.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Accessor<T> notPresent() {
+		return (Accessor<T>) NOT_PRESENT;
 	}
 
 }

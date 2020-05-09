@@ -54,6 +54,15 @@ public class MenuAccessor extends Accessor<Menu> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain MenuAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain Menu} instance to access.
+	 */
+	public MenuAccessor(Accessor<Menu> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Gets all {@linkplain MenuItem}s of this {@linkplain Menu}.
 	 * <p>
 	 * Calling this function is equivalent to calling {@code items(Integer.MAX_VALUE, true)}.

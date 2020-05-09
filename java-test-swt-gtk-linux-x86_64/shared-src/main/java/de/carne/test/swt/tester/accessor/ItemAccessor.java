@@ -53,7 +53,7 @@ public class ItemAccessor<T extends Item> extends Accessor<T> {
 	 *
 	 * @param accessor the accessor to the {@linkplain Item} instance to access.
 	 */
-	public ItemAccessor(ItemAccessor<T> accessor) {
+	public ItemAccessor(Accessor<T> accessor) {
 		super(accessor);
 	}
 

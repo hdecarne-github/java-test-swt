@@ -52,8 +52,19 @@ public class ControlAccessor<T extends Control> extends Accessor<T> {
 	 *
 	 * @param accessor the accessor to the {@linkplain Control} instance to access.
 	 */
-	public ControlAccessor(ControlAccessor<T> accessor) {
+	public ControlAccessor(Accessor<T> accessor) {
 		super(accessor);
+	}
+
+	/**
+	 * Gets the control only if it is enabled.
+	 *
+	 * @return the accessor for the enabled widget.
+	 */
+	public Accessor<T> accessEnabled() {
+		Optional<T> optionalControl = getOptional();
+
+		return (optionalControl.isPresent() && optionalControl.get().isEnabled() ? this : Accessor.notPresent());
 	}
 
 	/**

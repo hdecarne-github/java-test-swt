@@ -53,7 +53,7 @@ public class DecorationsAccessor<T extends Decorations> extends CompositeAccesso
 	 *
 	 * @param accessor the accessor to the {@linkplain Decorations} instance to access.
 	 */
-	public DecorationsAccessor(DecorationsAccessor<T> accessor) {
+	public DecorationsAccessor(Accessor<T> accessor) {
 		super(accessor);
 	}
 

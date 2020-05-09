@@ -47,6 +47,15 @@ public class ToolItemAccessor extends ItemAccessor<ToolItem> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain ToolItemAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain ToolItem} instance to access.
+	 */
+	public ToolItemAccessor(Accessor<ToolItem> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Generate a selection event to the {@linkplain ToolItem}.
 	 */
 	public void select() {

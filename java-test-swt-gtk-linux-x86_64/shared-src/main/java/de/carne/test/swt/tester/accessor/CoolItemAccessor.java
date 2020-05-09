@@ -46,6 +46,15 @@ public class CoolItemAccessor extends ItemAccessor<CoolItem> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain CoolItemAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain CoolItem} instance to access.
+	 */
+	public CoolItemAccessor(Accessor<CoolItem> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Gets the {@linkplain CoolItem}'s {@linkplain Control}.
 	 * <p>
 	 * A test failure is signaled if the requested {@linkplain Control} does not exist.

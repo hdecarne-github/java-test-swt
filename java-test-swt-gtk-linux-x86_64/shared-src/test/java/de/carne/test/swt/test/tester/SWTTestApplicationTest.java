@@ -166,8 +166,8 @@ class SWTTestApplicationTest extends SWTTest {
 	}
 
 	protected ButtonAccessor doWaitProgressDialogClosable() {
-		return accessShell(SWTTestApplication.PROGRESS_TITLE).accessButton(SWTTestApplication.BUTTON_CLOSE)
-				.accessEnabled();
+		return new ButtonAccessor(accessShell(SWTTestApplication.PROGRESS_TITLE)
+				.accessButton(SWTTestApplication.BUTTON_CLOSE).accessEnabled());
 	}
 
 	protected void doCloseProgressDialog(ButtonAccessor closeButton) {

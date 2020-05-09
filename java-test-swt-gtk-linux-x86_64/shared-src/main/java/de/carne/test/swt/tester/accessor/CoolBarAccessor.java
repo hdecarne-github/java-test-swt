@@ -52,6 +52,15 @@ public class CoolBarAccessor extends ControlAccessor<CoolBar> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain CoolBarAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain CoolBar} instance to access.
+	 */
+	public CoolBarAccessor(Accessor<CoolBar> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Gets all {@linkplain CoolItem}s of this {@linkplain CoolBar}.
 	 *
 	 * @return all {@linkplain CoolItem}s of this {@linkplain CoolBar}.

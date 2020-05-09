@@ -51,6 +51,15 @@ public class ToolBarAccessor extends ControlAccessor<ToolBar> {
 	}
 
 	/**
+	 * Constructs a new {@linkplain ToolBarAccessor} instance.
+	 *
+	 * @param accessor the accessor to the {@linkplain ToolBar} instance to access.
+	 */
+	public ToolBarAccessor(Accessor<ToolBar> accessor) {
+		super(accessor);
+	}
+
+	/**
 	 * Gets all {@linkplain ToolItem}s of this {@linkplain ToolBar}.
 	 *
 	 * @return all {@linkplain ToolItem}s of this {@linkplain ToolBar}.

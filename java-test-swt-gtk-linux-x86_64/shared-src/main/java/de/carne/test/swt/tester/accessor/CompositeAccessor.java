@@ -61,7 +61,7 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 *
 	 * @param accessor the accessor to the {@linkplain Composite} instance to access.
 	 */
-	public CompositeAccessor(CompositeAccessor<T> accessor) {
+	public CompositeAccessor(Accessor<T> accessor) {
 		super(accessor);
 	}
 
