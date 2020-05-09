@@ -58,6 +58,8 @@ class SWTTestApplicationTest extends SWTTest {
 		script.add(this::doTestPrintDialog);
 		script.add(this::doTestMiddleButton);
 		script.add(this::doTestMiddleCoolButton);
+		script.add(this::doOpenProgressDialog, true);
+		script.add(this::doWaitProgressDialogClosable, this::doCloseProgressDialog);
 		script.add(this::doCloseRoot);
 		script.execute();
 
@@ -157,6 +159,19 @@ class SWTTestApplicationTest extends SWTTest {
 				.accessControl(ButtonAccessor::new, Button.class).select();
 
 		Assertions.assertEquals("CoolButton selected: " + SWTTestApplication.BUTTON_MIDDLE, getLastMessage());
+	}
+
+	protected void doOpenProgressDialog() {
+		accessShell().accessMenuBar().accessItem(SWTTestApplication.MENU_ITEM_PROGRESS).select();
+	}
+
+	protected ButtonAccessor doWaitProgressDialogClosable() {
+		return accessShell(SWTTestApplication.PROGRESS_TITLE).accessButton(SWTTestApplication.BUTTON_CLOSE)
+				.accessEnabled();
+	}
+
+	protected void doCloseProgressDialog(ButtonAccessor closeButton) {
+		closeButton.select();
 	}
 
 	protected void doCloseRoot() {

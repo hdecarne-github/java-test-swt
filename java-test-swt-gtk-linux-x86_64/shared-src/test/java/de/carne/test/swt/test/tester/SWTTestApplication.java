@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -55,8 +56,12 @@ import de.carne.util.Late;
 class SWTTestApplication {
 
 	final static String ROOT_TITLE = "root";
+	final static String PROGRESS_TITLE = "progress";
 
+	final static String MENU_APPLICATION = "Application";
 	final static String MENU_ITEM_QUIT = "Quit";
+	final static String MENU_TEST = "Test";
+	final static String MENU_ITEM_PROGRESS = "Progress";
 
 	final static String TOOL_ITEM_MESSAGE = "Message";
 	final static String TOOL_ITEM_COLOR = "Color";
@@ -68,6 +73,7 @@ class SWTTestApplication {
 	final static String BUTTON_LEFT = "Left button";
 	final static String BUTTON_MIDDLE = "Middle button";
 	final static String BUTTON_RIGHT = "Right button";
+	final static String BUTTON_CLOSE = "Close";
 
 	private final Shell root;
 	private final Late<List> messageListHolder = new Late<>();
@@ -162,7 +168,7 @@ class SWTTestApplication {
 		Menu menuBar = new Menu(this.root, SWT.BAR);
 		MenuItem applicationItem = new MenuItem(menuBar, SWT.CASCADE);
 
-		applicationItem.setText(ROOT_TITLE);
+		applicationItem.setText(MENU_APPLICATION);
 
 		Menu applicationMenu = new Menu(applicationItem);
 
@@ -172,6 +178,19 @@ class SWTTestApplication {
 
 		quitItem.setText(MENU_ITEM_QUIT);
 		quitItem.addSelectionListener(SelectionListener.widgetSelectedAdapter(evt -> this.root.close()));
+
+		MenuItem testItem = new MenuItem(menuBar, SWT.CASCADE);
+
+		testItem.setText(MENU_TEST);
+
+		Menu testMenu = new Menu(testItem);
+
+		testItem.setMenu(testMenu);
+
+		MenuItem progressItem = new MenuItem(testMenu, SWT.PUSH);
+
+		progressItem.setText(MENU_ITEM_PROGRESS);
+		progressItem.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::openProgress));
 		this.root.setMenuBar(menuBar);
 	}
 
@@ -357,6 +376,45 @@ class SWTTestApplication {
 
 		messageList.add(message);
 		messageList.select(messageList.getItemCount() - 1);
+	}
+
+	@SuppressWarnings("unused")
+	private void openProgress(SelectionEvent evt) {
+		Shell dialog = new Shell(this.root, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+
+		dialog.setLayout(new RowLayout(SWT.VERTICAL));
+		dialog.setText(PROGRESS_TITLE);
+
+		ProgressBar progressBar = new ProgressBar(dialog, SWT.SMOOTH);
+
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(10);
+		progressBar.setSelection(0);
+
+		Button closeButton = new Button(dialog, SWT.PUSH);
+
+		closeButton.setText(BUTTON_CLOSE);
+		closeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::onProgressCloseSelected));
+
+		progressTimer(progressBar, closeButton);
+		dialog.pack();
+		dialog.open();
+	}
+
+	private void onProgressCloseSelected(SelectionEvent evt) {
+		Check.isInstanceOf(Check.isInstanceOf(evt.widget, Button.class).getParent(), Shell.class).close();
+	}
+
+	private void progressTimer(ProgressBar progressBar, Button closeButton) {
+		int newSelection = progressBar.getSelection() + 1;
+
+		if (newSelection < progressBar.getMaximum()) {
+			progressBar.setSelection(newSelection);
+			closeButton.setEnabled(false);
+			progressBar.getDisplay().timerExec(100, () -> progressTimer(progressBar, closeButton));
+		} else {
+			closeButton.setEnabled(true);
+		}
 	}
 
 }
