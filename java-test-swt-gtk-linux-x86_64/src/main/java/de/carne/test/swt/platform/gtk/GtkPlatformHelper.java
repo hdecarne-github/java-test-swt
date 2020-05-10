@@ -16,6 +16,9 @@
  */
 package de.carne.test.swt.platform.gtk;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,7 +28,9 @@ import org.eclipse.swt.internal.gtk.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import de.carne.nio.file.attribute.FileAttributes;
 import de.carne.test.swt.platform.PlatformHelper;
+import de.carne.test.swt.platform.ProcessRunner;
 import de.carne.util.logging.Log;
 
 /**
@@ -99,6 +104,16 @@ public class GtkPlatformHelper extends PlatformHelper {
 		LOG.debug("Find native dialog result: 0x{0}", Long.toHexString(nativeDialog));
 
 		return nativeDialog;
+	}
+
+	@Override
+	protected Path internalGrabScreen(Path dir) throws IOException {
+		Path tmpFile = Files.createTempFile(dir, null, ".png", FileAttributes.userFileDefault(dir)).toAbsolutePath();
+		ProcessRunner processRunner = new ProcessRunner("gnome-screenshot", "-f", tmpFile.toString());
+
+		processRunner.run();
+		processRunner.checkStatus();
+		return tmpFile;
 	}
 
 }
