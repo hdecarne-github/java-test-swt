@@ -30,13 +30,13 @@ class ProcessRunnerTest {
 
 	@Test
 	void testRunCommand() {
-		ProcessRunner runner = new ProcessRunner("nslookup", "127.0.0.1").withTimeout(5000).withCaptureOutput(true);
+		ProcessRunner runner = new ProcessRunner("nslookup", "github.com").withTimeout(5000).withCaptureOutput(true);
 		ProcessRunner.Status status = runner.run();
 
 		Assertions.assertEquals(ProcessRunner.Status.RUN_COMPLETED, status);
 		Assertions.assertTrue(runner.statusException().isEmpty());
 		Assertions.assertEquals(0, runner.exitValue());
-		Assertions.assertTrue(runner.output().contains("localhost"));
+		Assertions.assertTrue(runner.output().contains("github.com"));
 	}
 
 	@Test
