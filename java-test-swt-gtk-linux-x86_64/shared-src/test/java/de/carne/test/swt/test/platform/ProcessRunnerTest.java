@@ -30,7 +30,7 @@ class ProcessRunnerTest {
 
 	@Test
 	void testRunCommand() {
-		ProcessRunner runner = new ProcessRunner("nslookup", "localhost").withTimeout(5000).withCaptureOutput(true);
+		ProcessRunner runner = new ProcessRunner("nslookup", "127.0.0.1").withTimeout(5000).withCaptureOutput(true);
 		ProcessRunner.Status status = runner.run();
 
 		Assertions.assertEquals(ProcessRunner.Status.RUN_COMPLETED, status);
