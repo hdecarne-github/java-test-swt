@@ -25,6 +25,7 @@ addons:
   apt:
     packages:
       - fluxbox
+      - gnome-screenshot
 
 git:
   depth: false  
