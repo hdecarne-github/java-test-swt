@@ -121,6 +121,8 @@ class AccessorTest {
 		ShellAccessor accessor3 = new ShellAccessor(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(Optional.empty(), accessor1.accessMenuBar().accessItem(item -> true).getOptional());
 	}
 
 	@Test
