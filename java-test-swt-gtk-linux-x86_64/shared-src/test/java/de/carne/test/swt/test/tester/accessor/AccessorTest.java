@@ -72,6 +72,8 @@ class AccessorTest {
 		ControlAccessor<Control> accessor3 = new ControlAccessor<>(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(Optional.empty(), accessor1.accessEnabled().getOptional());
 	}
 
 	@Test
@@ -94,6 +96,9 @@ class AccessorTest {
 		CompositeAccessor<Composite> accessor3 = new CompositeAccessor<>(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(0, accessor1.children().count());
+		Assertions.assertEquals(Optional.empty(), accessor1.accessButton(0));
 	}
 
 	@Test
@@ -127,6 +132,10 @@ class AccessorTest {
 		CoolBarAccessor accessor3 = new CoolBarAccessor(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(0, accessor1.items().count());
+		Assertions.assertEquals(Optional.empty(), accessor1.accessItem(item -> true).getOptional());
+		Assertions.assertEquals(Optional.empty(), accessor1.accessItem(0).getOptional());
 	}
 
 	@Test
