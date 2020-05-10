@@ -112,6 +112,7 @@ subprojects {
 		}
 		jvmArgs "-javaagent:${classpath.find { it.name.contains('jmockit') }.absolutePath}"
 		enabled = project.name.endsWith(javatools.platform.swtToolkit)
+		workingDir = project.buildDir
 	}
 
 	project.tasks["sonarqube"].enabled = test.enabled
