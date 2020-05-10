@@ -69,53 +69,23 @@ public class MenuAccessor extends Accessor<Menu> {
 	 * </p>
 	 *
 	 * @return all {@linkplain MenuItem}s of this {@linkplain Menu}.
-	 * @see #items(int, boolean)
 	 */
 	public Stream<MenuItem> items() {
-		return items(Integer.MAX_VALUE, true);
-	}
-
-	/**
-	 * Gets all {@linkplain MenuItem}s of this {@linkplain Menu}.
-	 *
-	 * @param maxDepth the maximum number of sub-levels to search for items.
-	 * @param depthsFirst whether to collect depths first or not.
-	 * @return all {@linkplain MenuItem}s of this {@linkplain Menu}.
-	 */
-	public Stream<MenuItem> items(int maxDepth, boolean depthsFirst) {
 		Optional<? extends Menu> optionalMenu = getOptional();
 
-		return (optionalMenu.isPresent()
-				? collectItems(new ArrayList<>(), optionalMenu.get(), 0, maxDepth, depthsFirst).stream()
+		return (optionalMenu.isPresent() ? collectItems(new ArrayList<>(), optionalMenu.get(), 0).stream()
 				: Stream.empty());
 	}
 
-	private List<MenuItem> collectItems(List<MenuItem> items, Menu menu, int depth, int maxDepth, boolean depthsFirst) {
-		if (depth <= maxDepth) {
-			@NonNull MenuItem[] menuItems = menu.getItems();
+	private List<MenuItem> collectItems(List<MenuItem> items, Menu menu, int level) {
+		@NonNull MenuItem[] menuItems = menu.getItems();
 
-			if (depthsFirst) {
-				for (MenuItem menuItem : menuItems) {
-					items.add(menuItem);
-					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
-				}
-			} else {
-				items.addAll(Arrays.asList(menuItems));
-				for (MenuItem menuItem : menuItems) {
-					collectItems(items, menuItem, depth + 1, maxDepth, depthsFirst);
-				}
-			}
-		}
-		return items;
-	}
-
-	private List<MenuItem> collectItems(List<MenuItem> items, MenuItem item, int depth, int maxDepth,
-			boolean depthsFirst) {
-		if (depth <= maxDepth) {
-			Menu itemMenu = item.getMenu();
+		items.addAll(Arrays.asList(menuItems));
+		for (MenuItem menuItem : menuItems) {
+			Menu itemMenu = menuItem.getMenu();
 
 			if (itemMenu != null) {
-				collectItems(items, itemMenu, depth, maxDepth, depthsFirst);
+				collectItems(items, itemMenu, level + 1);
 			}
 		}
 		return items;

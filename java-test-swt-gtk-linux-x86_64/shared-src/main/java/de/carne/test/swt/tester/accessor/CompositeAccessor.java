@@ -72,50 +72,21 @@ public class CompositeAccessor<T extends Composite> extends ControlAccessor<T> {
 	 * </p>
 	 *
 	 * @return all child {@linkplain Control}s of this {@linkplain Composite}.
-	 * @see #children(int, boolean)
 	 */
 	public Stream<Control> children() {
-		return children(Integer.MAX_VALUE, true);
-	}
-
-	/**
-	 * Gets all child {@linkplain Control}s of this {@linkplain Composite}.
-	 * <p>
-	 * Calling this function is equivalent to calling {@code children(Integer.MAX_VALUE, true)}.
-	 * </p>
-	 *
-	 * @param maxDepth the maximum number of sub-levels to search for child controls.
-	 * @param depthFirst whether to collect depths first or not.
-	 * @return all child {@linkplain Control}s of this {@linkplain Composite}.
-	 */
-	public Stream<Control> children(int maxDepth, boolean depthFirst) {
 		Optional<? extends Composite> optionalComposite = getOptional();
 
-		return (optionalComposite.isPresent()
-				? collectChildren(new ArrayList<>(), get(), 0, maxDepth, depthFirst).stream()
-				: Stream.empty());
+		return (optionalComposite.isPresent() ? collectChildren(new ArrayList<>(), get(), 0).stream() : Stream.empty());
 	}
 
 	@SuppressWarnings("squid:S3776")
-	private List<Control> collectChildren(List<Control> children, Composite composite, int depth, int maxDepth,
-			boolean depthFirst) {
-		if (depth <= maxDepth) {
-			@NonNull Control[] controls = composite.getChildren();
+	private List<Control> collectChildren(List<Control> children, Composite composite, int level) {
+		@NonNull Control[] controls = composite.getChildren();
 
-			if (depthFirst) {
-				for (Control control : controls) {
-					children.add(control);
-					if (control instanceof Composite) {
-						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthFirst);
-					}
-				}
-			} else {
-				children.addAll(Arrays.asList(controls));
-				for (Control control : controls) {
-					if (control instanceof Composite) {
-						collectChildren(children, (Composite) control, depth + 1, maxDepth, depthFirst);
-					}
-				}
+		children.addAll(Arrays.asList(controls));
+		for (Control control : controls) {
+			if (control instanceof Composite) {
+				collectChildren(children, (Composite) control, level + 1);
 			}
 		}
 		return children;

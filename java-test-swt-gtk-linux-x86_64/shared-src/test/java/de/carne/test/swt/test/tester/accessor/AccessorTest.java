@@ -147,6 +147,10 @@ class AccessorTest {
 		ToolBarAccessor accessor3 = new ToolBarAccessor(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(0, accessor1.items().count());
+		Assertions.assertEquals(Optional.empty(), accessor1.accessItem(item -> true).getOptional());
+		Assertions.assertEquals(Optional.empty(), accessor1.accessItem(0).getOptional());
 	}
 
 	@Test
@@ -202,6 +206,8 @@ class AccessorTest {
 		MenuAccessor accessor3 = new MenuAccessor(accessor1);
 
 		testAccessors(accessor1, accessor2, accessor3);
+
+		Assertions.assertEquals(0, accessor1.items().count());
 	}
 
 	private <T> void testAccessors(Accessor<T> accessor1, Accessor<T> accessor2, Accessor<T> accessor3) {
