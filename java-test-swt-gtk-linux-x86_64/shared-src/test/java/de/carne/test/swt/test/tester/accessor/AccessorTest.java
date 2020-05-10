@@ -98,7 +98,7 @@ class AccessorTest {
 		testAccessors(accessor1, accessor2, accessor3);
 
 		Assertions.assertEquals(0, accessor1.children().count());
-		Assertions.assertEquals(Optional.empty(), accessor1.accessButton(0));
+		Assertions.assertEquals(Optional.empty(), accessor1.accessButton(0).getOptional());
 	}
 
 	@Test
