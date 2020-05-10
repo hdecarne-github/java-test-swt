@@ -16,6 +16,9 @@
  */
 package de.carne.test.swt.platform;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
@@ -111,6 +114,28 @@ public abstract class PlatformHelper {
 	 */
 	protected boolean internalCloseNativeDialogs(Display display) {
 		return false;
+	}
+
+	/**
+	 * Tries to grab the screen and stores a screenshot by invoking a platform dependent command.
+	 *
+	 * @param dir the directory to store the screenshot into.
+	 * @return the created screenshot file.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static Path grabScreen(Path dir) throws IOException {
+		return INSTANCE_HOLDER.get().internalGrabScreen(dir);
+	}
+
+	/**
+	 * Tries to grab the screen and stores a screenshot by invoking a platform dependent command.
+	 *
+	 * @param dir the directory to store the screenshot into.
+	 * @return the created screenshot file.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	protected Path internalGrabScreen(Path dir) throws IOException {
+		throw new IOException("No screenshot command found");
 	}
 
 }

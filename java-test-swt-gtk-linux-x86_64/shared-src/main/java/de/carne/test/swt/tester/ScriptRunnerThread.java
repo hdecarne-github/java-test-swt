@@ -17,6 +17,9 @@
 package de.carne.test.swt.tester;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,11 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWTError;
@@ -37,7 +38,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 
+import de.carne.nio.file.FileUtil;
+import de.carne.nio.file.attribute.FileAttributes;
 import de.carne.test.swt.platform.PlatformHelper;
+import de.carne.util.Exceptions;
 import de.carne.util.Strings;
 import de.carne.util.logging.Log;
 import de.carne.util.logging.LogLevel;
@@ -49,17 +53,16 @@ final class ScriptRunnerThread extends Thread {
 
 	private static final Log LOG = new Log();
 
-	private static final String ENV_SCREENSHOT_CMD = ScriptRunnerThread.class.getPackage().getName()
-			+ ".SCREENSHOT_CMD";
-
+	private final String testName;
 	private final Thread displayThread;
 	private final Iterable<ScriptAction> actions;
 	private final boolean ignoreRemaining;
 	private final Duration timeout;
 	private final AtomicReference<@Nullable AssertionError> assertionStatus = new AtomicReference<>();
 
-	ScriptRunnerThread(Iterable<ScriptAction> actions, boolean ignoreRemaining, Duration timeout) {
-		super(ScriptRunnerThread.class.getName());
+	ScriptRunnerThread(String testName, Iterable<ScriptAction> actions, boolean ignoreRemaining, Duration timeout) {
+		super(ScriptRunnerThread.class.getSimpleName() + " [" + testName + "]");
+		this.testName = testName;
 		this.displayThread = Thread.currentThread();
 		this.actions = actions;
 		this.ignoreRemaining = ignoreRemaining;
@@ -91,7 +94,7 @@ final class ScriptRunnerThread extends Thread {
 
 				LOG.debug("All actions processed; cleaning up...");
 			} finally {
-				remainingShellTexts = disposeRemaining(display, !this.ignoreRemaining);
+				remainingShellTexts = disposeRemaining(display);
 				display.dispose();
 			}
 			if (!this.ignoreRemaining && !remainingShellTexts.isEmpty()) {
@@ -116,9 +119,10 @@ final class ScriptRunnerThread extends Thread {
 		}
 	}
 
-	private List<String> disposeRemaining(Display display, boolean grabScreen) throws InterruptedException {
-		List<String> remainingShellTexts = new ArrayList<>();
+	private List<String> disposeRemaining(Display display) throws InterruptedException {
+		boolean grabScreen = this.assertionStatus.get() != null || !this.ignoreRemaining;
 		boolean screenGrabbed = false;
+		List<String> remainingShellTexts = new ArrayList<>();
 
 		if (PlatformHelper.inNativeDialog(display)) {
 			LOG.log((this.ignoreRemaining ? LogLevel.LEVEL_INFO : LogLevel.LEVEL_WARNING), null,
@@ -134,7 +138,7 @@ final class ScriptRunnerThread extends Thread {
 			Timing closing = new Timing();
 
 			while (PlatformHelper.closeNativeDialogs(display)) {
-				closing.step("");
+				closing.step("Timeout exceeded while waiting for <native dialog>");
 			}
 		}
 		if (!display.isDisposed()) {
@@ -176,35 +180,45 @@ final class ScriptRunnerThread extends Thread {
 		VALID_SCREENSHOT_CMDS.add("screencapture -c");
 	}
 
-	@SuppressWarnings("squid:S2076")
 	private void grabScreen() {
-		String screenshotCmd = System.getenv(ENV_SCREENSHOT_CMD);
+		try {
+			Path workingDir = FileUtil.workingDir();
 
-		if (screenshotCmd != null && VALID_SCREENSHOT_CMDS.contains(screenshotCmd)) {
-			LOG.info("Invoking screenshot command ''{0}''...", screenshotCmd);
+			LOG.info("Grabbing screenshot into directory ''{0}''...", workingDir);
 
-			try {
-				Process screenshotProcess = Runtime.getRuntime().exec(screenshotCmd);
-				boolean screenshotProcessExited = screenshotProcess.waitFor(Timing.STEP_TIMEOUT, TimeUnit.MILLISECONDS);
+			Path tmpScreenshotFile = PlatformHelper.grabScreen(workingDir);
 
-				if (screenshotProcessExited) {
-					int screenshotProcessStatus = screenshotProcess.exitValue();
+			LOG.info("Grabbed screenshot stored in file ''{0}''", tmpScreenshotFile);
 
-					LOG.log((screenshotProcessStatus != 0 ? Level.WARNING : Level.INFO), null,
-							"Screenshot command ''{0}'' finished (status {1})", screenshotCmd, screenshotProcessStatus);
-				} else {
-					LOG.warning("Screenshot command ''{0}'' not finished after {1} ms", screenshotCmd,
-							Timing.STEP_TIMEOUT);
-				}
-			} catch (IOException e) {
-				LOG.warning(e, "Screenshot command ''{0}'' failed with I/O error", screenshotCmd);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				LOG.warning(e, "Screenshot command ''{0}'' interupted", screenshotCmd);
-			}
-		} else {
-			LOG.info("Environment variable {0} not set or not valid; ignoring screenshot request", ENV_SCREENSHOT_CMD);
+			Path screenshotFile = createScreenShotFile(tmpScreenshotFile);
+
+			Files.move(tmpScreenshotFile, screenshotFile, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			LOG.error(e, "Failed to grab screenshot");
 		}
+	}
+
+	private Path createScreenShotFile(Path tmpScreenshotFile) throws IOException {
+		Path dir = tmpScreenshotFile.getParent();
+		String extension = FileUtil.splitPath(tmpScreenshotFile.getFileName().toString())[2];
+		Path screenshotFile = null;
+		int screenshotIndex = 0;
+
+		while (screenshotFile == null) {
+			screenshotIndex++;
+			if (screenshotIndex > 9999) {
+				throw new IOException("Too many screenshots");
+			}
+			try {
+				Path createdFile = dir
+						.resolve(String.format("%1$s%2$04d.%3$s", this.testName, screenshotIndex, extension));
+
+				screenshotFile = Files.createFile(createdFile, FileAttributes.userFileDefault(dir));
+			} catch (IOException e) {
+				Exceptions.ignore(e);
+			}
+		}
+		return screenshotFile;
 	}
 
 	private Display getDisplay() {

@@ -54,6 +54,7 @@ public abstract class SWTTest {
 
 	private static final Log LOG = new Log();
 
+	private final String name;
 	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
 	private final Late<FileDialogMock> fileDialogMock = new Late<>();
 	private final Late<DirectoryDialogMock> directoryDialogMock = new Late<>();
@@ -65,7 +66,7 @@ public abstract class SWTTest {
 	 * Constructs a new {@code SWTTest} instance.
 	 */
 	protected SWTTest() {
-		this(true);
+		this(defaultName(), true);
 	}
 
 	/**
@@ -74,6 +75,17 @@ public abstract class SWTTest {
 	 * @param mockDialogs whether to mock native {@linkplain Dialog} instance ({@code true}) or not ({@code false}).
 	 */
 	protected SWTTest(boolean mockDialogs) {
+		this(defaultName(), mockDialogs);
+	}
+
+	/**
+	 * Constructs a new {@code SWTTest} instance.
+	 *
+	 * @param name the name of the running test.
+	 * @param mockDialogs whether to mock native {@linkplain Dialog} instance ({@code true}) or not ({@code false}).
+	 */
+	protected SWTTest(String name, boolean mockDialogs) {
+		this.name = name;
 		if (mockDialogs) {
 			this.messageBoxMock.set(new MessageBoxMock());
 			this.fileDialogMock.set(new FileDialogMock());
@@ -82,6 +94,14 @@ public abstract class SWTTest {
 			this.colorDialogMock.set(new ColorDialogMock());
 			this.fontDialogMock.set(new FontDialogMock());
 		}
+	}
+
+	private static String defaultName() {
+		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+		String className = stes[3].getClassName();
+		int simpleNameIndex = className.lastIndexOf('.');
+
+		return (simpleNameIndex >= 0 ? className.substring(simpleNameIndex + 1) : className);
 	}
 
 	/**
@@ -262,7 +282,8 @@ public abstract class SWTTest {
 	void runScript(MainFunction application, String[] applicationArgs, Iterable<ScriptAction> actions,
 			boolean ignoreRemaining, Duration timeout) {
 		try {
-			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(actions, ignoreRemaining, timeout);
+			ScriptRunnerThread scriptRunnerThread = new ScriptRunnerThread(this.name, actions, ignoreRemaining,
+					timeout);
 
 			scriptRunnerThread.setDaemon(true);
 			scriptRunnerThread.start();
@@ -300,10 +321,10 @@ public abstract class SWTTest {
 	 * Traces the calling function in the test run's debug log.
 	 */
 	protected void traceAction() {
-		if (LOG.isDebugLoggable()) {
+		if (LOG.isInfoLoggable()) {
 			StackTraceElement[] stes = Thread.currentThread().getStackTrace();
 
-			LOG.debug("Executing {0}", stes[2]);
+			LOG.info("Executing {0}", stes[2]);
 		}
 	}
 
@@ -339,7 +360,7 @@ public abstract class SWTTest {
 	 * @return the application's unique {@linkplain Shell}.
 	 */
 	protected ShellAccessor accessShell() {
-		return new ShellAccessor(shells().collect(Unique.get()));
+		return new ShellAccessor(shells().collect(Unique.getOptional()));
 	}
 
 	/**
@@ -352,7 +373,7 @@ public abstract class SWTTest {
 	 * @return the found {@linkplain Shell}.
 	 */
 	protected ShellAccessor accessShell(String text) {
-		return new ShellAccessor(shells().filter(DecorationsAccessor.matchText(text)).collect(Unique.get()));
+		return new ShellAccessor(shells().filter(DecorationsAccessor.matchText(text)).collect(Unique.getOptional()));
 	}
 
 	/**
@@ -365,7 +386,8 @@ public abstract class SWTTest {
 	 * @return the found {@linkplain Shell}.
 	 */
 	protected ShellAccessor accessShell(Pattern textPattern) {
-		return new ShellAccessor(shells().filter(DecorationsAccessor.matchText(textPattern)).collect(Unique.get()));
+		return new ShellAccessor(
+				shells().filter(DecorationsAccessor.matchText(textPattern)).collect(Unique.getOptional()));
 	}
 
 	/**
