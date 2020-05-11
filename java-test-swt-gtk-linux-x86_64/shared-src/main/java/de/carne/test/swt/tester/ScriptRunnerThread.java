@@ -22,11 +22,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -171,13 +169,6 @@ final class ScriptRunnerThread extends Thread {
 			display.dispose();
 		}
 		return remainingShellTexts;
-	}
-
-	private static final Set<String> VALID_SCREENSHOT_CMDS = new HashSet<>();
-
-	static {
-		// macOS
-		VALID_SCREENSHOT_CMDS.add("screencapture -c");
 	}
 
 	private void grabScreen() {
