@@ -179,11 +179,13 @@ final class ScriptRunnerThread extends Thread {
 
 			Path tmpScreenshotFile = PlatformHelper.grabScreen(workingDir);
 
-			LOG.info("Grabbed screenshot stored in file ''{0}''", tmpScreenshotFile);
+			LOG.info("Grabbed screenshot to file ''{0}''", tmpScreenshotFile);
 
 			Path screenshotFile = createScreenShotFile(tmpScreenshotFile);
 
 			Files.move(tmpScreenshotFile, screenshotFile, StandardCopyOption.REPLACE_EXISTING);
+
+			LOG.info("Grabbed screenshot stored in file ''{0}''", screenshotFile);
 		} catch (IOException e) {
 			LOG.error(e, "Failed to grab screenshot");
 		}
