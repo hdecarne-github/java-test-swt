@@ -109,6 +109,9 @@ public class GtkPlatformHelper extends PlatformHelper {
 	@Override
 	protected Path internalGrabScreen(Path dir) throws IOException {
 		Path tmpFile = Files.createTempFile(dir, null, ".png", FileAttributes.userFileDefault(dir)).toAbsolutePath();
+
+		Files.delete(tmpFile);
+
 		ProcessRunner processRunner = new ProcessRunner("gnome-screenshot", "-f", tmpFile.toString());
 
 		processRunner.run();
