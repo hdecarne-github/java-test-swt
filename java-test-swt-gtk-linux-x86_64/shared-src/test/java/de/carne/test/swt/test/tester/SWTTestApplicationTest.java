@@ -177,7 +177,7 @@ class SWTTestApplicationTest extends SWTTest {
 	protected void doCloseRoot() {
 		traceAction();
 
-		accessShell().accessMenuBar().accessItem(SWTTestApplication.MENU_ITEM_QUIT).select();
+		accessShell().close();
 	}
 
 	private String getLastMessage() {

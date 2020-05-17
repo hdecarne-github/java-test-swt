@@ -80,4 +80,11 @@ public class ShellAccessor extends DecorationsAccessor<Shell> {
 		return accessMenuBar().accessItem(predicate);
 	}
 
+	/**
+	 * Convenience function to close this {@linkplain Shell}.
+	 */
+	public void close() {
+		get().close();
+	}
+
 }
