@@ -98,13 +98,28 @@ public class Accessor<T> implements Supplier<T> {
 
 	/**
 	 * Gets the empty accessor.
-	 * 
+	 *
 	 * @param <T> the actual object type to access.
 	 * @return the empty accessor.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Accessor<T> notPresent() {
 		return (Accessor<T>) NOT_PRESENT;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.objectHolder.hashCode();
+	}
+
+	@Override
+	public boolean equals(@Nullable Object obj) {
+		return this.objectHolder.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return this.objectHolder.toString();
 	}
 
 }
