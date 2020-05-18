@@ -66,6 +66,12 @@ class SWTTestApplicationTest extends SWTTest {
 		Assertions.assertTrue(script.passed());
 	}
 
+	protected void doActiveShell() {
+		traceAction();
+
+		Assertions.assertEquals(accessShell(), accessActiveShell());
+	}
+
 	protected void doTestMessage() {
 		traceAction();
 
@@ -162,15 +168,21 @@ class SWTTestApplicationTest extends SWTTest {
 	}
 
 	protected void doOpenProgressDialog() {
+		traceAction();
+
 		accessShell().accessMenuBar().accessItem(SWTTestApplication.MENU_ITEM_PROGRESS).select();
 	}
 
 	protected ButtonAccessor doWaitProgressDialogClosable() {
+		traceAction();
+
 		return new ButtonAccessor(accessShell(SWTTestApplication.PROGRESS_TITLE)
 				.accessButton(SWTTestApplication.BUTTON_CLOSE).accessEnabled());
 	}
 
 	protected void doCloseProgressDialog(ButtonAccessor closeButton) {
+		traceAction();
+
 		closeButton.select();
 	}
 

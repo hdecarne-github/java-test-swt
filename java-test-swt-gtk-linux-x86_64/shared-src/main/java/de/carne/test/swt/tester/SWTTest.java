@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -349,6 +350,18 @@ public abstract class SWTTest {
 	 */
 	protected Stream<Shell> shells() {
 		return Arrays.stream(display().getShells());
+	}
+
+	/**
+	 * Gets the currently active {@linkplain Shell}.
+	 * <p>
+	 * A test failure is signaled if no active {@linkplain Shell} exists.
+	 * </p>
+	 *
+	 * @return the application's active {@linkplain Shell}.
+	 */
+	protected ShellAccessor accessActiveShell() {
+		return new ShellAccessor(Optional.ofNullable(display().getActiveShell()));
 	}
 
 	/**
