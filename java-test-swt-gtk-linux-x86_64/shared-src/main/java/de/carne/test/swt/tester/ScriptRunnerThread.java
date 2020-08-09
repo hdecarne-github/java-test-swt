@@ -273,10 +273,12 @@ final class ScriptRunnerThread extends Thread {
 	}
 
 	void runNoWait(Display display, Runnable runnable) {
+		checkDisplayNotDisposed(display);
 		display.asyncExec(runnable);
 	}
 
 	void runWait(Display display, Runnable runnable) {
+		checkDisplayNotDisposed(display);
 		if (Thread.currentThread().equals(display.getThread())) {
 			runnable.run();
 		} else {
@@ -287,6 +289,8 @@ final class ScriptRunnerThread extends Thread {
 	}
 
 	<T> T runWait(Display display, Supplier<T> supplier) {
+		checkDisplayNotDisposed(display);
+
 		final AtomicReference<T> resultHolder = new AtomicReference<>();
 
 		if (Thread.currentThread().equals(display.getThread())) {
@@ -324,6 +328,12 @@ final class ScriptRunnerThread extends Thread {
 
 		if (assertion != null) {
 			throw assertion;
+		}
+	}
+
+	private void checkDisplayNotDisposed(Display display) {
+		if (display.isDisposed()) {
+			Assertions.fail("Display disposed");
 		}
 	}
 
