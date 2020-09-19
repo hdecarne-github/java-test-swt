@@ -91,7 +91,7 @@ subprojects {
 			exclude(group: "org.eclipse.platform", module: 'org.eclipse.swt.${osgi.platform}')
 		}
 		implementation(group: "de.carne.common", name: "java-default", version: project.javaDefaultVersion)
-		api(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
+		implementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
 		implementation(group: "de.carne.common", name: "jmockit", version: project.jmockitVersion)
 	}
 	
