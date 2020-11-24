@@ -16,29 +16,47 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.function.Supplier;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * Interface for mocking of standard dialog results during a test run.
+ * Base class for mocking of standard dialog results during a test run.
  *
  * @param <T> the actual dialog result type.
  */
-public interface DialogMock<T> {
+public abstract class DialogMock<T> {
+
+	private Deque<@Nullable Supplier<T>> resultQueue = new LinkedList<>();
 
 	/**
 	 * Adds a result to the result queue.
 	 *
 	 * @param result the result to add.
 	 */
-	void offerResult(@Nullable T result);
+	public void offerResult(@Nullable T result) {
+		offerResult(result != null ? () -> result : null);
+	}
 
 	/**
 	 * Adds a result to the result queue.
 	 *
 	 * @param resultSupplier the result to add.
 	 */
-	void offerResult(Supplier<@Nullable T> resultSupplier);
+	public void offerResult(@Nullable Supplier<T> resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
+	}
+
+	/**
+	 * Gets the next result from the result queue.
+	 *
+	 * @return the next result from the result queue or {@code null} if the result queue is empty.
+	 */
+	@Nullable
+	protected Supplier<T> pollResult() {
+		return this.resultQueue.poll();
+	}
 
 }

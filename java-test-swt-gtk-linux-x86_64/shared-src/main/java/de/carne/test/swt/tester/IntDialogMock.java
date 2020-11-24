@@ -16,25 +16,45 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.function.IntSupplier;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Interface for mocking of standard dialog results during a test run.
  */
-public interface IntDialogMock {
+public abstract class IntDialogMock {
+
+	private Deque<IntSupplier> resultQueue = new LinkedList<>();
 
 	/**
 	 * Adds a result to the result queue.
 	 *
 	 * @param result the result to add.
 	 */
-	void offerResult(int result);
+	public void offerResult(int result) {
+		offerResult(() -> result);
+	}
 
 	/**
 	 * Adds a result to the result queue.
 	 *
 	 * @param resultSupplier the result to add.
 	 */
-	void offerResult(IntSupplier resultSupplier);
+	public void offerResult(IntSupplier resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
+	}
+
+	/**
+	 * Gets the next result from the result queue.
+	 *
+	 * @return the next result from the result queue or {@code null} if the result queue is empty.
+	 */
+	@Nullable
+	protected IntSupplier pollResult() {
+		return this.resultQueue.poll();
+	}
 
 }

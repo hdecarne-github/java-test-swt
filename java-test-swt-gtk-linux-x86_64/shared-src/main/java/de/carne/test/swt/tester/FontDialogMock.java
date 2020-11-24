@@ -16,11 +16,8 @@
  */
 package de.carne.test.swt.tester;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.mockito.MockedConstruction;
@@ -28,37 +25,23 @@ import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
 
-final class FontDialogMock implements DialogMock<FontData>, AutoCloseable {
+final class FontDialogMock extends DialogMock<FontData> implements AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private Deque<Supplier<@Nullable FontData>> resultQueue = new LinkedList<>();
-
 	private MockedConstruction<FontDialog> mockConstruction = Mockito.mockConstruction(FontDialog.class,
-			Mockito.withSettings(), (mock, context) -> {
-				Mockito.when(mock.open()).then(iom -> {
-					Supplier<@Nullable FontData> resultSupplier = this.resultQueue.poll();
-					FontData result = (resultSupplier != null ? resultSupplier.get() : null);
+			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
+				Supplier<FontData> resultSupplier = pollResult();
+				FontData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("FontDialog.open() = {0}", result);
+				LOG.info("FontDialog.open() = {0}", result);
 
-					return result;
-				});
-			});
+				return result;
+			}));
 
 	@Override
 	public void close() {
 		this.mockConstruction.close();
-	}
-
-	@Override
-	public void offerResult(@Nullable FontData result) {
-		offerResult(() -> result);
-	}
-
-	@Override
-	public void offerResult(Supplier<@Nullable FontData> resultSupplier) {
-		this.resultQueue.offer(resultSupplier);
 	}
 
 }

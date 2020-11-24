@@ -16,48 +16,31 @@
  */
 package de.carne.test.swt.tester;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
 
-final class DirectoryDialogMock implements DialogMock<String>, AutoCloseable {
+final class DirectoryDialogMock extends DialogMock<String> implements AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private Deque<Supplier<@Nullable String>> resultQueue = new LinkedList<>();
-
 	private MockedConstruction<DirectoryDialog> mockConstruction = Mockito.mockConstruction(DirectoryDialog.class,
-			Mockito.withSettings(), (mock, context) -> {
-				Mockito.when(mock.open()).then(iom -> {
-					Supplier<@Nullable String> resultSupplier = this.resultQueue.poll();
-					String result = (resultSupplier != null ? resultSupplier.get() : null);
+			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
+				Supplier<String> resultSupplier = pollResult();
+				String result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("DirectoryDialog.open() = {0}", result);
+				LOG.info("DirectoryDialog.open() = {0}", result);
 
-					return result;
-				});
-			});
+				return result;
+			}));
 
 	@Override
 	public void close() {
 		this.mockConstruction.close();
-	}
-
-	@Override
-	public void offerResult(@Nullable String result) {
-		offerResult(() -> result);
-	}
-
-	@Override
-	public void offerResult(Supplier<@Nullable String> resultSupplier) {
-		this.resultQueue.offer(resultSupplier);
 	}
 
 }

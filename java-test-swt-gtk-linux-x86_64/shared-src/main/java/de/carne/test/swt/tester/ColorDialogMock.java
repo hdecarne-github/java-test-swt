@@ -16,11 +16,8 @@
  */
 package de.carne.test.swt.tester;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.mockito.MockedConstruction;
@@ -28,37 +25,23 @@ import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
 
-final class ColorDialogMock implements DialogMock<RGB>, AutoCloseable {
+final class ColorDialogMock extends DialogMock<RGB> implements AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private Deque<Supplier<@Nullable RGB>> resultQueue = new LinkedList<>();
-
 	private MockedConstruction<ColorDialog> mockConstruction = Mockito.mockConstruction(ColorDialog.class,
-			Mockito.withSettings(), (mock, context) -> {
-				Mockito.when(mock.open()).then(iom -> {
-					Supplier<@Nullable RGB> resultSupplier = this.resultQueue.poll();
-					RGB result = (resultSupplier != null ? resultSupplier.get() : null);
+			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
+				Supplier<RGB> resultSupplier = pollResult();
+				RGB result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("ColorDialog.open() = {0}", result);
+				LOG.info("ColorDialog.open() = {0}", result);
 
-					return result;
-				});
-			});
+				return result;
+			}));
 
 	@Override
 	public void close() {
 		this.mockConstruction.close();
-	}
-
-	@Override
-	public void offerResult(@Nullable RGB result) {
-		offerResult(() -> result);
-	}
-
-	@Override
-	public void offerResult(Supplier<@Nullable RGB> resultSupplier) {
-		this.resultQueue.offer(resultSupplier);
 	}
 
 }

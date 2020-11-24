@@ -16,11 +16,8 @@
  */
 package de.carne.test.swt.tester;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
 import org.mockito.MockedConstruction;
@@ -28,37 +25,23 @@ import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
 
-final class PrintDialogMock implements DialogMock<PrinterData>, AutoCloseable {
+final class PrintDialogMock extends DialogMock<PrinterData> implements AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private Deque<Supplier<@Nullable PrinterData>> resultQueue = new LinkedList<>();
-
 	private MockedConstruction<PrintDialog> mockConstruction = Mockito.mockConstruction(PrintDialog.class,
-			Mockito.withSettings(), (mock, context) -> {
-				Mockito.when(mock.open()).then(iom -> {
-					Supplier<@Nullable PrinterData> resultSupplier = this.resultQueue.poll();
-					PrinterData result = (resultSupplier != null ? resultSupplier.get() : null);
+			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
+				Supplier<PrinterData> resultSupplier = pollResult();
+				PrinterData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("PrintDialog.open() = {0}", result);
+				LOG.info("PrintDialog.open() = {0}", result);
 
-					return result;
-				});
-			});
+				return result;
+			}));
 
 	@Override
 	public void close() {
 		this.mockConstruction.close();
-	}
-
-	@Override
-	public void offerResult(@Nullable PrinterData result) {
-		offerResult(() -> result);
-	}
-
-	@Override
-	public void offerResult(Supplier<@Nullable PrinterData> resultSupplier) {
-		this.resultQueue.offer(resultSupplier);
 	}
 
 }

@@ -16,9 +16,7 @@
  */
 package de.carne.test.swt.tester;
 
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
@@ -29,7 +27,7 @@ import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
 
-final class MessageBoxMock implements IntDialogMock, AutoCloseable {
+final class MessageBoxMock extends IntDialogMock implements AutoCloseable {
 
 	private static final Log LOG = new Log();
 
@@ -45,33 +43,19 @@ final class MessageBoxMock implements IntDialogMock, AutoCloseable {
 		SWT_SYMBOLS.put(SWT.IGNORE, "SWT.IGNORE");
 	}
 
-	private Deque<IntSupplier> resultQueue = new LinkedList<>();
-
 	private MockedConstruction<MessageBox> mockConstruction = Mockito.mockConstruction(MessageBox.class,
-			Mockito.withSettings(), (mock, context) -> {
-				Mockito.when(mock.open()).then(iom -> {
-					IntSupplier resultSupplier = this.resultQueue.poll();
-					int result = (resultSupplier != null ? resultSupplier.getAsInt() : SWT.CANCEL);
+			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
+				IntSupplier resultSupplier = pollResult();
+				int result = (resultSupplier != null ? resultSupplier.getAsInt() : SWT.CANCEL);
 
-					LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
+				LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
 
-					return result;
-				});
-			});
+				return result;
+			}));
 
 	@Override
 	public void close() {
 		this.mockConstruction.close();
-	}
-
-	@Override
-	public void offerResult(int result) {
-		offerResult(() -> result);
-	}
-
-	@Override
-	public void offerResult(IntSupplier resultSupplier) {
-		this.resultQueue.offer(resultSupplier);
 	}
 
 }
