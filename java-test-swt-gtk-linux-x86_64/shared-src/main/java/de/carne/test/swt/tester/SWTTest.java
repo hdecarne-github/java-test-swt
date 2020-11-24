@@ -416,9 +416,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain MessageBox} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain MessageBox} mock.
 	 */
@@ -428,9 +425,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain FileDialog} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain FileDialog} mock.
 	 */
@@ -440,9 +434,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain DirectoryDialog} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain DirectoryDialog} mock.
 	 */
@@ -452,9 +443,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain PrintDialog} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain PrintDialog} mock.
 	 */
@@ -464,9 +452,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain ColorDialog} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain ColorDialog} mock.
 	 */
@@ -476,9 +461,6 @@ public abstract class SWTTest {
 
 	/**
 	 * Gets the test's {@linkplain FontDialog} mock.
-	 * <p>
-	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
-	 * </p>
 	 *
 	 * @return the test's {@linkplain FontDialog} mock.
 	 */
