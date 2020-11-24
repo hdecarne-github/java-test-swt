@@ -18,6 +18,7 @@ package de.carne.test.swt.tester;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +27,17 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FontDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 
 import de.carne.test.swt.tester.ScriptAction.AsyncDoScriptAction;
@@ -37,7 +46,8 @@ import de.carne.test.swt.tester.ScriptAction.WaitScriptAction;
 import de.carne.test.swt.tester.accessor.Accessor;
 import de.carne.test.swt.tester.accessor.DecorationsAccessor;
 import de.carne.test.swt.tester.accessor.ShellAccessor;
-import de.carne.util.Late;
+import de.carne.util.AutoCloseables;
+import de.carne.util.Lazy;
 import de.carne.util.Strings;
 import de.carne.util.logging.Log;
 import de.carne.util.stream.Unique;
@@ -55,46 +65,47 @@ public abstract class SWTTest {
 
 	private static final Log LOG = new Log();
 
+	private static final Deque<AutoCloseable> RESOURCE_TRACKER = new LinkedList<>();
+
 	private final String name;
-	private final Late<MessageBoxMock> messageBoxMock = new Late<>();
-	private final Late<FileDialogMock> fileDialogMock = new Late<>();
-	private final Late<DirectoryDialogMock> directoryDialogMock = new Late<>();
-	private final Late<PrintDialogMock> printDialogMock = new Late<>();
-	private final Late<ColorDialogMock> colorDialogMock = new Late<>();
-	private final Late<FontDialogMock> fontDialogMock = new Late<>();
+	private final Lazy<MessageBoxMock> messageBoxMock = new Lazy<>(() -> trackResource(MessageBoxMock::new));
+	private final Lazy<FileDialogMock> fileDialogMock = new Lazy<>(() -> trackResource(FileDialogMock::new));
+	private final Lazy<DirectoryDialogMock> directoryDialogMock = new Lazy<>(
+			() -> trackResource(DirectoryDialogMock::new));
+	private final Lazy<PrintDialogMock> printDialogMock = new Lazy<>(() -> trackResource(PrintDialogMock::new));
+	private final Lazy<ColorDialogMock> colorDialogMock = new Lazy<>(() -> trackResource(ColorDialogMock::new));
+	private final Lazy<FontDialogMock> fontDialogMock = new Lazy<>(() -> trackResource(FontDialogMock::new));
+
+	private static <T extends AutoCloseable> T trackResource(Supplier<T> resourceSupplier) {
+		T resource = resourceSupplier.get();
+
+		RESOURCE_TRACKER.add(resource);
+		return resource;
+	}
+
+	@AfterAll
+	static void closeTrackedResources() throws Exception {
+		try {
+			AutoCloseables.closeAll(RESOURCE_TRACKER);
+		} finally {
+			RESOURCE_TRACKER.clear();
+		}
+	}
 
 	/**
 	 * Constructs a new {@code SWTTest} instance.
 	 */
 	protected SWTTest() {
-		this(defaultName(), true);
-	}
-
-	/**
-	 * Constructs a new {@code SWTTest} instance.
-	 *
-	 * @param mockDialogs whether to mock native {@linkplain Dialog} instance ({@code true}) or not ({@code false}).
-	 */
-	protected SWTTest(boolean mockDialogs) {
-		this(defaultName(), mockDialogs);
+		this(defaultName());
 	}
 
 	/**
 	 * Constructs a new {@code SWTTest} instance.
 	 *
 	 * @param name the name of the running test.
-	 * @param mockDialogs whether to mock native {@linkplain Dialog} instance ({@code true}) or not ({@code false}).
 	 */
-	protected SWTTest(String name, boolean mockDialogs) {
+	protected SWTTest(String name) {
 		this.name = name;
-		if (mockDialogs) {
-			this.messageBoxMock.set(new MessageBoxMock());
-			this.fileDialogMock.set(new FileDialogMock());
-			this.directoryDialogMock.set(new DirectoryDialogMock());
-			this.printDialogMock.set(new PrintDialogMock());
-			this.colorDialogMock.set(new ColorDialogMock());
-			this.fontDialogMock.set(new FontDialogMock());
-		}
 	}
 
 	private static String defaultName() {
@@ -404,74 +415,74 @@ public abstract class SWTTest {
 	}
 
 	/**
-	 * Gets the test's {@linkplain MessageBoxMock}.
+	 * Gets the test's {@linkplain MessageBox} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain MessageBoxMock}.
+	 * @return the test's {@linkplain MessageBox} mock.
 	 */
-	protected MessageBoxMock mockMessageBox() {
+	protected IntDialogMock mockMessageBox() {
 		return this.messageBoxMock.get();
 	}
 
 	/**
-	 * Gets the test's {@linkplain FileDialogMock}.
+	 * Gets the test's {@linkplain FileDialog} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain FileDialogMock}.
+	 * @return the test's {@linkplain FileDialog} mock.
 	 */
-	protected FileDialogMock mockFileDialog() {
+	protected DialogMock<String> mockFileDialog() {
 		return this.fileDialogMock.get();
 	}
 
 	/**
-	 * Gets the test's {@linkplain DirectoryDialogMock}.
+	 * Gets the test's {@linkplain DirectoryDialog} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain DirectoryDialogMock}.
+	 * @return the test's {@linkplain DirectoryDialog} mock.
 	 */
-	protected DirectoryDialogMock mockDirectoryDialog() {
+	protected DialogMock<String> mockDirectoryDialog() {
 		return this.directoryDialogMock.get();
 	}
 
 	/**
-	 * Gets the test's {@linkplain PrintDialogMock}.
+	 * Gets the test's {@linkplain PrintDialog} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain PrintDialogMock}.
+	 * @return the test's {@linkplain PrintDialog} mock.
 	 */
-	protected PrintDialogMock mockPrintDialog() {
+	protected DialogMock<PrinterData> mockPrintDialog() {
 		return this.printDialogMock.get();
 	}
 
 	/**
-	 * Gets the test's {@linkplain ColorDialogMock}.
+	 * Gets the test's {@linkplain ColorDialog} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain ColorDialogMock}.
+	 * @return the test's {@linkplain ColorDialog} mock.
 	 */
-	protected ColorDialogMock mockColorDialog() {
+	protected DialogMock<RGB> mockColorDialog() {
 		return this.colorDialogMock.get();
 	}
 
 	/**
-	 * Gets the test's {@linkplain FontDialogMock}.
+	 * Gets the test's {@linkplain FontDialog} mock.
 	 * <p>
 	 * Fails if dialog mocking is disabled (see {@linkplain #SWTTest(boolean)}).
 	 * </p>
 	 *
-	 * @return the test's {@linkplain FontDialogMock}.
+	 * @return the test's {@linkplain FontDialog} mock.
 	 */
-	protected FontDialogMock mockFontDialog() {
+	protected DialogMock<FontData> mockFontDialog() {
 		return this.fontDialogMock.get();
 	}
 

@@ -16,49 +16,48 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.function.Supplier;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.FileDialog;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
-import mockit.Mock;
-import mockit.MockUp;
 
-/**
- * Mock for {@linkplain FileDialog} dialog.
- */
-public final class FileDialogMock {
+final class FileDialogMock implements DialogMock<String>, AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private @Nullable String nextResult = null;
+	private Deque<Supplier<@Nullable String>> resultQueue = new LinkedList<>();
 
-	@SuppressWarnings("unused")
-	private final MockUp<FileDialog> mockUp = new MockUp<FileDialog>() {
+	private MockedConstruction<FileDialog> mockConstruction = Mockito.mockConstruction(FileDialog.class,
+			Mockito.withSettings(), (mock, context) -> {
+				Mockito.when(mock.open()).then(iom -> {
+					Supplier<@Nullable String> resultSupplier = this.resultQueue.poll();
+					String result = (resultSupplier != null ? resultSupplier.get() : null);
 
-		@Mock
-		public @Nullable String open() {
-			return mockOpen();
-		}
+					LOG.info("FileDialog.open() = {0}", result);
 
-	};
+					return result;
+				});
+			});
 
-	/**
-	 * Sets the result for the next call to {@linkplain FileDialog#open()}.
-	 *
-	 * @param result the result for the next call to {@linkplain FileDialog#open()}.
-	 */
-	public void result(String result) {
-		this.nextResult = result;
+	@Override
+	public void close() {
+		this.mockConstruction.close();
 	}
 
-	@Nullable
-	String mockOpen() {
-		String result = this.nextResult;
+	@Override
+	public void offerResult(@Nullable String result) {
+		offerResult(() -> result);
+	}
 
-		LOG.info("FileDialog.open() = {0}", result);
-
-		this.nextResult = null;
-		return result;
+	@Override
+	public void offerResult(Supplier<@Nullable String> resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
 	}
 
 }

@@ -16,20 +16,20 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.function.IntSupplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
-import mockit.Mock;
-import mockit.MockUp;
 
-/**
- * Mock for {@linkplain MessageBox} dialog.
- */
-public final class MessageBoxMock {
+final class MessageBoxMock implements IntDialogMock, AutoCloseable {
 
 	private static final Log LOG = new Log();
 
@@ -45,34 +45,33 @@ public final class MessageBoxMock {
 		SWT_SYMBOLS.put(SWT.IGNORE, "SWT.IGNORE");
 	}
 
-	private int nextResult = SWT.CANCEL;
+	private Deque<IntSupplier> resultQueue = new LinkedList<>();
 
-	@SuppressWarnings("unused")
-	private final MockUp<MessageBox> mockUp = new MockUp<MessageBox>() {
+	private MockedConstruction<MessageBox> mockConstruction = Mockito.mockConstruction(MessageBox.class,
+			Mockito.withSettings(), (mock, context) -> {
+				Mockito.when(mock.open()).then(iom -> {
+					IntSupplier resultSupplier = this.resultQueue.poll();
+					int result = (resultSupplier != null ? resultSupplier.getAsInt() : SWT.CANCEL);
 
-		@Mock
-		public int open() {
-			return mockOpen();
-		}
+					LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
 
-	};
+					return result;
+				});
+			});
 
-	/**
-	 * Sets the result for the next call to {@linkplain MessageBox#open()}.
-	 *
-	 * @param result the result for the next call to {@linkplain MessageBox#open()}.
-	 */
-	public void result(int result) {
-		this.nextResult = result;
+	@Override
+	public void close() {
+		this.mockConstruction.close();
 	}
 
-	int mockOpen() {
-		int result = this.nextResult;
+	@Override
+	public void offerResult(int result) {
+		offerResult(() -> result);
+	}
 
-		LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
-
-		this.nextResult = SWT.CANCEL;
-		return result;
+	@Override
+	public void offerResult(IntSupplier resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
 	}
 
 }

@@ -16,50 +16,49 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.function.Supplier;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
-import mockit.Mock;
-import mockit.MockUp;
 
-/**
- * Mock for {@linkplain ColorDialog} dialog.
- */
-public final class ColorDialogMock {
+final class ColorDialogMock implements DialogMock<RGB>, AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private @Nullable RGB nextResult = null;
+	private Deque<Supplier<@Nullable RGB>> resultQueue = new LinkedList<>();
 
-	@SuppressWarnings("unused")
-	private final MockUp<ColorDialog> mockUp = new MockUp<ColorDialog>() {
+	private MockedConstruction<ColorDialog> mockConstruction = Mockito.mockConstruction(ColorDialog.class,
+			Mockito.withSettings(), (mock, context) -> {
+				Mockito.when(mock.open()).then(iom -> {
+					Supplier<@Nullable RGB> resultSupplier = this.resultQueue.poll();
+					RGB result = (resultSupplier != null ? resultSupplier.get() : null);
 
-		@Mock
-		public @Nullable RGB open() {
-			return mockOpen();
-		}
+					LOG.info("ColorDialog.open() = {0}", result);
 
-	};
+					return result;
+				});
+			});
 
-	/**
-	 * Sets the result for the next call to {@linkplain ColorDialog#open()}.
-	 *
-	 * @param result the result for the next call to {@linkplain ColorDialog#open()}.
-	 */
-	public void result(RGB result) {
-		this.nextResult = result;
+	@Override
+	public void close() {
+		this.mockConstruction.close();
 	}
 
-	@Nullable
-	RGB mockOpen() {
-		RGB result = this.nextResult;
+	@Override
+	public void offerResult(@Nullable RGB result) {
+		offerResult(() -> result);
+	}
 
-		LOG.info("ColorDialog.open() = {0}", result);
-
-		this.nextResult = null;
-		return result;
+	@Override
+	public void offerResult(Supplier<@Nullable RGB> resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
 	}
 
 }

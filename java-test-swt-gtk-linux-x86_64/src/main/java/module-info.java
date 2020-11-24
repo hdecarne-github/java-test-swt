@@ -3,10 +3,10 @@
  */
 module de.carne.test.swt {
 	requires transitive org.eclipse.swt.gtk.linux.x86_64;
+	requires transitive org.eclipse.jdt.annotation;
 	requires transitive de.carne.test;
 
-	requires org.eclipse.jdt.annotation;
-	requires org.jmockit;
+	requires org.mockito;
 	requires de.carne;
 
 	exports de.carne.test.swt;

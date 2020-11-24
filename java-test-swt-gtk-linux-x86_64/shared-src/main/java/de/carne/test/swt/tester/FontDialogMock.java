@@ -16,50 +16,49 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.function.Supplier;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
-import mockit.Mock;
-import mockit.MockUp;
 
-/**
- * Mock for {@linkplain FontDialog} dialog.
- */
-public final class FontDialogMock {
+final class FontDialogMock implements DialogMock<FontData>, AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private @Nullable FontData nextResult = null;
+	private Deque<Supplier<@Nullable FontData>> resultQueue = new LinkedList<>();
 
-	@SuppressWarnings("unused")
-	private final MockUp<FontDialog> mockUp = new MockUp<FontDialog>() {
+	private MockedConstruction<FontDialog> mockConstruction = Mockito.mockConstruction(FontDialog.class,
+			Mockito.withSettings(), (mock, context) -> {
+				Mockito.when(mock.open()).then(iom -> {
+					Supplier<@Nullable FontData> resultSupplier = this.resultQueue.poll();
+					FontData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-		@Mock
-		public @Nullable FontData open() {
-			return mockOpen();
-		}
+					LOG.info("FontDialog.open() = {0}", result);
 
-	};
+					return result;
+				});
+			});
 
-	/**
-	 * Sets the result for the next call to {@linkplain FontDialog#open()}.
-	 *
-	 * @param result the result for the next call to {@linkplain FontDialog#open()}.
-	 */
-	public void result(FontData result) {
-		this.nextResult = result;
+	@Override
+	public void close() {
+		this.mockConstruction.close();
 	}
 
-	@Nullable
-	FontData mockOpen() {
-		FontData result = this.nextResult;
+	@Override
+	public void offerResult(@Nullable FontData result) {
+		offerResult(() -> result);
+	}
 
-		LOG.info("FontDialog.open() = {0}", result);
-
-		this.nextResult = null;
-		return result;
+	@Override
+	public void offerResult(Supplier<@Nullable FontData> resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
 	}
 
 }

@@ -18,7 +18,7 @@ package de.carne.test.swt.test.extension;
 
 import org.eclipse.swt.widgets.Display;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import de.carne.test.swt.extension.SWTDisplayParameterResolver;
  */
 @DisableIfThreadNotSWTCapable
 @ExtendWith(SWTDisplayParameterResolver.class)
-@TestMethodOrder(Alphanumeric.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 class SWTDisplayParameterResolverTest {
 
 	@Test

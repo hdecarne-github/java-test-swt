@@ -16,50 +16,49 @@
  */
 package de.carne.test.swt.tester;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.function.Supplier;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 
 import de.carne.util.logging.Log;
-import mockit.Mock;
-import mockit.MockUp;
 
-/**
- * Mock for {@linkplain PrintDialog} dialog.
- */
-public final class PrintDialogMock {
+final class PrintDialogMock implements DialogMock<PrinterData>, AutoCloseable {
 
 	private static final Log LOG = new Log();
 
-	private @Nullable PrinterData nextResult = null;
+	private Deque<Supplier<@Nullable PrinterData>> resultQueue = new LinkedList<>();
 
-	@SuppressWarnings("unused")
-	private final MockUp<PrintDialog> mockUp = new MockUp<PrintDialog>() {
+	private MockedConstruction<PrintDialog> mockConstruction = Mockito.mockConstruction(PrintDialog.class,
+			Mockito.withSettings(), (mock, context) -> {
+				Mockito.when(mock.open()).then(iom -> {
+					Supplier<@Nullable PrinterData> resultSupplier = this.resultQueue.poll();
+					PrinterData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-		@Mock
-		public @Nullable PrinterData open() {
-			return mockOpen();
-		}
+					LOG.info("PrintDialog.open() = {0}", result);
 
-	};
+					return result;
+				});
+			});
 
-	/**
-	 * Sets the result for the next call to {@linkplain PrintDialog#open()}.
-	 *
-	 * @param result the result for the next call to {@linkplain PrintDialog#open()}.
-	 */
-	public void result(PrinterData result) {
-		this.nextResult = result;
+	@Override
+	public void close() {
+		this.mockConstruction.close();
 	}
 
-	@Nullable
-	PrinterData mockOpen() {
-		PrinterData result = this.nextResult;
+	@Override
+	public void offerResult(@Nullable PrinterData result) {
+		offerResult(() -> result);
+	}
 
-		LOG.info("PrintDialog.open() = {0}", result);
-
-		this.nextResult = null;
-		return result;
+	@Override
+	public void offerResult(Supplier<@Nullable PrinterData> resultSupplier) {
+		this.resultQueue.offer(resultSupplier);
 	}
 
 }

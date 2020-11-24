@@ -34,10 +34,6 @@ class SWTTestTimeoutTest extends SWTTest {
 
 	private static int TIMEOUT = 5000;
 
-	SWTTestTimeoutTest() {
-		super(false);
-	}
-
 	@BeforeAll
 	static void setTestTimeout() {
 		System.setProperty(SWTTest.class.getPackage().getName() + ".TEST_TIMEOUT", Integer.toString(TIMEOUT));

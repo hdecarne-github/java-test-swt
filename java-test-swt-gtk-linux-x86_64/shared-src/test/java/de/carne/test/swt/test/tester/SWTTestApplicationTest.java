@@ -77,7 +77,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		int result = SWT.OK;
 
-		mockMessageBox().result(result);
+		mockMessageBox().offerResult(result);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(0).select();
 
@@ -89,7 +89,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		RGB color = new RGB(1, 2, 3);
 
-		mockColorDialog().result(color);
+		mockColorDialog().offerResult(color);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(SWTTestApplication.TOOL_ITEM_COLOR)
 				.select();
@@ -102,7 +102,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		String directory = FileUtil.workingDir().toString();
 
-		mockDirectoryDialog().result(directory);
+		mockDirectoryDialog().offerResult(directory);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0)
 				.accessItem(SWTTestApplication.TOOL_ITEM_DIRECTORY).select();
@@ -115,7 +115,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		String file = FileUtil.tmpDir().resolve("afile.txt").toString();
 
-		mockFileDialog().result(file);
+		mockFileDialog().offerResult(file);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(SWTTestApplication.TOOL_ITEM_FILE)
 				.select();
@@ -128,7 +128,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		FontData font = Objects.requireNonNull(Display.getCurrent().getFontList(null, true)[0]);
 
-		mockFontDialog().result(font);
+		mockFontDialog().offerResult(font);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(SWTTestApplication.TOOL_ITEM_FONT)
 				.select();
@@ -141,7 +141,7 @@ class SWTTestApplicationTest extends SWTTest {
 
 		PrinterData printer = new PrinterData("MockDriver", "MockPrinter");
 
-		mockPrintDialog().result(printer);
+		mockPrintDialog().offerResult(printer);
 
 		accessShell().accessChild(ToolBarAccessor::new, ToolBar.class, 0).accessItem(SWTTestApplication.TOOL_ITEM_PRINT)
 				.select();
