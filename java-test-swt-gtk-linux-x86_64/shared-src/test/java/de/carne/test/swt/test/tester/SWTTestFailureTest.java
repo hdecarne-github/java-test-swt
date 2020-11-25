@@ -29,7 +29,7 @@ import de.carne.test.swt.tester.SWTTest;
 class SWTTestFailureTest extends SWTTest {
 
 	@Test
-	public void testFailure() {
+	void testFailure() {
 		Script script = script(SWTTestApplication::main);
 
 		script.args(getClass().getSimpleName()).add(this::doFailure);

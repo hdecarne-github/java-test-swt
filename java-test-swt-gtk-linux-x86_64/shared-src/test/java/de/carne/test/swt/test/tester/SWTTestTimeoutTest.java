@@ -40,9 +40,11 @@ class SWTTestTimeoutTest extends SWTTest {
 	}
 
 	@Test
-	public void testTimeout() {
+	void testTimeout() {
+		Script script = script(Application::run).args(getClass().getSimpleName()).add(this::openMessageBox);
+
 		Assertions.assertThrows(AssertionError.class, () -> {
-			script(Application::run).args(getClass().getSimpleName()).add(this::openMessageBox).execute();
+			script.execute();
 		});
 	}
 
@@ -53,7 +55,7 @@ class SWTTestTimeoutTest extends SWTTest {
 
 		messageBox.setText(getClass().getSimpleName());
 		messageBox.setMessage("Waiting for " + TIMEOUT + " ms timeout...");
-		// messageBox.open();
+		messageBox.open();
 	}
 
 }
