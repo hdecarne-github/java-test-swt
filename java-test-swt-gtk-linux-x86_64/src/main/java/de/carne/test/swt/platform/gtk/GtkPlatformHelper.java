@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.carne.nio.file.attribute.FileAttributes;
 import de.carne.test.swt.platform.PlatformHelper;
 import de.carne.test.swt.platform.ProcessRunner;
+import de.carne.util.Strings;
 import de.carne.util.logging.Log;
 
 /**
@@ -42,7 +43,7 @@ public class GtkPlatformHelper extends PlatformHelper {
 
 	@Override
 	protected boolean internalIsCurrentThreadSWTCapable() {
-		return true;
+		return !Strings.isEmpty(System.getenv("DISPLAY"));
 	}
 
 	@Override
