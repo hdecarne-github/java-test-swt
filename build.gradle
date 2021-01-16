@@ -92,7 +92,7 @@ subprojects {
 		}
 		implementation(group: "de.carne.common", name: "java-default", version: project.javaDefaultVersion)
 		implementation(group: "de.carne.common", name: "java-test", version: project.javaTestVersion)
-		implementation(group: "org.mockito", name: "mockito-junit-jupiter", version: project.mockitoVersion)
+		implementation(group: "org.mockito", name: "mockito-junit-jupiter", version: project.mockitoJunitJupiterVersion)
 		implementation(group: "org.mockito", name: "mockito-inline", version: project.mockitoVersion)
 	}
 	
