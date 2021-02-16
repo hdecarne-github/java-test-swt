@@ -1,6 +1,6 @@
 // Plugins
 plugins {
-	id "de.carne.java-tools" version "0.9.0" apply false
+	id "de.carne.java-tools" version "0.9.1" apply false
 	id "org.sonarqube" version "3.1" apply false
 	id "org.owasp.dependencycheck" version "6.0.5"
 }
@@ -144,6 +144,7 @@ subprojects {
 	
 	sonarqube {
 		properties {
+			property 'sonar.projectKey', ${rootproject.group} + ':' + ${rootproject.name}
 			property 'sonar.coverage.jacoco.xmlReportPaths', jacocoTestReport.reports.xml.destination
 		}
 	}
