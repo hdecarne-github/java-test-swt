@@ -23,9 +23,9 @@ import java.util.function.IntSupplier;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * Interface for mocking of standard dialog results during a test run.
+ * Class for mocking of standard dialog results during a test run.
  */
-public abstract class IntDialogMock {
+public final class IntDialogMock {
 
 	private Deque<IntSupplier> resultQueue = new LinkedList<>();
 
@@ -47,13 +47,8 @@ public abstract class IntDialogMock {
 		this.resultQueue.offer(resultSupplier);
 	}
 
-	/**
-	 * Gets the next result from the result queue.
-	 *
-	 * @return the next result from the result queue or {@code null} if the result queue is empty.
-	 */
 	@Nullable
-	protected IntSupplier pollResult() {
+	IntSupplier pollResult() {
 		return this.resultQueue.poll();
 	}
 

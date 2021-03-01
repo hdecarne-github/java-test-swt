@@ -23,25 +23,27 @@ import org.eclipse.swt.widgets.FontDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class FontDialogMock extends DialogMock<FontData> implements AutoCloseable {
+final class FontDialogMock extends ScopedMockInstance<MockedConstruction<FontDialog>, DialogMock<FontData>> {
 
 	private static final Log LOG = new Log();
 
-	private MockedConstruction<FontDialog> mockConstruction = Mockito.mockConstruction(FontDialog.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				Supplier<FontData> resultSupplier = pollResult();
-				FontData result = (resultSupplier != null ? resultSupplier.get() : null);
+	FontDialogMock() {
+		super(FontDialogMock::initialize, new DialogMock<FontData>());
+	}
 
-				LOG.info("FontDialog.open() = {0}", result);
+	private static MockedConstruction<FontDialog> initialize(DialogMock<FontData> instance) {
+		return Mockito.mockConstruction(FontDialog.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					Supplier<FontData> resultSupplier = instance.pollResult();
+					FontData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-				return result;
-			}));
+					LOG.info("FontDialog.open() = {0}", result);
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }

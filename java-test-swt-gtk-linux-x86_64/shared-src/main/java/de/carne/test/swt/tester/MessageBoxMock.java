@@ -25,9 +25,10 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class MessageBoxMock extends IntDialogMock implements AutoCloseable {
+final class MessageBoxMock extends ScopedMockInstance<MockedConstruction<MessageBox>, IntDialogMock> {
 
 	private static final Log LOG = new Log();
 
@@ -43,19 +44,20 @@ final class MessageBoxMock extends IntDialogMock implements AutoCloseable {
 		SWT_SYMBOLS.put(SWT.IGNORE, "SWT.IGNORE");
 	}
 
-	private MockedConstruction<MessageBox> mockConstruction = Mockito.mockConstruction(MessageBox.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				IntSupplier resultSupplier = pollResult();
-				int result = (resultSupplier != null ? resultSupplier.getAsInt() : SWT.CANCEL);
+	MessageBoxMock() {
+		super(MessageBoxMock::initialize, new IntDialogMock());
+	}
 
-				LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
+	private static MockedConstruction<MessageBox> initialize(IntDialogMock instance) {
+		return Mockito.mockConstruction(MessageBox.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					IntSupplier resultSupplier = instance.pollResult();
+					int result = (resultSupplier != null ? resultSupplier.getAsInt() : SWT.CANCEL);
 
-				return result;
-			}));
+					LOG.info("MessageBox.open() = {0}", SWT_SYMBOLS.getOrDefault(result, Integer.toString(result)));
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }

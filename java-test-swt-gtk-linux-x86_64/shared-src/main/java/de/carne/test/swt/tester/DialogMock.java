@@ -23,11 +23,11 @@ import java.util.function.Supplier;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * Base class for mocking of standard dialog results during a test run.
+ * Class for mocking of standard dialog results during a test run.
  *
  * @param <T> the actual dialog result type.
  */
-public abstract class DialogMock<T> {
+public final class DialogMock<T> {
 
 	private Deque<@Nullable Supplier<T>> resultQueue = new LinkedList<>();
 
@@ -49,13 +49,8 @@ public abstract class DialogMock<T> {
 		this.resultQueue.offer(resultSupplier);
 	}
 
-	/**
-	 * Gets the next result from the result queue.
-	 *
-	 * @return the next result from the result queue or {@code null} if the result queue is empty.
-	 */
 	@Nullable
-	protected Supplier<T> pollResult() {
+	Supplier<T> pollResult() {
 		return this.resultQueue.poll();
 	}
 

@@ -421,7 +421,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain MessageBox} mock.
 	 */
 	protected IntDialogMock mockMessageBox() {
-		return this.messageBoxMock.get();
+		return this.messageBoxMock.get().get();
 	}
 
 	/**
@@ -430,7 +430,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain FileDialog} mock.
 	 */
 	protected DialogMock<String> mockFileDialog() {
-		return this.fileDialogMock.get();
+		return this.fileDialogMock.get().get();
 	}
 
 	/**
@@ -439,7 +439,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain DirectoryDialog} mock.
 	 */
 	protected DialogMock<String> mockDirectoryDialog() {
-		return this.directoryDialogMock.get();
+		return this.directoryDialogMock.get().get();
 	}
 
 	/**
@@ -448,7 +448,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain PrintDialog} mock.
 	 */
 	protected DialogMock<PrinterData> mockPrintDialog() {
-		return this.printDialogMock.get();
+		return this.printDialogMock.get().get();
 	}
 
 	/**
@@ -457,7 +457,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain ColorDialog} mock.
 	 */
 	protected DialogMock<RGB> mockColorDialog() {
-		return this.colorDialogMock.get();
+		return this.colorDialogMock.get().get();
 	}
 
 	/**
@@ -466,7 +466,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain FontDialog} mock.
 	 */
 	protected DialogMock<FontData> mockFontDialog() {
-		return this.fontDialogMock.get();
+		return this.fontDialogMock.get().get();
 	}
 
 }

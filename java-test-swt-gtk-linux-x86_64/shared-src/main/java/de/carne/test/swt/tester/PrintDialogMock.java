@@ -23,25 +23,27 @@ import org.eclipse.swt.printing.PrinterData;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class PrintDialogMock extends DialogMock<PrinterData> implements AutoCloseable {
+final class PrintDialogMock extends ScopedMockInstance<MockedConstruction<PrintDialog>, DialogMock<PrinterData>> {
 
 	private static final Log LOG = new Log();
 
-	private MockedConstruction<PrintDialog> mockConstruction = Mockito.mockConstruction(PrintDialog.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				Supplier<PrinterData> resultSupplier = pollResult();
-				PrinterData result = (resultSupplier != null ? resultSupplier.get() : null);
+	PrintDialogMock() {
+		super(PrintDialogMock::initialize, new DialogMock<>());
+	}
 
-				LOG.info("PrintDialog.open() = {0}", result);
+	private static MockedConstruction<PrintDialog> initialize(DialogMock<PrinterData> instance) {
+		return Mockito.mockConstruction(PrintDialog.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					Supplier<PrinterData> resultSupplier = instance.pollResult();
+					PrinterData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-				return result;
-			}));
+					LOG.info("PrintDialog.open() = {0}", result);
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }

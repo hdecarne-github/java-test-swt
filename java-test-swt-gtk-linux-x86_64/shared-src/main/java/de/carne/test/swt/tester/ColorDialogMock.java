@@ -23,25 +23,27 @@ import org.eclipse.swt.widgets.ColorDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class ColorDialogMock extends DialogMock<RGB> implements AutoCloseable {
+final class ColorDialogMock extends ScopedMockInstance<MockedConstruction<ColorDialog>, DialogMock<RGB>> {
 
 	private static final Log LOG = new Log();
 
-	private MockedConstruction<ColorDialog> mockConstruction = Mockito.mockConstruction(ColorDialog.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				Supplier<RGB> resultSupplier = pollResult();
-				RGB result = (resultSupplier != null ? resultSupplier.get() : null);
+	ColorDialogMock() {
+		super(ColorDialogMock::initialize, new DialogMock<>());
+	}
 
-				LOG.info("ColorDialog.open() = {0}", result);
+	private static MockedConstruction<ColorDialog> initialize(DialogMock<RGB> instance) {
+		return Mockito.mockConstruction(ColorDialog.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					Supplier<RGB> resultSupplier = instance.pollResult();
+					RGB result = (resultSupplier != null ? resultSupplier.get() : null);
 
-				return result;
-			}));
+					LOG.info("ColorDialog.open() = {0}", result);
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }

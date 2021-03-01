@@ -22,25 +22,27 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class DirectoryDialogMock extends DialogMock<String> implements AutoCloseable {
+final class DirectoryDialogMock extends ScopedMockInstance<MockedConstruction<DirectoryDialog>, DialogMock<String>> {
 
 	private static final Log LOG = new Log();
 
-	private MockedConstruction<DirectoryDialog> mockConstruction = Mockito.mockConstruction(DirectoryDialog.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				Supplier<String> resultSupplier = pollResult();
-				String result = (resultSupplier != null ? resultSupplier.get() : null);
+	DirectoryDialogMock() {
+		super(DirectoryDialogMock::initialize, new DialogMock<>());
+	}
 
-				LOG.info("DirectoryDialog.open() = {0}", result);
+	private static MockedConstruction<DirectoryDialog> initialize(DialogMock<String> instance) {
+		return Mockito.mockConstruction(DirectoryDialog.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					Supplier<String> resultSupplier = instance.pollResult();
+					String result = (resultSupplier != null ? resultSupplier.get() : null);
 
-				return result;
-			}));
+					LOG.info("DirectoryDialog.open() = {0}", result);
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }

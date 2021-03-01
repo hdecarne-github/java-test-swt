@@ -22,25 +22,27 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class FileDialogMock extends DialogMock<String> implements AutoCloseable {
+final class FileDialogMock extends ScopedMockInstance<MockedConstruction<FileDialog>, DialogMock<String>> {
 
 	private static final Log LOG = new Log();
 
-	private MockedConstruction<FileDialog> mockConstruction = Mockito.mockConstruction(FileDialog.class,
-			Mockito.withSettings(), (mock, context) -> Mockito.when(mock.open()).then(iom -> {
-				Supplier<String> resultSupplier = pollResult();
-				String result = (resultSupplier != null ? resultSupplier.get() : null);
+	FileDialogMock() {
+		super(FileDialogMock::initialize, new DialogMock<>());
+	}
 
-				LOG.info("FileDialog.open() = {0}", result);
+	private static MockedConstruction<FileDialog> initialize(DialogMock<String> instance) {
+		return Mockito.mockConstruction(FileDialog.class, Mockito.withSettings(),
+				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
+					Supplier<String> resultSupplier = instance.pollResult();
+					String result = (resultSupplier != null ? resultSupplier.get() : null);
 
-				return result;
-			}));
+					LOG.info("FileDialog.open() = {0}", result);
 
-	@Override
-	public void close() {
-		this.mockConstruction.close();
+					return result;
+				}));
 	}
 
 }
