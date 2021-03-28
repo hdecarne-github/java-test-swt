@@ -28,7 +28,7 @@ import org.mockito.Mockito;
 import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class MessageBoxMock extends ScopedMockInstance<MockedConstruction<MessageBox>, IntDialogMock> {
+final class MessageBoxMockInstance extends ScopedMockInstance<MockedConstruction<MessageBox>, IntDialogMock> {
 
 	private static final Log LOG = new Log();
 
@@ -44,8 +44,8 @@ final class MessageBoxMock extends ScopedMockInstance<MockedConstruction<Message
 		SWT_SYMBOLS.put(SWT.IGNORE, "SWT.IGNORE");
 	}
 
-	MessageBoxMock() {
-		super(MessageBoxMock::initialize, new IntDialogMock());
+	MessageBoxMockInstance() {
+		super(MessageBoxMockInstance::initialize, new IntDialogMock());
 	}
 
 	private static MockedConstruction<MessageBox> initialize(IntDialogMock instance) {

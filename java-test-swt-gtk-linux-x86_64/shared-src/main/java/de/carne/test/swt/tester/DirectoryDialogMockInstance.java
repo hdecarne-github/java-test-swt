@@ -25,12 +25,12 @@ import org.mockito.Mockito;
 import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class DirectoryDialogMock extends ScopedMockInstance<MockedConstruction<DirectoryDialog>, DialogMock<String>> {
+final class DirectoryDialogMockInstance extends ScopedMockInstance<MockedConstruction<DirectoryDialog>, DialogMock<String>> {
 
 	private static final Log LOG = new Log();
 
-	DirectoryDialogMock() {
-		super(DirectoryDialogMock::initialize, new DialogMock<>());
+	DirectoryDialogMockInstance() {
+		super(DirectoryDialogMockInstance::initialize, new DialogMock<>());
 	}
 
 	private static MockedConstruction<DirectoryDialog> initialize(DialogMock<String> instance) {

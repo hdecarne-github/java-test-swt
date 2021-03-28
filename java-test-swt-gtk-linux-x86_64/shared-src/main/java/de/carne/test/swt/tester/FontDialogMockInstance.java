@@ -18,28 +18,29 @@ package de.carne.test.swt.tester;
 
 import java.util.function.Supplier;
 
-import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.FontDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class FileDialogMock extends ScopedMockInstance<MockedConstruction<FileDialog>, DialogMock<String>> {
+final class FontDialogMockInstance extends ScopedMockInstance<MockedConstruction<FontDialog>, DialogMock<FontData>> {
 
 	private static final Log LOG = new Log();
 
-	FileDialogMock() {
-		super(FileDialogMock::initialize, new DialogMock<>());
+	FontDialogMockInstance() {
+		super(FontDialogMockInstance::initialize, new DialogMock<>());
 	}
 
-	private static MockedConstruction<FileDialog> initialize(DialogMock<String> instance) {
-		return Mockito.mockConstruction(FileDialog.class, Mockito.withSettings(),
+	private static MockedConstruction<FontDialog> initialize(DialogMock<FontData> instance) {
+		return Mockito.mockConstruction(FontDialog.class, Mockito.withSettings(),
 				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
-					Supplier<String> resultSupplier = instance.pollResult();
-					String result = (resultSupplier != null ? resultSupplier.get() : null);
+					Supplier<FontData> resultSupplier = instance.pollResult();
+					FontData result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("FileDialog.open() = {0}", result);
+					LOG.info("FontDialog.open() = {0}", result);
 
 					return result;
 				}));

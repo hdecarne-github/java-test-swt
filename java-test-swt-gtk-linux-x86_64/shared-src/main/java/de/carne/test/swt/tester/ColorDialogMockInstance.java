@@ -18,29 +18,29 @@ package de.carne.test.swt.tester;
 
 import java.util.function.Supplier;
 
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.widgets.FontDialog;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class FontDialogMock extends ScopedMockInstance<MockedConstruction<FontDialog>, DialogMock<FontData>> {
+final class ColorDialogMockInstance extends ScopedMockInstance<MockedConstruction<ColorDialog>, DialogMock<RGB>> {
 
 	private static final Log LOG = new Log();
 
-	FontDialogMock() {
-		super(FontDialogMock::initialize, new DialogMock<FontData>());
+	ColorDialogMockInstance() {
+		super(ColorDialogMockInstance::initialize, new DialogMock<>());
 	}
 
-	private static MockedConstruction<FontDialog> initialize(DialogMock<FontData> instance) {
-		return Mockito.mockConstruction(FontDialog.class, Mockito.withSettings(),
+	private static MockedConstruction<ColorDialog> initialize(DialogMock<RGB> instance) {
+		return Mockito.mockConstruction(ColorDialog.class, Mockito.withSettings(),
 				(mock, context) -> Mockito.when(mock.open()).then(iom -> {
-					Supplier<FontData> resultSupplier = instance.pollResult();
-					FontData result = (resultSupplier != null ? resultSupplier.get() : null);
+					Supplier<RGB> resultSupplier = instance.pollResult();
+					RGB result = (resultSupplier != null ? resultSupplier.get() : null);
 
-					LOG.info("FontDialog.open() = {0}", result);
+					LOG.info("ColorDialog.open() = {0}", result);
 
 					return result;
 				}));

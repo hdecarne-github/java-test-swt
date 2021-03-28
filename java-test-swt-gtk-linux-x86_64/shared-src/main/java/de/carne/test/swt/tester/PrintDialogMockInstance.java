@@ -26,12 +26,12 @@ import org.mockito.Mockito;
 import de.carne.test.mock.ScopedMockInstance;
 import de.carne.util.logging.Log;
 
-final class PrintDialogMock extends ScopedMockInstance<MockedConstruction<PrintDialog>, DialogMock<PrinterData>> {
+final class PrintDialogMockInstance extends ScopedMockInstance<MockedConstruction<PrintDialog>, DialogMock<PrinterData>> {
 
 	private static final Log LOG = new Log();
 
-	PrintDialogMock() {
-		super(PrintDialogMock::initialize, new DialogMock<>());
+	PrintDialogMockInstance() {
+		super(PrintDialogMockInstance::initialize, new DialogMock<>());
 	}
 
 	private static MockedConstruction<PrintDialog> initialize(DialogMock<PrinterData> instance) {

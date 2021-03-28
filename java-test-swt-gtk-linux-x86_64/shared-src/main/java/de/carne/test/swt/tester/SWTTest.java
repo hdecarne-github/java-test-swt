@@ -69,13 +69,13 @@ public abstract class SWTTest {
 	private static final Deque<AutoCloseable> RESOURCE_TRACKER = new LinkedList<>();
 
 	private final String name;
-	private final Lazy<MessageBoxMock> messageBoxMock = new Lazy<>(() -> trackResource(MessageBoxMock::new));
-	private final Lazy<FileDialogMock> fileDialogMock = new Lazy<>(() -> trackResource(FileDialogMock::new));
-	private final Lazy<DirectoryDialogMock> directoryDialogMock = new Lazy<>(
-			() -> trackResource(DirectoryDialogMock::new));
-	private final Lazy<PrintDialogMock> printDialogMock = new Lazy<>(() -> trackResource(PrintDialogMock::new));
-	private final Lazy<ColorDialogMock> colorDialogMock = new Lazy<>(() -> trackResource(ColorDialogMock::new));
-	private final Lazy<FontDialogMock> fontDialogMock = new Lazy<>(() -> trackResource(FontDialogMock::new));
+	private final Lazy<MessageBoxMockInstance> messageBoxMockInstanceHolder = new Lazy<>(() -> trackResource(MessageBoxMockInstance::new));
+	private final Lazy<FileDialogMockInstance> fileDialogMockInstanceHolder = new Lazy<>(() -> trackResource(FileDialogMockInstance::new));
+	private final Lazy<DirectoryDialogMockInstance> directoryDialogMockInstanceHolder = new Lazy<>(
+			() -> trackResource(DirectoryDialogMockInstance::new));
+	private final Lazy<PrintDialogMockInstance> printDialogMockInstanceHolder = new Lazy<>(() -> trackResource(PrintDialogMockInstance::new));
+	private final Lazy<ColorDialogMockInstance> colorDialogMockInstanceHolder = new Lazy<>(() -> trackResource(ColorDialogMockInstance::new));
+	private final Lazy<FontDialogMockInstance> fontDialogMockInstanceHolder = new Lazy<>(() -> trackResource(FontDialogMockInstance::new));
 
 	private static <T extends AutoCloseable> T trackResource(Supplier<T> resourceSupplier) {
 		T resource = resourceSupplier.get();
@@ -421,7 +421,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain MessageBox} mock.
 	 */
 	protected IntDialogMock mockMessageBox() {
-		return this.messageBoxMock.get().get();
+		return this.messageBoxMockInstanceHolder.get().get();
 	}
 
 	/**
@@ -430,7 +430,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain FileDialog} mock.
 	 */
 	protected DialogMock<String> mockFileDialog() {
-		return this.fileDialogMock.get().get();
+		return this.fileDialogMockInstanceHolder.get().get();
 	}
 
 	/**
@@ -439,7 +439,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain DirectoryDialog} mock.
 	 */
 	protected DialogMock<String> mockDirectoryDialog() {
-		return this.directoryDialogMock.get().get();
+		return this.directoryDialogMockInstanceHolder.get().get();
 	}
 
 	/**
@@ -448,7 +448,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain PrintDialog} mock.
 	 */
 	protected DialogMock<PrinterData> mockPrintDialog() {
-		return this.printDialogMock.get().get();
+		return this.printDialogMockInstanceHolder.get().get();
 	}
 
 	/**
@@ -457,7 +457,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain ColorDialog} mock.
 	 */
 	protected DialogMock<RGB> mockColorDialog() {
-		return this.colorDialogMock.get().get();
+		return this.colorDialogMockInstanceHolder.get().get();
 	}
 
 	/**
@@ -466,7 +466,7 @@ public abstract class SWTTest {
 	 * @return the test's {@linkplain FontDialog} mock.
 	 */
 	protected DialogMock<FontData> mockFontDialog() {
-		return this.fontDialogMock.get().get();
+		return this.fontDialogMockInstanceHolder.get().get();
 	}
 
 }
