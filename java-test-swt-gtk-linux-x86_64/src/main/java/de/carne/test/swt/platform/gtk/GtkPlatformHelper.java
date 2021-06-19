@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.internal.gtk.GTK;
 import org.eclipse.swt.internal.gtk.OS;
+import org.eclipse.swt.internal.gtk3.GTK3;
+import org.eclipse.swt.internal.gtk4.GTK4;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -71,7 +73,11 @@ public class GtkPlatformHelper extends PlatformHelper {
 				if (nativeDialog != 0) {
 					LOG.debug("Destroying native dialog: 0x{0}", Long.toHexString(nativeDialog));
 
-					GTK.gtk_widget_destroy(nativeDialog);
+					if (GTK.GTK4) {
+						GTK4.gtk_window_destroy(nativeDialog);
+					} else {
+						GTK3.gtk_widget_destroy(nativeDialog);
+					}
 					resultHolder.set(true);
 				}
 			} else {
@@ -85,7 +91,11 @@ public class GtkPlatformHelper extends PlatformHelper {
 		Set<Long> shellToplevels = new HashSet<>();
 
 		for (Shell shell : display.getShells()) {
-			shellToplevels.add(GTK.gtk_widget_get_toplevel(shell.handle));
+			if (GTK.GTK4) {
+				shellToplevels.add(GTK4.gtk_widget_get_native(shell.handle));
+			} else {
+				shellToplevels.add(GTK3.gtk_widget_get_toplevel(shell.handle));
+			}
 		}
 
 		long nativeDialog = 0;
